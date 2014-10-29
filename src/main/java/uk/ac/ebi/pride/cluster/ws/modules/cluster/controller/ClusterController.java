@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterDetail;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterDetailList;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterSummary;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
@@ -29,12 +31,12 @@ public class ClusterController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    ClusterDetail getClusterDetail(
+    ClusterSummary getClusterDetail(
             @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") String clusterId) {
+            @PathVariable("clusterId") int clusterId) {
         logger.info("Cluster " + clusterId + " detail requested");
 
-        ClusterDetail res = new ClusterDetail();
+        ClusterSummary res = new ClusterSummary();
         res.setId(clusterId);
 
         // TODO
@@ -47,16 +49,14 @@ public class ClusterController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    ClusterDetailList simpleSearchClusters(
+    List<ClusterSummary> simpleSearchClusters(
             @ApiParam(value = "search term to query for")
             @RequestParam(value = "q", required = false, defaultValue = "") String term
     ) {
 
         logger.debug("Fetched clusters for term: " + term);
 
-        ClusterDetailList list = new ClusterDetailList();
-
-        return list;
+        return getTestClusterSummaries(10);
     }
 
     @ApiOperation(value = "list similar clusters given a list of peaks", position = 3, notes = "additive clustering functionality")
@@ -64,16 +64,26 @@ public class ClusterController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    ClusterDetailList getSimilarClusters(
+    List<ClusterSummary> getSimilarClusters(
             @ApiParam(value = "peak list to compare to")
             @RequestParam(value = "peaks", required = false, defaultValue = "") String peaks
     ) {
 
         logger.debug("Fetched clusters for peak list: " + peaks);
 
-        ClusterDetailList list = new ClusterDetailList();
-
-        return list;
+        return getTestClusterSummaries(5);
     }
 
+
+    private List<ClusterSummary> getTestClusterSummaries(int n) {
+        List<ClusterSummary> res = new LinkedList<ClusterSummary>();
+
+        for (int i=0;i<n;i++) {
+            ClusterSummary clusterSummary = new ClusterSummary();
+            clusterSummary.setId(i);
+            res.add(clusterSummary);
+        }
+
+        return res;
+    }
 }

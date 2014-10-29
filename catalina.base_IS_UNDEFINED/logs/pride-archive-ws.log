@@ -1,0 +1,130 @@
+I|13:44:25.886|SwaggerPluginAdapter                    |Context refreshed
+I|13:44:25.889|SwaggerPluginAdapter                    |Found custom SwaggerSpringMvcPlugins
+I|13:44:25.890|SwaggerPluginAdapter                    |initializing plugin bean customImplementation
+I|13:44:25.903|ApiListingReferenceScanner              |Scanning for api listing references
+I|13:44:25.908|ApiListingReferenceScanner              |Request mapping: getClusterDetail belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:44:25.908|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getClusterDetail
+I|13:44:25.909|ApiListingReferenceScanner              |Request mapping: simpleSearchClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:44:25.911|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:simpleSearchClusters
+I|13:44:25.912|ApiListingReferenceScanner              |Request mapping: getSimilarClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:44:25.912|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getSimilarClusters
+I|13:44:25.912|ApiListingReferenceScanner              |Excluding method as its class is annotated with: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:44:25.912|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:44:25.913|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:44:25.920|ApiListingReferenceScanner              |Created resource listing Path: /default/cluster Description: cluster Position: 0
+I|13:44:26.218|SwaggerApiResourceListing               |Added a resource listing with (1) api resources: 
+I|13:44:26.218|SwaggerApiResourceListing               |  cluster at location: /api-docs/default/cluster
+I|13:47:57.829|ClusterController                       |Cluster 1 detail requested
+I|13:48:03.479|ClusterController                       |Cluster 2 detail requested
+I|13:50:36.320|SwaggerPluginAdapter                    |Context refreshed
+I|13:50:36.324|SwaggerPluginAdapter                    |Found custom SwaggerSpringMvcPlugins
+I|13:50:36.324|SwaggerPluginAdapter                    |initializing plugin bean customImplementation
+I|13:50:36.339|ApiListingReferenceScanner              |Scanning for api listing references
+I|13:50:36.344|ApiListingReferenceScanner              |Request mapping: getClusterDetail belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:50:36.344|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getClusterDetail
+I|13:50:36.345|ApiListingReferenceScanner              |Request mapping: simpleSearchClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:50:36.346|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:simpleSearchClusters
+I|13:50:36.347|ApiListingReferenceScanner              |Request mapping: getSimilarClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:50:36.348|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getSimilarClusters
+I|13:50:36.348|ApiListingReferenceScanner              |Excluding method as its class is annotated with: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:50:36.348|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:50:36.348|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:50:36.354|ApiListingReferenceScanner              |Created resource listing Path: /default/cluster Description: cluster Position: 0
+I|13:50:36.692|SwaggerApiResourceListing               |Added a resource listing with (1) api resources: 
+I|13:50:36.693|SwaggerApiResourceListing               |  cluster at location: /api-docs/default/cluster
+I|13:53:08.999|SwaggerPluginAdapter                    |Context refreshed
+I|13:53:09.003|SwaggerPluginAdapter                    |Found custom SwaggerSpringMvcPlugins
+I|13:53:09.003|SwaggerPluginAdapter                    |initializing plugin bean customImplementation
+I|13:53:09.015|ApiListingReferenceScanner              |Scanning for api listing references
+I|13:53:09.018|ApiListingReferenceScanner              |Request mapping: getClusterDetail belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:53:09.019|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getClusterDetail
+I|13:53:09.020|ApiListingReferenceScanner              |Request mapping: simpleSearchClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:53:09.021|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:simpleSearchClusters
+I|13:53:09.022|ApiListingReferenceScanner              |Request mapping: getSimilarClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:53:09.022|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getSimilarClusters
+I|13:53:09.022|ApiListingReferenceScanner              |Excluding method as its class is annotated with: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:53:09.022|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:53:09.022|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:53:09.028|ApiListingReferenceScanner              |Created resource listing Path: /default/cluster Description: cluster Position: 0
+I|13:53:09.336|SwaggerApiResourceListing               |Added a resource listing with (1) api resources: 
+I|13:53:09.336|SwaggerApiResourceListing               |  cluster at location: /api-docs/default/cluster
+I|13:54:15.826|SwaggerPluginAdapter                    |Context refreshed
+I|13:54:15.829|SwaggerPluginAdapter                    |Found custom SwaggerSpringMvcPlugins
+I|13:54:15.829|SwaggerPluginAdapter                    |initializing plugin bean customImplementation
+I|13:54:15.843|ApiListingReferenceScanner              |Scanning for api listing references
+I|13:54:15.847|ApiListingReferenceScanner              |Request mapping: getClusterDetail belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:54:15.847|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getClusterDetail
+I|13:54:15.848|ApiListingReferenceScanner              |Request mapping: simpleSearchClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:54:15.850|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:simpleSearchClusters
+I|13:54:15.851|ApiListingReferenceScanner              |Request mapping: getSimilarClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|13:54:15.851|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getSimilarClusters
+I|13:54:15.851|ApiListingReferenceScanner              |Excluding method as its class is annotated with: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:54:15.851|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:54:15.851|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|13:54:15.859|ApiListingReferenceScanner              |Created resource listing Path: /default/cluster Description: cluster Position: 0
+I|13:54:16.203|SwaggerApiResourceListing               |Added a resource listing with (1) api resources: 
+I|13:54:16.204|SwaggerApiResourceListing               |  cluster at location: /api-docs/default/cluster
+I|14:11:18.890|SwaggerPluginAdapter                    |Context refreshed
+I|14:11:18.893|SwaggerPluginAdapter                    |Found custom SwaggerSpringMvcPlugins
+I|14:11:18.893|SwaggerPluginAdapter                    |initializing plugin bean customImplementation
+I|14:11:18.907|ApiListingReferenceScanner              |Scanning for api listing references
+I|14:11:18.910|ApiListingReferenceScanner              |Request mapping: getClusterDetail belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:11:18.911|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getClusterDetail
+I|14:11:18.912|ApiListingReferenceScanner              |Request mapping: simpleSearchClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:11:18.913|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:simpleSearchClusters
+I|14:11:18.914|ApiListingReferenceScanner              |Request mapping: getSimilarClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:11:18.914|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getSimilarClusters
+I|14:11:18.915|ApiListingReferenceScanner              |Excluding method as its class is annotated with: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:11:18.915|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:11:18.915|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:11:18.925|ApiListingReferenceScanner              |Created resource listing Path: /default/cluster Description: cluster Position: 0
+I|14:11:19.251|SwaggerApiResourceListing               |Added a resource listing with (1) api resources: 
+I|14:11:19.251|SwaggerApiResourceListing               |  cluster at location: /api-docs/default/cluster
+I|14:12:13.707|SwaggerPluginAdapter                    |Context refreshed
+I|14:12:13.709|SwaggerPluginAdapter                    |Found custom SwaggerSpringMvcPlugins
+I|14:12:13.709|SwaggerPluginAdapter                    |initializing plugin bean customImplementation
+I|14:12:13.723|ApiListingReferenceScanner              |Scanning for api listing references
+I|14:12:13.726|ApiListingReferenceScanner              |Request mapping: getClusterDetail belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:12:13.727|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getClusterDetail
+I|14:12:13.728|ApiListingReferenceScanner              |Request mapping: simpleSearchClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:12:13.730|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:simpleSearchClusters
+I|14:12:13.731|ApiListingReferenceScanner              |Request mapping: getSimilarClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:12:13.731|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getSimilarClusters
+I|14:12:13.731|ApiListingReferenceScanner              |Excluding method as its class is annotated with: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:12:13.731|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:12:13.732|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:12:13.740|ApiListingReferenceScanner              |Created resource listing Path: /default/cluster Description: cluster Position: 0
+I|14:12:14.067|SwaggerApiResourceListing               |Added a resource listing with (1) api resources: 
+I|14:12:14.067|SwaggerApiResourceListing               |  cluster at location: /api-docs/default/cluster
+I|14:15:39.468|SwaggerPluginAdapter                    |Context refreshed
+I|14:15:39.471|SwaggerPluginAdapter                    |Found custom SwaggerSpringMvcPlugins
+I|14:15:39.471|SwaggerPluginAdapter                    |initializing plugin bean customImplementation
+I|14:15:39.486|ApiListingReferenceScanner              |Scanning for api listing references
+I|14:15:39.490|ApiListingReferenceScanner              |Request mapping: getClusterDetail belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:15:39.490|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getClusterDetail
+I|14:15:39.491|ApiListingReferenceScanner              |Request mapping: simpleSearchClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:15:39.493|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:simpleSearchClusters
+I|14:15:39.493|ApiListingReferenceScanner              |Request mapping: getSimilarClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:15:39.493|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getSimilarClusters
+I|14:15:39.494|ApiListingReferenceScanner              |Excluding method as its class is annotated with: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:15:39.494|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:15:39.494|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:15:39.501|ApiListingReferenceScanner              |Created resource listing Path: /default/cluster Description: cluster Position: 0
+I|14:15:39.848|SwaggerApiResourceListing               |Added a resource listing with (1) api resources: 
+I|14:15:39.848|SwaggerApiResourceListing               |  cluster at location: /api-docs/default/cluster
+I|14:16:06.361|SwaggerPluginAdapter                    |Context refreshed
+I|14:16:06.364|SwaggerPluginAdapter                    |Found custom SwaggerSpringMvcPlugins
+I|14:16:06.365|SwaggerPluginAdapter                    |initializing plugin bean customImplementation
+I|14:16:06.376|ApiListingReferenceScanner              |Scanning for api listing references
+I|14:16:06.380|ApiListingReferenceScanner              |Request mapping: getClusterDetail belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:16:06.380|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getClusterDetail
+I|14:16:06.381|ApiListingReferenceScanner              |Request mapping: simpleSearchClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:16:06.382|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:simpleSearchClusters
+I|14:16:06.383|ApiListingReferenceScanner              |Request mapping: getSimilarClusters belongs to groups: [[ResourceGroup{groupName='cluster'}]] 
+I|14:16:06.383|ApiListingReferenceScanner              |Adding resource to group:ResourceGroup{groupName='cluster'} with description:cluster for handler method:getSimilarClusters
+I|14:16:06.383|ApiListingReferenceScanner              |Excluding method as its class is annotated with: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:16:06.384|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:16:06.384|ApiListingReferenceScanner              |Excluding method as it contains the excluded annotation: interface com.mangofactory.swagger.annotations.ApiIgnore
+I|14:16:06.392|ApiListingReferenceScanner              |Created resource listing Path: /default/cluster Description: cluster Position: 0
+I|14:16:06.766|SwaggerApiResourceListing               |Added a resource listing with (1) api resources: 
+I|14:16:06.766|SwaggerApiResourceListing               |  cluster at location: /api-docs/default/cluster
