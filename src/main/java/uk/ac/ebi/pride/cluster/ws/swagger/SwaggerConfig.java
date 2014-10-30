@@ -20,7 +20,7 @@ import java.net.URL;
  */
 @Configuration
 @EnableSwagger
-@ComponentScan("uk.ac.ebi.pride.cluster.ws.modules.cluster.controller")
+@ComponentScan("uk.ac.ebi.pride.cluster.ws.modules.clustersummary.controller")
 public class SwaggerConfig {
 
     private SpringSwaggerConfig springSwaggerConfig;

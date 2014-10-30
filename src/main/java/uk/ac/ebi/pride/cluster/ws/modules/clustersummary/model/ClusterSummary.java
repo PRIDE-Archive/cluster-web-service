@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.modules.cluster.model;
+package uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
