@@ -1,5 +1,10 @@
 package uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model;
 
+import uk.ac.ebi.pride.cluster.ws.modules.psmsummary.model.PsmSummary;
+import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.SpectrumSummary;
+
+import java.util.Collection;
+
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
@@ -14,6 +19,10 @@ public class ClusterDetail {
     int numberOfSpectra;
 
     double maxRatio;
+
+    Collection<SpectrumSummary> spectra;
+
+    Collection<PsmSummary> psms;
 
     public int getId() {
         return id;
@@ -53,5 +62,21 @@ public class ClusterDetail {
 
     public void setMaxRatio(double maxRatio) {
         this.maxRatio = maxRatio;
+    }
+
+    public Collection<SpectrumSummary> getSpectra() {
+        return spectra;
+    }
+
+    public void setSpectra(Collection<SpectrumSummary> spectra) {
+        this.spectra = spectra;
+    }
+
+    public Collection<PsmSummary> getPsms() {
+        return psms;
+    }
+
+    public void setPsms(Collection<PsmSummary> psms) {
+        this.psms = psms;
     }
 }
