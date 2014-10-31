@@ -5,11 +5,11 @@ A RESTful web service providing access to the European Bioinformatics Institute 
 
 #### End points
 
-Detailed and functional documentation will be available thanks to [](Swagger) once the web-service is deployed. As a
-summary, these are the available end-points for the web service:
+Detailed and functional documentation will be available thanks to [https://github.com/swagger-api](Swagger) once the
+web-service is deployed. As a summary, these are the available end-points for the web service:
 
 * `ClusterSummary`: an abbreviated version of a cluster. Suitable for listing mainly.
-* `ClusterDetail`: a more data loaded version of a given cluster. Suitable for detailed views.  
+* `ClusterDetail`: a more data loaded version of a given cluster. Suitable for detailed views.
 
 #### Some deign notes
 * `ClusterDetail` and `ClusterSummary` are provided as separate resources. Past experiences with the
