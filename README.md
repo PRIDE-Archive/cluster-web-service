@@ -5,7 +5,7 @@ A RESTful web service providing access to the European Bioinformatics Institute 
 
 #### End points
 
-Detailed and functional documentation will be available thanks to [https://github.com/swagger-api](Swagger) once the
+Detailed and functional documentation will be available thanks to [Swagger](https://github.com/swagger-api) once the
 web-service is deployed. As a summary, these are the available end-points for the web service:
 
 * `ClusterSummary`: an abbreviated version of a cluster. Suitable for listing mainly.
@@ -13,7 +13,7 @@ web-service is deployed. As a summary, these are the available end-points for th
 
 #### Some deign notes
 * `ClusterDetail` and `ClusterSummary` are provided as separate resources. Past experiences with the
-[http://www.ebi.ac.uk/pride/ws/archive/](PRIDE Archive web service) demonstrated that having a single resource
+[PRIDE Archive web service](http://www.ebi.ac.uk/pride/ws/archive/) demonstrated that having a single resource
 (e.g. 'project') providing both `ProjectDetail` and `ProjectSummary` depending on what individual end point was
 requested is confusing from the point of view of client libraries and web apps.
 * Following a similar logic, spectra and psms will be independent WS endpoints, instead of being part of `ClusterDetail`.
