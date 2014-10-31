@@ -15,7 +15,8 @@ web-service is deployed. As a summary, these are the available end-points for th
 * `ClusterDetail` and `ClusterSummary` are provided as separate resources. Past experiences with the
 [PRIDE Archive web service](http://www.ebi.ac.uk/pride/ws/archive/) demonstrated that having a single resource
 (e.g. 'project') providing both `ProjectDetail` and `ProjectSummary` depending on what individual end point was
-requested is confusing from the point of view of client libraries and web apps.
-* Following a similar logic, spectra and psms will be independent WS endpoints, instead of being part of `ClusterDetail`.
+requested, even when absolutely correct, might be not so easy to understand from the point of view of client
+libraries and web apps.
+* With the same rational behind, spectra and psms will be independent WS endpoints, instead of being part of `ClusterDetail`.
 Doing so we can better manage resources in the client, since this end point can potentially return long collections
 of results.
