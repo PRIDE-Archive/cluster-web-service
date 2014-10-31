@@ -1,5 +1,15 @@
-web-service
-===========
+PRIDE Cluster web-service
+=========================
+
+A RESTful web service providing access to the European Bioinformatics Institute PRIDE Cluster resource.
+
+#### End points
+
+Detailed and functional documentation will be available thanks to [](Swagger) once the web-service is deployed. As a
+summary, these are the available end-points for the web service:
+
+* `ClusterSummary`: an abbreviated version of a cluster. Suitable for listing mainly.
+* `ClusterDetail`: a more data loaded version of a given cluster. Suitable for detailed views.  
 
 #### Some deign notes
 * `ClusterDetail` and `ClusterSummary` are provided as separate resources. Past experiences with the
