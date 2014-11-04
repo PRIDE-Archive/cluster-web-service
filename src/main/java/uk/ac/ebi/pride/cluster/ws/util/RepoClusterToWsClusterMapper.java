@@ -51,6 +51,8 @@ public class RepoClusterToWsClusterMapper {
         res.setNumberOfSpectra(repoCluster.getNumberOfSpectra());
         res.setAveragePrecursorCharge(repoCluster.getAveragePrecursorCharge());
         res.setAveragePrecursorMz(repoCluster.getAveragePrecursorMz());
+        res.setConsensusSpectrumIntensity(repoCluster.getConsensusSpectrumIntensity());
+        res.setConsensusSpectrumMz(repoCluster.getConsensusSpectrumMz());
         res.setMaxRatio(repoCluster.getMaxPeptideRatio());
 
         return res;

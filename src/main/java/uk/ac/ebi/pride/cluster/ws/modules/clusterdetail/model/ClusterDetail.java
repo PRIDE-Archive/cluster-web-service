@@ -11,19 +11,23 @@ import java.util.Collection;
  */
 public class ClusterDetail {
 
-    long id;
+    private long id;
 
-    double averagePrecursorMz;
+    private double averagePrecursorMz;
 
-    double averagePrecursorCharge;
+    private double averagePrecursorCharge;
 
-    int numberOfSpectra;
+    private int numberOfSpectra;
 
-    double maxRatio;
+    private double maxRatio;
 
-    Collection<SpectrumSummary> spectra;
+    private String consensusSpectrumMz;
 
-    Collection<PsmSummary> psms;
+    private String consensusSpectrumIntensity;
+
+    private Collection<SpectrumSummary> spectra;
+
+    private Collection<PsmSummary> psms;
 
     public long getId() {
         return id;
@@ -63,6 +67,22 @@ public class ClusterDetail {
 
     public void setMaxRatio(double maxRatio) {
         this.maxRatio = maxRatio;
+    }
+
+    public String getConsensusSpectrumMz() {
+        return consensusSpectrumMz;
+    }
+
+    public void setConsensusSpectrumMz(String consensusSpectrumMz) {
+        this.consensusSpectrumMz = consensusSpectrumMz;
+    }
+
+    public String getConsensusSpectrumIntensity() {
+        return consensusSpectrumIntensity;
+    }
+
+    public void setConsensusSpectrumIntensity(String consensusSpectrumIntensity) {
+        this.consensusSpectrumIntensity = consensusSpectrumIntensity;
     }
 
     public Collection<SpectrumSummary> getSpectra() {
