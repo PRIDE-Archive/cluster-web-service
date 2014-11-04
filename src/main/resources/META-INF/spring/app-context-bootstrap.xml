@@ -14,4 +14,30 @@
     <!-- Callback filter for cross server query support -->
     <bean class="uk.ac.ebi.pride.web.util.callback.filter.JsonpCallbackFilter" id="jsonpCallbackFilter"/>
 
+
+    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.ClusterReader" id="clusterReaderDao">
+        <constructor-arg ref="clusterDataSource"/>
+    </bean>
+
+    <!--Setup data source using place holder properties-->
+    <bean id="clusterDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${prider.jdbc.driver}"/>
+        <property name="url" value="${prider.jdbc.url}"/>
+        <property name="username" value="${prider.jdbc.user}"/>
+        <property name="password" value="${prider.jdbc.password}"/>
+        <property name="maxActive" value="50"/>
+        <property name="maxIdle" value="25"/>
+        <property name="minIdle" value="1"/>
+        <property name="initialSize" value="1"/>
+        <property name="minEvictableIdleTimeMillis" value="60000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name="numTestsPerEvictionRun" value="3"/>
+        <property name="maxWait" value="10000"/>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="validationQuery" value="SELECT 1 FROM dual"/>
+        <!-- Oracle validation query -->
+    </bean>
+
 </beans>

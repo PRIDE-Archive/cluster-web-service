@@ -23,6 +23,26 @@
     <build>
         <finalName>${project.name}-${project.version}</finalName>
 
+        <resources>
+            <!-- regular resources -->
+            <!-- Maven should filter properties files -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/props/*.properties</include>
+                </includes>
+            </resource>
+            <!-- Maven should not filter other files -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/props/*.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
         <!-- maven-jetty-plugin -->
         <plugins>
             <plugin>
@@ -38,6 +58,18 @@
                         </connector>
                     </connectors>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.oracle</groupId>
+                        <artifactId>oracle-thin</artifactId>
+                        <version>11.2.0.1.0</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>commons-dbcp</groupId>
+                        <artifactId>commons-dbcp</artifactId>
+                        <version>1.2.2</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
 
@@ -90,6 +122,21 @@
             <groupId>uk.ac.ebi.pride.web</groupId>
             <artifactId>pride-web-utils</artifactId>
             <version>${pride.web.utils.version}</version>
+        </dependency>
+
+        <!--Cluster repo-->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.spectracluster</groupId>
+            <artifactId>spectra-cluster-repo</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!--Data source dependencies-->
+        <!-- oracle jdbc driver -->
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>oracle-thin</artifactId>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

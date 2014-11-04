@@ -6,7 +6,7 @@ package uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model;
  */
 public class ClusterSummary {
 
-    int id;
+    long id;
 
     double averagePrecursorMz;
 
@@ -16,11 +16,11 @@ public class ClusterSummary {
 
     double maxRatio;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

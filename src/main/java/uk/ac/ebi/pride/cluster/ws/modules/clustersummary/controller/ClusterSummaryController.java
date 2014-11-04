@@ -5,11 +5,14 @@ import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model.ClusterSummary;
+import uk.ac.ebi.pride.cluster.ws.util.RepoClusterToClusterSummaryMapper;
+import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +28,8 @@ public class ClusterSummaryController {
 
     private static final Logger logger = LoggerFactory.getLogger(ClusterSummaryController.class);
 
+    @Autowired
+    IClusterReadDao clusterReaderDao;
 
     @ApiOperation(value = "retrieves cluster summary information by cluster ID", position = 1, notes = "retrieve a record of a specific clusterSummary")
     @RequestMapping(value = "/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +61,7 @@ public class ClusterSummaryController {
 
         logger.debug("Fetched cluster summaries for term: " + term);
 
-        return getTestClusterSummaries(10);
+        return RepoClusterToClusterSummaryMapper.asClusterSummaryList(clusterReaderDao.getAllClusters(1,12));
     }
 
     @ApiOperation(value = "list similar cluster summaries given a list of peaks", position = 3, notes = "additive clustering functionality")
