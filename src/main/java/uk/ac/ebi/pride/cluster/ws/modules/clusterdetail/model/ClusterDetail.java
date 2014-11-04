@@ -10,7 +10,8 @@ import java.util.Collection;
  *
  */
 public class ClusterDetail {
-    int id;
+
+    long id;
 
     double averagePrecursorMz;
 
@@ -24,11 +25,11 @@ public class ClusterDetail {
 
     Collection<PsmSummary> psms;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

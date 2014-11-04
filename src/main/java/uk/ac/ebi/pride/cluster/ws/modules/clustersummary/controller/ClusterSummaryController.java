@@ -11,7 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model.ClusterSummary;
-import uk.ac.ebi.pride.cluster.ws.util.RepoClusterToClusterSummaryMapper;
+import uk.ac.ebi.pride.cluster.ws.util.RepoClusterToWsClusterMapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
 
 import java.util.LinkedList;
@@ -38,15 +38,10 @@ public class ClusterSummaryController {
     @ResponseBody
     ClusterSummary getClusterSummary(
             @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") int clusterId) {
+            @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster " + clusterId + " summary requested");
 
-        ClusterSummary res = new ClusterSummary();
-        res.setId(clusterId);
-
-        // TODO
-
-        return res;
+        return RepoClusterToWsClusterMapper.asClusterSummary(clusterReaderDao.findCluster(clusterId));
     }
 
     @ApiOperation(value = "list clusters summaries for given criteria", position = 2, notes = "search functionality")
@@ -61,7 +56,7 @@ public class ClusterSummaryController {
 
         logger.debug("Fetched cluster summaries for term: " + term);
 
-        return RepoClusterToClusterSummaryMapper.asClusterSummaryList(clusterReaderDao.getAllClusters(1,12));
+        return RepoClusterToWsClusterMapper.asClusterSummaryList(clusterReaderDao.getAllClusters(1, 12));
     }
 
     @ApiOperation(value = "list similar cluster summaries given a list of peaks", position = 3, notes = "additive clustering functionality")

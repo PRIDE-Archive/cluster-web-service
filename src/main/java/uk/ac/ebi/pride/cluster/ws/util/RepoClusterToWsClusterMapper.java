@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.cluster.ws.util;
 
+import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model.ClusterDetail;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model.ClusterSummary;
 import uk.ac.ebi.pride.spectracluster.repo.utils.paging.Page;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-public class RepoClusterToClusterSummaryMapper {
+public class RepoClusterToWsClusterMapper {
 
     public static List<ClusterSummary> asClusterSummaryList(Page<uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary> repoClusters) {
         List<ClusterSummary> res = new LinkedList<ClusterSummary>();
@@ -26,6 +27,31 @@ public class RepoClusterToClusterSummaryMapper {
 
             res.add(newClusterSummary);
         }
+
+        return res;
+    }
+
+    public static ClusterSummary asClusterSummary(uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary repoCluster) {
+
+        ClusterSummary res = new ClusterSummary();
+
+        res.setId(repoCluster.getId());
+        res.setNumberOfSpectra(repoCluster.getNumberOfSpectra());
+        res.setAveragePrecursorCharge(repoCluster.getAveragePrecursorCharge());
+        res.setAveragePrecursorMz(repoCluster.getAveragePrecursorMz());
+        res.setMaxRatio(repoCluster.getMaxPeptideRatio());
+
+        return res;
+    }
+
+    public static ClusterDetail asClusterDetail(uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary repoCluster) {
+        ClusterDetail res = new ClusterDetail();
+
+        res.setId(repoCluster.getId());
+        res.setNumberOfSpectra(repoCluster.getNumberOfSpectra());
+        res.setAveragePrecursorCharge(repoCluster.getAveragePrecursorCharge());
+        res.setAveragePrecursorMz(repoCluster.getAveragePrecursorMz());
+        res.setMaxRatio(repoCluster.getMaxPeptideRatio());
 
         return res;
     }
