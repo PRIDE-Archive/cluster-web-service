@@ -51,16 +51,18 @@ public class ClusterSummaryController {
     @ResponseBody
     List<ClusterSummary> simpleSearchClusters(
             @ApiParam(value = "search term to query for")
-            @RequestParam(value = "q", required = false, defaultValue = "") String term
+            @RequestParam(value = "q", required = false, defaultValue = "") String term,
+            @RequestParam(value = "page", required = true) int page,
+            @RequestParam(value = "size", required = true) int size
     ) {
 
-        logger.debug("Fetched cluster summaries for term: " + term);
+        logger.info("Fetched cluster summaries for term:" + term + " page:" + page + " size:" + size);
 
-        return RepoClusterToWsClusterMapper.asClusterSummaryList(clusterReaderDao.getAllClusters(1, 12));
+        return RepoClusterToWsClusterMapper.asClusterSummaryList(clusterReaderDao.getAllClusters(page, size));
     }
 
     @ApiOperation(value = "list similar cluster summaries given a list of peaks", position = 3, notes = "additive clustering functionality")
-    @RequestMapping(value = "/similar", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/nearest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
