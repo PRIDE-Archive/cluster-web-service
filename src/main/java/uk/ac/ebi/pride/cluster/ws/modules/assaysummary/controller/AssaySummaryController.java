@@ -10,21 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
-import uk.ac.ebi.pride.cluster.ws.modules.assaysummary.model.AssaySummary;
-import uk.ac.ebi.pride.cluster.ws.modules.assaysummary.model.Species;
-import uk.ac.ebi.pride.cluster.ws.modules.assaysummary.util.RepoAssaySummaryToWsAssaySummaryMapper;
-import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model.ClusterDetail;
-import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.util.RepoClusterToWsClusterDetailMapper;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.Spectrum;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.SpectrumPeak;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.SpectrumSummary;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.util.RepoSpectrumToWsSpectrumSummaryMapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
@@ -45,12 +36,22 @@ public class AssaySummaryController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    List<Species> getClusterSpecies(
+    Set<String> getClusterSpecies(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster " + clusterId + " consensus spectra requested");
 
-        return null;
+        // get the cluster
+        ClusterSummary repoCluster = clusterReaderDao.findCluster(clusterId);
+        // Get the assays for a given cluster
+        List<uk.ac.ebi.pride.spectracluster.repo.model.AssaySummary> repoAssays = repoCluster.getAssaySummaries();
+        // Extract the species
+        Set<String> species = new HashSet<String>();
+        for (uk.ac.ebi.pride.spectracluster.repo.model.AssaySummary repoAssay: repoAssays) {
+            species.addAll(repoAssay.getSpeciesEntries());
+        }
+
+        return species;
 
     }
 }

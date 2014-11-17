@@ -15,6 +15,7 @@
     <name>pride-cluster-web-service</name>
 
     <properties>
+        <pride.spectra.cluster.repo.version>1.0.1-SNAPSHOT</pride.spectra.cluster.repo.version>
         <pride.web.utils.version>1.3.8</pride.web.utils.version>
         <swagger.version>0.8.6</swagger.version>
     </properties>
@@ -128,7 +129,7 @@
         <dependency>
             <groupId>uk.ac.ebi.pride.spectracluster</groupId>
             <artifactId>spectra-cluster-repo</artifactId>
-            <version>1.0.1-SNAPSHOT</version>
+            <version>${pride.spectra.cluster.repo.version}</version>
         </dependency>
 
         <!--Data source dependencies-->
