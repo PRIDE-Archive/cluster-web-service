@@ -36,19 +36,6 @@ public class SpectrumSummaryController {
     @Autowired
     IClusterReadDao clusterReaderDao;
 
-    @ApiOperation(value = "retrieves spectrum summary information for a particular cluster", position = 1, notes = "retrieve a list of spectrum summaries")
-    @RequestMapping(value = "/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK) // 200
-    public
-    @ResponseBody
-    SpectrumSummary getClusterSpectrumSummary(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
-        logger.info("Spectra summaries for Cluster " + clusterId + " requested");
-
-        return RepoSpectrumToWsSpectrumSummaryMapper.asSpectrumSummary(/*clusterReaderDao.getSpecies(clusterId)*/);
-    }
-
     @ApiOperation(value = "a convenience endpoint that retrieves cluster consensus spectrum information only", position = 1, notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/consensus", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200

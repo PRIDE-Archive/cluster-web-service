@@ -40,19 +40,6 @@ public class AssaySummaryController {
     @Autowired
     IClusterReadDao clusterReaderDao;
 
-    @ApiOperation(value = "retrieves assay summary information for a particular cluster", position = 1, notes = "retrieve a list of assay summaries")
-    @RequestMapping(value = "/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK) // 200
-    public
-    @ResponseBody
-    List<AssaySummary> getClusterAssaySummary(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
-        logger.info("Assay summaries for Cluster " + clusterId + " requested");
-
-        return RepoAssaySummaryToWsAssaySummaryMapper.asAssaySummaryList(/*clusterReaderDao.getSpecies(clusterId)*/);
-    }
-
     @ApiOperation(value = "a convenience endpoint that retrieves cluster consensus spectrum information only", position = 1, notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/species", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
