@@ -100,4 +100,5 @@ public class ClusterDetail {
     public void setPsms(Collection<PsmSummary> psms) {
         this.psms = psms;
     }
+
 }

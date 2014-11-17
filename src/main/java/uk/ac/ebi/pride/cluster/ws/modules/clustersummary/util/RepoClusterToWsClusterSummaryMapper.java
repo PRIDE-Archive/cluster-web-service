@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.util;
+package uk.ac.ebi.pride.cluster.ws.modules.clustersummary.util;
 
 import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model.ClusterDetail;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model.ClusterSummary;
@@ -11,7 +11,7 @@ import java.util.List;
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-public class RepoClusterToWsClusterMapper {
+public class RepoClusterToWsClusterSummaryMapper {
 
     public static List<ClusterSummary> asClusterSummaryList(Page<uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary> repoClusters) {
         List<ClusterSummary> res = new LinkedList<ClusterSummary>();
@@ -44,17 +44,4 @@ public class RepoClusterToWsClusterMapper {
         return res;
     }
 
-    public static ClusterDetail asClusterDetail(uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary repoCluster) {
-        ClusterDetail res = new ClusterDetail();
-
-        res.setId(repoCluster.getId());
-        res.setNumberOfSpectra(repoCluster.getNumberOfSpectra());
-        res.setAveragePrecursorCharge(repoCluster.getAveragePrecursorCharge());
-        res.setAveragePrecursorMz(repoCluster.getAveragePrecursorMz());
-        res.setConsensusSpectrumIntensity(repoCluster.getConsensusSpectrumIntensity());
-        res.setConsensusSpectrumMz(repoCluster.getConsensusSpectrumMz());
-        res.setMaxRatio(repoCluster.getMaxPeptideRatio());
-
-        return res;
-    }
 }
