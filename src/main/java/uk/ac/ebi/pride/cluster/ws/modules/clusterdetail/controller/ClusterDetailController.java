@@ -3,6 +3,7 @@ package uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.controller;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
+import uk.ac.ebi.pride.cluster.ws.modules.assaysummary.model.SpeciesCount;
+import uk.ac.ebi.pride.cluster.ws.modules.assaysummary.model.SpeciesDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model.ClusterDetail;
 import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.util.RepoClusterToWsClusterDetailMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.Spectrum;
@@ -19,10 +22,7 @@ import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssaySummary;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
@@ -57,7 +57,7 @@ public class ClusterDetailController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    Set<String> getClusterSpecies(
+    List<SpeciesCount> getClusterSpecies(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster " + clusterId + " consensus spectra requested");
@@ -67,12 +67,20 @@ public class ClusterDetailController {
         // Get the assays for a given cluster
         List<AssaySummary> repoAssays = repoCluster.getAssaySummaries();
         // Extract the species
-        Set<String> species = new HashSet<String>();
+        SpeciesDistribution species = new SpeciesDistribution();
         for (uk.ac.ebi.pride.spectracluster.repo.model.AssaySummary repoAssay: repoAssays) {
-            species.addAll(repoAssay.getSpeciesEntries());
+            for (String aSpecies: repoAssay.getSpeciesEntries()) {
+                if (species.getDistribution().containsKey(aSpecies)) {
+                    species.getDistribution().get(aSpecies).addSpeciesCount(1);
+                } else {
+                    SpeciesCount newSpeciesCount = new SpeciesCount(aSpecies,1);
+                    species.getDistribution().put(aSpecies, newSpeciesCount);
+                }
+            }
+
         }
 
-        return species;
+        return new ArrayList<SpeciesCount>(species.getDistribution().values());
 
     }
 
