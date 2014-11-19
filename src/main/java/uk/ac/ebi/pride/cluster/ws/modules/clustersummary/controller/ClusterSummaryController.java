@@ -6,17 +6,25 @@ import com.wordnik.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.pride.cluster.search.model.Cluster;
+import uk.ac.ebi.pride.cluster.search.model.SolrCluster;
+import uk.ac.ebi.pride.cluster.search.service.IClusterSearchService;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model.ClusterSummary;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.util.RepoClusterToWsClusterSummaryMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.util.RepoClusterToWsClusterSummaryMapper;
+import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.util.SolrClusterToWsClusterSummaryMapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
@@ -31,6 +39,9 @@ public class ClusterSummaryController {
 
     @Autowired
     IClusterReadDao clusterReaderDao;
+
+    @Autowired
+    IClusterSearchService clusterSearchService;
 
     @ApiOperation(value = "retrieves cluster summary information by cluster ID", position = 1, notes = "retrieve a record of a specific clusterSummary")
     @RequestMapping(value = "/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,15 +62,45 @@ public class ClusterSummaryController {
     public
     @ResponseBody
     List<ClusterSummary> simpleSearchClusters(
-            @ApiParam(value = "search term to query for")
-            @RequestParam(value = "q", required = false, defaultValue = "") String term,
+            @ApiParam(value = "general search term against multiple fields including: Max Ratio Peptide Sequence")
+            @RequestParam(value = "q", required = false, defaultValue = "") String q,
+            @ApiParam(value = "specific search term against Max Ratio Peptide Sequence")
+            @RequestParam(value = "peptide", required = false, defaultValue = "") String peptide,
+            @ApiParam(value = "specific search term against Species in a Cluster")
+            @RequestParam(value = "species", required = false, defaultValue = "") String species,
+            @ApiParam(value = "specific search term against Protein Accessions in a Cluster")
+            @RequestParam(value = "protein", required = false, defaultValue = "") String protein,
+            @ApiParam(value = "specific search term against Project Accessions in a Cluster")
+            @RequestParam(value = "project", required = false, defaultValue = "") String project,
+            @ApiParam(value = "1-based page number")
             @RequestParam(value = "page", required = true) int page,
+            @ApiParam(value = "maximum number of results per page")
             @RequestParam(value = "size", required = true) int size
     ) {
 
-        logger.info("Fetched cluster summaries for term:" + term + " page:" + page + " size:" + size);
+        logger.info("Fetched cluster summaries for\n" +
+                " query: " + q + "\n" +
+                " peptide: " + peptide + "\n" +
+                " species: " + species + "\n" +
+                " protein: " + protein + "\n" +
+                " project: " + project + "\n" +
+                " page: " + page + "\n" +
+                " size: " + size
+        );
 
-        return RepoClusterToWsClusterSummaryMapper.asClusterSummaryList(clusterReaderDao.getAllClusters(page, size));
+        int solrPage = page - 1; // Spring data for Solr uses 0-based paging
+        Page<SolrCluster> res;
+        if ("".equals(q)) {
+            res = clusterSearchService.findAll(new PageRequest(solrPage,size));
+        } else {
+            Set<String> seqs = new HashSet<String>();
+            for (String seq : q.split(" ")) {
+                seqs.add(seq);
+            }
+            res = clusterSearchService.findByHighestRatioPepSequences(seqs, new PageRequest(solrPage, size));
+        }
+
+        return SolrClusterToWsClusterSummaryMapper.asClusterSummaryList(res);
     }
 
     @ApiOperation(value = "list similar cluster summaries given a list of peaks", position = 3, notes = "additive clustering functionality")

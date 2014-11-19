@@ -8,7 +8,7 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:META-INF/spring/app-context-bootstrap.xml
-            <!--classpath:META-INF/spring/app-context-solr.xml-->
+            classpath:META-INF/spring/search-context.xml
         </param-value>
     </context-param>
 

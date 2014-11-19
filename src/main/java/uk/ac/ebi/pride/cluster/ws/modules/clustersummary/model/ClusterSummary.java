@@ -12,7 +12,7 @@ public class ClusterSummary {
 
     double averagePrecursorCharge;
 
-    int numberOfSpectra;
+    long numberOfSpectra;
 
     double maxRatio;
 
@@ -40,11 +40,11 @@ public class ClusterSummary {
         this.averagePrecursorCharge = averagePrecursorCharge;
     }
 
-    public int getNumberOfSpectra() {
+    public long getNumberOfSpectra() {
         return numberOfSpectra;
     }
 
-    public void setNumberOfSpectra(int numberOfSpectra) {
+    public void setNumberOfSpectra(long numberOfSpectra) {
         this.numberOfSpectra = numberOfSpectra;
     }
 

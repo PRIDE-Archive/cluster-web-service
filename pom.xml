@@ -16,6 +16,7 @@
 
     <properties>
         <pride.spectra.cluster.repo.version>1.0.1-SNAPSHOT</pride.spectra.cluster.repo.version>
+        <pride.spectra.cluster.search.version>0.1.0-SNAPSHOT</pride.spectra.cluster.search.version>
         <pride.web.utils.version>1.3.8</pride.web.utils.version>
         <swagger.version>0.8.6</swagger.version>
     </properties>
@@ -130,6 +131,13 @@
             <groupId>uk.ac.ebi.pride.spectracluster</groupId>
             <artifactId>spectra-cluster-repo</artifactId>
             <version>${pride.spectra.cluster.repo.version}</version>
+        </dependency>
+
+        <!--Cluster search-->
+        <dependency>
+            <groupId>uk.ac.ebi.pride.cluster</groupId>
+            <artifactId>cluster-search</artifactId>
+            <version>${pride.spectra.cluster.search.version}</version>
         </dependency>
 
         <!--Data source dependencies-->
