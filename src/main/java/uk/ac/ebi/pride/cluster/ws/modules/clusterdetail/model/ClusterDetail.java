@@ -25,9 +25,9 @@ public class ClusterDetail {
 
     private String consensusSpectrumIntensity;
 
-    private Collection<SpectrumSummary> spectra;
+    private long numSpectra;
 
-    private Collection<PsmSummary> psms;
+    private long numPsms;
 
     public long getId() {
         return id;
@@ -85,20 +85,19 @@ public class ClusterDetail {
         this.consensusSpectrumIntensity = consensusSpectrumIntensity;
     }
 
-    public Collection<SpectrumSummary> getSpectra() {
-        return spectra;
+    public long getNumSpectra() {
+        return numSpectra;
     }
 
-    public void setSpectra(Collection<SpectrumSummary> spectra) {
-        this.spectra = spectra;
+    public void setNumSpectra(long numSpectra) {
+        this.numSpectra = numSpectra;
     }
 
-    public Collection<PsmSummary> getPsms() {
-        return psms;
+    public long getNumPsms() {
+        return numPsms;
     }
 
-    public void setPsms(Collection<PsmSummary> psms) {
-        this.psms = psms;
+    public void setNumPsms(long numPsms) {
+        this.numPsms = numPsms;
     }
-
 }

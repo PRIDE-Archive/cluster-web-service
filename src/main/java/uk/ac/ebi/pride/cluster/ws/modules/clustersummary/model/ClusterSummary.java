@@ -6,15 +6,17 @@ package uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model;
  */
 public class ClusterSummary {
 
-    long id;
+    private long id;
 
-    double averagePrecursorMz;
+    private double averagePrecursorMz;
 
-    double averagePrecursorCharge;
+    private double averagePrecursorCharge;
 
-    long numberOfSpectra;
+    private long numberOfSpectra;
 
-    double maxRatio;
+    private double maxRatio;
+
+    private String peptideSequence;
 
     public long getId() {
         return id;
@@ -54,5 +56,13 @@ public class ClusterSummary {
 
     public void setMaxRatio(double maxRatio) {
         this.maxRatio = maxRatio;
+    }
+
+    public String getPeptideSequence() {
+        return peptideSequence;
+    }
+
+    public void setPeptideSequence(String peptideSequence) {
+        this.peptideSequence = peptideSequence;
     }
 }

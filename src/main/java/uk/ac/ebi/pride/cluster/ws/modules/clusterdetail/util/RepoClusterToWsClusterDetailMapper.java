@@ -14,7 +14,7 @@ import java.util.List;
 public class RepoClusterToWsClusterDetailMapper {
 
 
-    public static ClusterDetail asClusterDetail(uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary repoCluster) {
+    public static ClusterDetail asClusterDetail(uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail repoCluster) {
         ClusterDetail res = new ClusterDetail();
 
         res.setId(repoCluster.getId());

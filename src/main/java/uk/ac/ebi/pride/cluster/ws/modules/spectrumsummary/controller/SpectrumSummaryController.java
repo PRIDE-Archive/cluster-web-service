@@ -15,8 +15,6 @@ import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model.ClusterDetail;
 import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.util.RepoClusterToWsClusterDetailMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.Spectrum;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.SpectrumPeak;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.SpectrumSummary;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.util.RepoSpectrumToWsSpectrumSummaryMapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 

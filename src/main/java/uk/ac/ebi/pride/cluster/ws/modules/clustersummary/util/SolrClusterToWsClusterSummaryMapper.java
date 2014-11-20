@@ -24,22 +24,10 @@ public class SolrClusterToWsClusterSummaryMapper {
             newClusterSummary.setAveragePrecursorCharge(solrCluster.getAveragePrecursorCharge());
             newClusterSummary.setAveragePrecursorMz(solrCluster.getAveragePrecursorMz());
             newClusterSummary.setMaxRatio(solrCluster.getMaxRatio());
+            newClusterSummary.setPeptideSequence((String) solrCluster.getHighestRatioPepSequences().toArray()[0]);
 
             res.add(newClusterSummary);
         }
-
-        return res;
-    }
-
-    public static ClusterSummary asClusterSummary(uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary repoCluster) {
-
-        ClusterSummary res = new ClusterSummary();
-
-        res.setId(repoCluster.getId());
-        res.setNumberOfSpectra(repoCluster.getNumberOfSpectra());
-        res.setAveragePrecursorCharge(repoCluster.getAveragePrecursorCharge());
-        res.setAveragePrecursorMz(repoCluster.getAveragePrecursorMz());
-        res.setMaxRatio(repoCluster.getMaxPeptideRatio());
 
         return res;
     }

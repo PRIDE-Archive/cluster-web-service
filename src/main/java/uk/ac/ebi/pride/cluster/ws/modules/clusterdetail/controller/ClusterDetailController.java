@@ -11,16 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
 import uk.ac.ebi.pride.cluster.ws.modules.assaysummary.model.SpeciesCount;
 import uk.ac.ebi.pride.cluster.ws.modules.assaysummary.model.SpeciesDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model.ClusterDetail;
 import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.util.RepoClusterToWsClusterDetailMapper;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.Spectrum;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.SpectrumPeak;
 import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
-import uk.ac.ebi.pride.spectracluster.repo.model.AssaySummary;
-import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
+import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
 
 import java.util.*;
 
@@ -52,7 +48,7 @@ public class ClusterDetailController {
     }
 
 
-    @ApiOperation(value = "a convenience endpoint that retrieves cluster consensus spectrum information only", position = 1, notes = "retrieve a record of a specific cluster consensus spectrum")
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster species information only", position = 1, notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/species", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -60,15 +56,15 @@ public class ClusterDetailController {
     List<SpeciesCount> getClusterSpecies(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
-        logger.info("Cluster " + clusterId + " consensus spectra requested");
+        logger.info("Cluster " + clusterId + " species requested");
 
         // get the cluster
-        ClusterSummary repoCluster = clusterReaderDao.findCluster(clusterId);
+        uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail repoCluster = clusterReaderDao.findCluster(clusterId);
         // Get the assays for a given cluster
-        List<AssaySummary> repoAssays = repoCluster.getAssaySummaries();
+        List<AssayDetail> repoAssays = repoCluster.getAssaySummaries();
         // Extract the species
         SpeciesDistribution species = new SpeciesDistribution();
-        for (uk.ac.ebi.pride.spectracluster.repo.model.AssaySummary repoAssay: repoAssays) {
+        for (AssayDetail repoAssay: repoAssays) {
             for (String aSpecies: repoAssay.getSpeciesEntries()) {
                 if (species.getDistribution().containsKey(aSpecies)) {
                     species.getDistribution().get(aSpecies).addSpeciesCount(1);
