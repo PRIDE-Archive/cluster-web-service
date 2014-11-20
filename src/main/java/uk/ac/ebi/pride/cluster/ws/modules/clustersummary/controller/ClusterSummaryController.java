@@ -16,6 +16,7 @@ import uk.ac.ebi.pride.cluster.search.model.Cluster;
 import uk.ac.ebi.pride.cluster.search.model.SolrCluster;
 import uk.ac.ebi.pride.cluster.search.service.IClusterSearchService;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model.ClusterSummary;
+import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model.ClusterSummarySearchResults;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.util.RepoClusterToWsClusterSummaryMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.util.RepoClusterToWsClusterSummaryMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.clustersummary.util.SolrClusterToWsClusterSummaryMapper;
@@ -56,12 +57,12 @@ public class ClusterSummaryController {
         return RepoClusterToWsClusterSummaryMapper.asClusterSummary(clusterReaderDao.findCluster(clusterId));
     }
 
-    @ApiOperation(value = "list clusters summaries for given criteria", position = 2, notes = "search functionality")
-    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "list clusters summaries for given search criteria", position = 2, notes = "search functionality")
+    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    List<ClusterSummary> simpleSearchClusters(
+    ClusterSummarySearchResults simpleSearchClusters(
             @ApiParam(value = "general search term against multiple fields including: Max Ratio Peptide Sequence")
             @RequestParam(value = "q", required = false, defaultValue = "") String q,
             @ApiParam(value = "specific search term against Max Ratio Peptide Sequence")
@@ -100,7 +101,14 @@ public class ClusterSummaryController {
             res = clusterSearchService.findByHighestRatioPepSequences(seqs, new PageRequest(solrPage, size));
         }
 
-        return SolrClusterToWsClusterSummaryMapper.asClusterSummaryList(res);
+        ClusterSummarySearchResults results = new ClusterSummarySearchResults();
+        results.setPageNumber(page);
+        results.setPageSize(size);
+        results.setTotalResults(res.getTotalElements());
+        logger.info("Total results is " + results.getTotalResults());
+        results.setResults(SolrClusterToWsClusterSummaryMapper.asClusterSummaryList(res));
+
+        return results;
     }
 
     @ApiOperation(value = "list similar cluster summaries given a list of peaks", position = 3, notes = "additive clustering functionality")
