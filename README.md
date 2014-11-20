@@ -10,6 +10,8 @@ web-service is deployed. As a summary, these are the available end-points for th
 
 * `ClusterSummary`: an abbreviated version of a cluster. Suitable for listing mainly.
 * `ClusterDetail`: a more data loaded version of a given cluster. Suitable for detailed views.
+* `PsmSummary`: an abbreviated version of a PSM.  
+* `SpectrumSummary`: an abbreviated version of a Spectrum. Includes consensus sepctrum for a given cluster.  
 
 #### Some deign notes
 * `ClusterDetail` and `ClusterSummary` are provided as separate resources. Past experiences with the
