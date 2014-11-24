@@ -18,6 +18,11 @@ public class ClusterSummary {
 
     private String peptideSequence;
 
+    private String proteinAccession;
+
+    private String clusterQuality;
+
+
     public long getId() {
         return id;
     }
@@ -64,5 +69,21 @@ public class ClusterSummary {
 
     public void setPeptideSequence(String peptideSequence) {
         this.peptideSequence = peptideSequence;
+    }
+
+    public String getProteinAccession() {
+        return proteinAccession;
+    }
+
+    public void setProteinAccession(String proteinAccession) {
+        this.proteinAccession = proteinAccession;
+    }
+
+    public String getClusterQuality() {
+        return clusterQuality;
+    }
+
+    public void setClusterQuality(String clusterQuality) {
+        this.clusterQuality = clusterQuality;
     }
 }
