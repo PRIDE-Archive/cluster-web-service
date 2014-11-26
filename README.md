@@ -3,6 +3,8 @@ PRIDE Cluster web-service
 
 A RESTful web service providing access to the European Bioinformatics Institute PRIDE Cluster resource.
 
+In-dev prototype deployed here: [http://wwwdev.ebi.ac.uk/pride/ws/cluster](http://wwwdev.ebi.ac.uk/pride/ws/cluster). 
+
 #### End points
 
 Detailed and functional documentation will be available thanks to [Swagger](https://github.com/swagger-api) once the
