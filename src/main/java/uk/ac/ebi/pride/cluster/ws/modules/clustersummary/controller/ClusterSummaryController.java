@@ -73,7 +73,7 @@ public class ClusterSummaryController {
             @RequestParam(value = "protein", required = false, defaultValue = "") String protein,
             @ApiParam(value = "specific search term against Project Accessions in a Cluster")
             @RequestParam(value = "project", required = false, defaultValue = "") String project,
-            @ApiParam(value = "1-based page number")
+            @ApiParam(value = "0-based page number")
             @RequestParam(value = "page", required = true, defaultValue = "0") int page,
             @ApiParam(value = "maximum number of results per page")
             @RequestParam(value = "size", required = true, defaultValue = "10") int size
