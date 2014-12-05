@@ -1,10 +1,10 @@
-package uk.ac.ebi.pride.cluster.ws.modules.psmsummary.model;
+package uk.ac.ebi.pride.cluster.ws.modules.psm.model;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-public class PsmSummary {
+public class Psm {
     private Long id;
     private Long clusterId;
     private String sequence;

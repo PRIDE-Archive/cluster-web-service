@@ -1,6 +1,6 @@
-package uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model;
+package uk.ac.ebi.pride.cluster.ws.modules.cluster.model;
 
-import uk.ac.ebi.pride.cluster.ws.modules.assaysummary.model.SpeciesCount;
+import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesCount;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
-package uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model;
+package uk.ac.ebi.pride.cluster.ws.modules.cluster.model;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-public class ClusterSummary {
+public class Cluster {
 
     private long id;
 

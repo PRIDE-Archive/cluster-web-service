@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.modules.spectrum.controller;
+package uk.ac.ebi.pride.cluster.ws.modules.assay.controller;
 
 import com.wordnik.swagger.annotations.Api;
 import org.slf4j.Logger;
@@ -12,15 +12,14 @@ import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-@Api(value = "spectrum", description = "retrieve information about spectra", position = 0)
+@Api(value = "assaySummary", description = "retrieve summarised information about assays", position = 0)
 @Controller
-@RequestMapping(value = "/spectrum")
-public class SpectrumController {
+@RequestMapping(value = "/assay")
+public class AssayController {
 
-    private static final Logger logger = LoggerFactory.getLogger(SpectrumController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AssayController.class);
 
     @Autowired
     IClusterReadDao clusterReaderDao;
-
 
 }

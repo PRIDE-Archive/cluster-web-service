@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.modules.assaysummary.model;
+package uk.ac.ebi.pride.cluster.ws.modules.assay.model;
 
 import java.util.HashMap;
 import java.util.Map;

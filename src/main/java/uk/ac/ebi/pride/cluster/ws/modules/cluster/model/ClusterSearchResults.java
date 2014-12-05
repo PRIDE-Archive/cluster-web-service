@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.modules.clustersummary.model;
+package uk.ac.ebi.pride.cluster.ws.modules.cluster.model;
 
 import java.util.List;
 
@@ -6,12 +6,12 @@ import java.util.List;
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-public class ClusterSummarySearchResults {
+public class ClusterSearchResults {
 
     private long totalResults;
     private long pageNumber;
     private long pageSize;
-    private List<ClusterSummary> results;
+    private List<Cluster> results;
 
     public long getTotalResults() {
         return totalResults;
@@ -37,11 +37,11 @@ public class ClusterSummarySearchResults {
         this.pageSize = pageSize;
     }
 
-    public List<ClusterSummary> getResults() {
+    public List<Cluster> getResults() {
         return results;
     }
 
-    public void setResults(List<ClusterSummary> results) {
+    public void setResults(List<Cluster> results) {
         this.results = results;
     }
 }
