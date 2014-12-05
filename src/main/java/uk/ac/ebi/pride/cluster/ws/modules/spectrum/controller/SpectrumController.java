@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.controller;
+package uk.ac.ebi.pride.cluster.ws.modules.spectrum.controller;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
 import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model.ClusterDetail;
 import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.util.RepoClusterToWsClusterDetailMapper;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.Spectrum;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.SpectrumPeak;
+import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
+import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.SpectrumPeak;
 import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 
@@ -24,12 +24,12 @@ import java.util.LinkedList;
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-@Api(value = "spectrumSummary", description = "retrieve summarised information about spectra", position = 0)
+@Api(value = "spectrum", description = "retrieve information about spectra", position = 0)
 @Controller
-@RequestMapping(value = "/spectrumSummary")
-public class SpectrumSummaryController {
+@RequestMapping(value = "/spectrum")
+public class SpectrumController {
 
-    private static final Logger logger = LoggerFactory.getLogger(SpectrumSummaryController.class);
+    private static final Logger logger = LoggerFactory.getLogger(SpectrumController.class);
 
     @Autowired
     IClusterReadDao clusterReaderDao;
@@ -49,7 +49,7 @@ public class SpectrumSummaryController {
             ClusterDetail clusterDetail = RepoClusterToWsClusterDetailMapper.asClusterDetail(clusterReaderDao.findCluster(clusterId));
 
             Spectrum consensusSpectrum = new Spectrum();
-            consensusSpectrum.setId(clusterDetail.getId());
+            consensusSpectrum.setClusterId(clusterDetail.getId());
             String[] peaksMz = clusterDetail.getConsensusSpectrumMz().split(",");
             String[] peaksIntensities = clusterDetail.getConsensusSpectrumIntensity().split(",");
             int i = 0;

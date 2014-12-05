@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model;
+package uk.ac.ebi.pride.cluster.ws.modules.spectrum.model;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class Spectrum {
 
-    private long id;
+    private long clusterId;
 
     private double mzStart;
 
@@ -16,12 +16,12 @@ public class Spectrum {
 
     private java.util.List<SpectrumPeak> peaks;
 
-    public long getId() {
-        return id;
+    public long getClusterId() {
+        return clusterId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setClusterId(long clusterId) {
+        this.clusterId = clusterId;
     }
 
     public double getMzStart() {

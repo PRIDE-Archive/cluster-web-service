@@ -74,9 +74,9 @@ public class ClusterSummaryController {
             @ApiParam(value = "specific search term against Project Accessions in a Cluster")
             @RequestParam(value = "project", required = false, defaultValue = "") String project,
             @ApiParam(value = "1-based page number")
-            @RequestParam(value = "page", required = true) int page,
+            @RequestParam(value = "page", required = true, defaultValue = "0") int page,
             @ApiParam(value = "maximum number of results per page")
-            @RequestParam(value = "size", required = true) int size
+            @RequestParam(value = "size", required = true, defaultValue = "10") int size
     ) {
 
         logger.info("Fetched cluster summaries for\n" +
@@ -89,16 +89,16 @@ public class ClusterSummaryController {
                 " size: " + size
         );
 
-        int solrPage = page - 1; // Spring data for Solr uses 0-based paging
         Page<SolrCluster> res;
+
         if ("".equals(q)) {
-            res = clusterSearchService.findAll(new PageRequest(solrPage,size));
+            res = clusterSearchService.findAll(new PageRequest(page,size));
         } else {
             Set<String> seqs = new HashSet<String>();
             for (String seq : q.split(" ")) {
                 seqs.add(seq);
             }
-            res = clusterSearchService.findByHighestRatioPepSequences(seqs, new PageRequest(solrPage, size));
+            res = clusterSearchService.findByHighestRatioPepSequences(seqs, new PageRequest(page, size));
         }
 
         ClusterSummarySearchResults results = new ClusterSummarySearchResults();

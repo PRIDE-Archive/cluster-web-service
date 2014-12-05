@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model;
+package uk.ac.ebi.pride.cluster.ws.modules.spectrum.model;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>

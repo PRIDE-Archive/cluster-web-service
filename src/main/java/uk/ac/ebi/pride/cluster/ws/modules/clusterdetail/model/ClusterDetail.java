@@ -1,10 +1,5 @@
 package uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model;
 
-import uk.ac.ebi.pride.cluster.ws.modules.psmsummary.model.PsmSummary;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrumsummary.model.SpectrumSummary;
-
-import java.util.Collection;
-
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
