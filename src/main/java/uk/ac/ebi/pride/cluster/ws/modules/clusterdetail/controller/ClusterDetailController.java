@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.cluster.ws.modules.assaysummary.model.SpeciesCount;
 import uk.ac.ebi.pride.cluster.ws.modules.assaysummary.model.SpeciesDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model.ClusterDetail;
+import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.model.ClusterSpeciesCounts;
 import uk.ac.ebi.pride.cluster.ws.modules.clusterdetail.util.RepoClusterToWsClusterDetailMapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
@@ -53,7 +54,7 @@ public class ClusterDetailController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    List<SpeciesCount> getClusterSpecies(
+    ClusterSpeciesCounts getClusterSpecies(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster " + clusterId + " species requested");
@@ -76,7 +77,9 @@ public class ClusterDetailController {
 
         }
 
-        return new ArrayList<SpeciesCount>(species.getDistribution().values());
+        ClusterSpeciesCounts res = new ClusterSpeciesCounts();
+        res.setSpeciesCounts(new ArrayList<SpeciesCount>(species.getDistribution().values()));
+        return res;
 
     }
 
