@@ -28,8 +28,16 @@
         <constructor-arg ref="solrTemplate"/>
     </bean>
 
+    <!--repositories that require manual creation-->
+    <bean id="solrClusterSpectralSearchRepository" class="uk.ac.ebi.pride.cluster.search.service.repository.SolrClusterSpectralSearchRepository">
+        <constructor-arg ref="clusterSolrServer"/>
+    </bean>
+
+
+    <!-- Search Services -->
     <bean id="clusterSearchService" class="uk.ac.ebi.pride.cluster.search.service.ClusterSearchService">
         <constructor-arg value="#{ solrClusterRepositoryFactory.create() }"/>
+        <constructor-arg ref="solrClusterSpectralSearchRepository"/>
     </bean>
 
     <!-- property files -->

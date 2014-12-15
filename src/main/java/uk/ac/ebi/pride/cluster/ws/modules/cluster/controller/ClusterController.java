@@ -174,14 +174,31 @@ public class ClusterController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    List<Cluster> getSimilarClusters(
+    ClusterSearchResults getSimilarClusters(
+            @ApiParam(value = "precursor MZ")
+            @RequestParam(value = "precursor", required = false, defaultValue = "") String precursor,
             @ApiParam(value = "peak list to compare to")
-            @RequestParam(value = "peaks", required = false, defaultValue = "") String peaks
+            @RequestParam(value = "peaks", required = false, defaultValue = "") String peaks,
+            @ApiParam(value = "0-based page number")
+            @RequestParam(value = "page", required = true, defaultValue = "0") int page,
+            @ApiParam(value = "maximum number of results per page")
+            @RequestParam(value = "size", required = true, defaultValue = "10") int size
+
     ) {
 
         logger.debug("Fetched clusters for peak list: " + peaks);
 
-        return getTestClusters(5);
+//        clusterSearchService.findByNearestPeaks();
+
+        ClusterSearchResults results = new ClusterSearchResults();
+        results.setPageNumber(page);
+        results.setPageSize(size);
+        results.setTotalResults(5);
+        logger.info("Total results is " + results.getTotalResults());
+        results.setResults(getTestClusters(5));
+
+        return results;
+
     }
 
 
