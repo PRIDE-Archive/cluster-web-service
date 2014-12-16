@@ -14,12 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.cluster.search.model.SolrCluster;
 import uk.ac.ebi.pride.cluster.search.service.IClusterSearchService;
+import uk.ac.ebi.pride.cluster.search.util.LowResUtils;
 import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesCount;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterSearchResults;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterSpeciesCounts;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.Cluster;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.QueryInputPeaks;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.RepoClusterToWsClusterMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.SolrClusterToWsClusterMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
@@ -186,22 +188,50 @@ public class ClusterController {
 
     ) {
 
-        logger.debug("Fetched clusters for peak list: " + peaks);
+        logger.info("Fetched clusters for ");
+        logger.info("page: " + page);
+        logger.info("size: " + size);
+        logger.info("precursor: " + precursor);
+        logger.info("peaks ");
+        logger.info(peaks);
 
-//        clusterSearchService.findByNearestPeaks();
+        QueryInputPeaks query = new QueryInputPeaks();
+        parsePeaks(peaks,query);
+        double precursorMz = Double.parseDouble(precursor);
+
+        Page<SolrCluster> clusters = clusterSearchService.findByNearestPeaks(
+                "HIGH",
+                precursorMz,
+                100.0,
+                LowResUtils.toLowResByBucketMean(query.mzValues, 20),
+                LowResUtils.toLowResByBucketMean(query.intensityValues, 20),
+                new PageRequest(page, size)
+        );
 
         ClusterSearchResults results = new ClusterSearchResults();
         results.setPageNumber(page);
         results.setPageSize(size);
-        results.setTotalResults(5);
-        logger.info("Total results is " + results.getTotalResults());
-        results.setResults(getTestClusters(5));
+        results.setTotalResults(clusters.getTotalElements());
+        logger.info("Total results is " + clusters.getTotalElements());
+        results.setResults(SolrClusterToWsClusterMapper.asClusterList(clusters));
 
         return results;
 
     }
 
+    private void parsePeaks(String peaks, QueryInputPeaks query) {
+        String[] peakStrings = peaks.split("\\n");
+        query.mzValues = new double[peakStrings.length];
+        query.intensityValues = new double[peakStrings.length];
 
+        int i = 0;
+        for (String peakString: peakStrings) {
+            String[] peakValues = peakString.split(" ");
+            query.mzValues[i] = Double.parseDouble(peakValues[0]);
+            query.intensityValues[i] = Double.parseDouble(peakValues[0]);
+            i++;
+        }
+    }
 
     private List<Cluster> getTestClusters(int n) {
         List<Cluster> res = new LinkedList<Cluster>();
