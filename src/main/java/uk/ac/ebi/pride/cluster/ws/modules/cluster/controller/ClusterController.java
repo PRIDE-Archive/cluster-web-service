@@ -220,16 +220,16 @@ public class ClusterController {
     }
 
     private void parsePeaks(String peaks, QueryInputPeaks query) {
-        String[] peakStrings = peaks.split("\\n");
-        query.mzValues = new double[peakStrings.length];
-        query.intensityValues = new double[peakStrings.length];
+        String[] peakStrings = peaks.split("[ \\n]+");
+        query.mzValues = new double[peakStrings.length/2];
+        query.intensityValues = new double[peakStrings.length/2];
 
-        int i = 0;
-        for (String peakString: peakStrings) {
-            String[] peakValues = peakString.split(" ");
-            query.mzValues[i] = Double.parseDouble(peakValues[0]);
-            query.intensityValues[i] = Double.parseDouble(peakValues[0]);
-            i++;
+
+        int j = 0;
+        for (int i = 0; i<peakStrings.length; i = i + 2) {
+            query.mzValues[j] = Double.parseDouble(peakStrings[i]);
+            query.intensityValues[j] = Double.parseDouble(peakStrings[i+1]);
+            j++;
         }
     }
 
