@@ -199,12 +199,17 @@ public class ClusterController {
         parsePeaks(peaks,query);
         double precursorMz = Double.parseDouble(precursor);
 
+        double[] lowResMz = LowResUtils.toLowResByBucketMean(query.mzValues, 20);
+        double[] lowResIntensity = LowResUtils.toLowResByBucketMean(query.intensityValues, 20);
+        logDoubleArray("MZ", lowResMz);
+        logDoubleArray("Intensity", lowResIntensity);
+
         Page<SolrCluster> clusters = clusterSearchService.findByNearestPeaks(
                 "HIGH",
                 precursorMz,
-                100.0,
-                LowResUtils.toLowResByBucketMean(query.mzValues, 20),
-                LowResUtils.toLowResByBucketMean(query.intensityValues, 20),
+                1.0,
+                lowResMz,
+                lowResIntensity,
                 new PageRequest(page, size)
         );
 
@@ -217,6 +222,12 @@ public class ClusterController {
 
         return results;
 
+    }
+
+    private void logDoubleArray(String tag, double[] values) {
+        for (double va: values) {
+            logger.info(tag + " is " + va);
+        }
     }
 
     private void parsePeaks(String peaks, QueryInputPeaks query) {
