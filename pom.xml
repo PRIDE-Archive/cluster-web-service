@@ -14,8 +14,17 @@
     <version>0.1.0-SNAPSHOT</version>
     <name>pride-cluster-web-service</name>
 
+    <!--
+        To build, require the following maven profiles
+
+        db-pride-repo-pridepro    database host
+        db-pride-repo-pridecluster-user schema user
+        pride-cluster-solr-cores    solr core
+
+    -->
+
     <properties>
-        <pride.spectra.cluster.repo.version>1.0.1-SNAPSHOT</pride.spectra.cluster.repo.version>
+        <pride.spectra.cluster.repo.version>1.0.2-SNAPSHOT</pride.spectra.cluster.repo.version>
         <pride.spectra.cluster.search.version>0.1.0-SNAPSHOT</pride.spectra.cluster.search.version>
         <pride.web.utils.version>1.3.8</pride.web.utils.version>
         <swagger.version>0.8.6</swagger.version>

@@ -14,6 +14,12 @@ public class Cluster {
 
     private long numberOfSpectra;
 
+    private int numberOfSpecies;
+
+    private int numberOfPTMs;
+
+    private int numberOfProjects;
+
     private double maxRatio;
 
     private String peptideSequence;
@@ -53,6 +59,30 @@ public class Cluster {
 
     public void setNumberOfSpectra(long numberOfSpectra) {
         this.numberOfSpectra = numberOfSpectra;
+    }
+
+    public int getNumberOfSpecies() {
+        return numberOfSpecies;
+    }
+
+    public void setNumberOfSpecies(int numberOfSpecies) {
+        this.numberOfSpecies = numberOfSpecies;
+    }
+
+    public int getNumberOfPTMs() {
+        return numberOfPTMs;
+    }
+
+    public void setNumberOfPTMs(int numberOfPTMs) {
+        this.numberOfPTMs = numberOfPTMs;
+    }
+
+    public int getNumberOfProjects() {
+        return numberOfProjects;
+    }
+
+    public void setNumberOfProjects(int numberOfProjects) {
+        this.numberOfProjects = numberOfProjects;
     }
 
     public double getMaxRatio() {
