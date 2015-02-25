@@ -11,7 +11,7 @@ import java.util.List;
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-public class SolrClusterToWsClusterMapper {
+public final class SolrClusterToWsClusterMapper {
 
     public static List<Cluster> asClusterList(Page<SolrCluster> solrClusterPage) {
         List<Cluster> res = new LinkedList<Cluster>();

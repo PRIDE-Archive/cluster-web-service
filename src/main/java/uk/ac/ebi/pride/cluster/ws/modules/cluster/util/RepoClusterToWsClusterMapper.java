@@ -2,17 +2,15 @@ package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.SpectrumPeak;
-import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-public class RepoClusterToWsClusterMapper {
+public final class RepoClusterToWsClusterMapper {
 
     public static Spectrum getConsensusSpectrum(ClusterSummary repoCluster) {
 

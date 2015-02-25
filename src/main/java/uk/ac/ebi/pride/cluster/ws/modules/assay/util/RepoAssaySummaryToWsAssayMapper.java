@@ -8,7 +8,7 @@ import java.util.List;
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-public class RepoAssaySummaryToWsAssayMapper {
+public final class RepoAssaySummaryToWsAssayMapper {
 
     public static List<Assay> asAssaySummaryList() {
         return null;

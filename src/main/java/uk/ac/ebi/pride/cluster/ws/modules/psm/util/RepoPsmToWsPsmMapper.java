@@ -10,7 +10,7 @@ import java.util.List;
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
  */
-public class RepoPsmToWsPsmMapper {
+public final class RepoPsmToWsPsmMapper {
 
     public static List<Psm> asPsmList(List<ClusteredPSMDetail> repoPsms) {
         List<Psm> res = new LinkedList<Psm>();
