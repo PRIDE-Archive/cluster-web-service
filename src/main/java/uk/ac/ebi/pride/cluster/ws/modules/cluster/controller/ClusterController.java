@@ -16,25 +16,24 @@ import uk.ac.ebi.pride.cluster.search.model.SolrCluster;
 import uk.ac.ebi.pride.cluster.search.service.IClusterSearchService;
 import uk.ac.ebi.pride.cluster.search.util.LowResUtils;
 import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
+import uk.ac.ebi.pride.cluster.ws.modules.assay.model.PTMCount;
+import uk.ac.ebi.pride.cluster.ws.modules.assay.model.PTMDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesCount;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesDistribution;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterSearchResults;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterSpeciesCounts;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.Cluster;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.QueryInputPeaks;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.*;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.RepoClusterToWsClusterMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.SolrClusterToWsClusterMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
-import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.SpectrumPeak;
 import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
+import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
+import uk.ac.ebi.pride.spectracluster.repo.model.PTMDetail;
 
 import java.util.*;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
- *
  */
 @Api(value = "cluster", description = "retrieve information about clusters", position = 0)
 @Controller
@@ -85,19 +84,19 @@ public class ClusterController {
     ) {
 
         logger.info("Fetched clusters for\n" +
-                " query: " + q + "\n" +
-                " peptide: " + peptide + "\n" +
-                " species: " + species + "\n" +
-                " protein: " + protein + "\n" +
-                " project: " + project + "\n" +
-                " page: " + page + "\n" +
-                " size: " + size
+                        " query: " + q + "\n" +
+                        " peptide: " + peptide + "\n" +
+                        " species: " + species + "\n" +
+                        " protein: " + protein + "\n" +
+                        " project: " + project + "\n" +
+                        " page: " + page + "\n" +
+                        " size: " + size
         );
 
         Page<SolrCluster> res;
 
         if ("".equals(q)) {
-            res = clusterSearchService.findAll(new PageRequest(page,size));
+            res = clusterSearchService.findAll(new PageRequest(page, size));
         } else {
             Set<String> seqs = new HashSet<String>();
             for (String seq : q.split(" ")) {
@@ -133,12 +132,12 @@ public class ClusterController {
         List<AssayDetail> repoAssays = repoCluster.getAssaySummaries();
         // Extract the species
         SpeciesDistribution species = new SpeciesDistribution();
-        for (AssayDetail repoAssay: repoAssays) {
-            for (String aSpecies: repoAssay.getSpeciesEntries()) {
+        for (AssayDetail repoAssay : repoAssays) {
+            for (String aSpecies : repoAssay.getSpeciesEntries()) {
                 if (species.getDistribution().containsKey(aSpecies)) {
                     species.getDistribution().get(aSpecies).addSpeciesCount(1);
                 } else {
-                    SpeciesCount newSpeciesCount = new SpeciesCount(aSpecies,1);
+                    SpeciesCount newSpeciesCount = new SpeciesCount(aSpecies, 1);
                     species.getDistribution().put(aSpecies, newSpeciesCount);
                 }
             }
@@ -147,6 +146,44 @@ public class ClusterController {
 
         ClusterSpeciesCounts res = new ClusterSpeciesCounts();
         res.setSpeciesCounts(new ArrayList<SpeciesCount>(species.getDistribution().values()));
+        return res;
+
+    }
+
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster PTM information only", position = 1, notes = "retrieve PTM records of a specific cluster")
+    @RequestMapping(value = "/{clusterId}/ptms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public
+    @ResponseBody
+    ClusterPTMCounts getClusterPTMs(
+            @ApiParam(value = "a cluster ID")
+            @PathVariable("clusterId") long clusterId) {
+        logger.info("Cluster " + clusterId + " PTMs requested");
+
+        // get the cluster
+        uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail repoCluster = clusterReaderDao.findCluster(clusterId);
+
+        // Get the clustered psm details for a given cluster
+        List<ClusteredPSMDetail> clusteredPSMDetails = repoCluster.getClusteredPSMDetails();
+
+        // Extract the PTMs
+        PTMDistribution ptms = new PTMDistribution();
+        for (ClusteredPSMDetail clusteredPSMDetail : clusteredPSMDetails) {
+            //todo: change to use standardised modifications
+            List<PTMDetail> modifications = clusteredPSMDetail.getPsmDetail().getModifications();
+
+            for (PTMDetail modification : modifications) {
+                if (ptms.getDistribution().containsKey(modification.getAccession())) {
+                    ptms.getDistribution().get(modification.getAccession()).addPTMCount(1);
+                } else {
+                    PTMCount ptmCount = new PTMCount(modification.getName(), modification.getAccession(), 1);
+                    ptms.getDistribution().put(modification.getAccession(), ptmCount);
+                }
+            }
+        }
+
+        ClusterPTMCounts res = new ClusterPTMCounts();
+        res.setPtmCounts(new ArrayList<PTMCount>(ptms.getDistribution().values()));
         return res;
 
     }
@@ -196,7 +233,7 @@ public class ClusterController {
         logger.info(peaks);
 
         QueryInputPeaks query = new QueryInputPeaks();
-        parsePeaks(peaks,query);
+        parsePeaks(peaks, query);
         double precursorMz = Double.parseDouble(precursor);
 
         double[] lowResMz = LowResUtils.toLowResByBucketMean(query.mzValues, 20);
@@ -225,21 +262,21 @@ public class ClusterController {
     }
 
     private void logDoubleArray(String tag, double[] values) {
-        for (double va: values) {
+        for (double va : values) {
             logger.info(tag + " is " + va);
         }
     }
 
     private void parsePeaks(String peaks, QueryInputPeaks query) {
         String[] peakStrings = peaks.split("[ \\n]+");
-        query.mzValues = new double[peakStrings.length/2];
-        query.intensityValues = new double[peakStrings.length/2];
+        query.mzValues = new double[peakStrings.length / 2];
+        query.intensityValues = new double[peakStrings.length / 2];
 
 
         int j = 0;
-        for (int i = 0; i<peakStrings.length; i = i + 2) {
+        for (int i = 0; i < peakStrings.length; i = i + 2) {
             query.mzValues[j] = Double.parseDouble(peakStrings[i]);
-            query.intensityValues[j] = Double.parseDouble(peakStrings[i+1]);
+            query.intensityValues[j] = Double.parseDouble(peakStrings[i + 1]);
             j++;
         }
     }
@@ -247,7 +284,7 @@ public class ClusterController {
     private List<Cluster> getTestClusters(int n) {
         List<Cluster> res = new LinkedList<Cluster>();
 
-        for (int i=0;i<n;i++) {
+        for (int i = 0; i < n; i++) {
             Cluster cluster = new Cluster();
             cluster.setId(i);
             res.add(cluster);
