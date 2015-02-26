@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.cluster.ws.modules.psm.model.Psm;
 import uk.ac.ebi.pride.cluster.ws.modules.psm.util.RepoPsmToWsPsmMapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
+import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class PsmController {
             @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster " + clusterId + " PSMs requested");
 
-        return RepoPsmToWsPsmMapper.asPsmList(clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterId));
-
+        List<ClusteredPSMDetail> clusteredPSMDetails = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterId);
+        return RepoPsmToWsPsmMapper.asPsmList(clusteredPSMDetails);
     }
 }
