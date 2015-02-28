@@ -65,7 +65,7 @@ public class ProjectController {
         ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
 
         // get a unique list of projects
-        List<AssayDetail> assaySummaries = cluster.getAssaySummaries();
+        List<AssayDetail> assaySummaries = cluster.getAssayDetails();
         Set<String> projectAccessions = new HashSet<String>();
         for (AssayDetail assaySummary : assaySummaries) {
             projectAccessions.add(assaySummary.getAccession());

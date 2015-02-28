@@ -99,9 +99,7 @@ public class ClusterController {
             res = clusterSearchService.findAll(new PageRequest(page, size));
         } else {
             Set<String> seqs = new HashSet<String>();
-            for (String seq : q.split(" ")) {
-                seqs.add(seq);
-            }
+            Collections.addAll(seqs, q.split(" "));
             res = clusterSearchService.findByHighestRatioPepSequences(seqs, new PageRequest(page, size));
         }
 
@@ -129,7 +127,7 @@ public class ClusterController {
         // get the cluster
         uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail repoCluster = clusterReaderDao.findCluster(clusterId);
         // Get the assays for a given cluster
-        List<AssayDetail> repoAssays = repoCluster.getAssaySummaries();
+        List<AssayDetail> repoAssays = repoCluster.getAssayDetails();
         // Extract the species
         SpeciesDistribution species = new SpeciesDistribution();
         for (AssayDetail repoAssay : repoAssays) {
