@@ -170,12 +170,21 @@ public class ClusterController {
             //todo: change to use standardised modifications
             List<PTMDetail> modifications = clusteredPSMDetail.getPsmDetail().getModifications();
 
-            for (PTMDetail modification : modifications) {
-                if (ptms.getDistribution().containsKey(modification.getAccession())) {
-                    ptms.getDistribution().get(modification.getAccession()).addPTMCount(1);
+            if (modifications.isEmpty()) {
+                if (ptms.getDistribution().containsKey(PTMDistribution.NO_MODIFICATIONS))  {
+                    ptms.getDistribution().get(PTMDistribution.NO_MODIFICATIONS).addPTMCount(1);
                 } else {
-                    PTMCount ptmCount = new PTMCount(modification.getName(), modification.getAccession(), 1);
-                    ptms.getDistribution().put(modification.getAccession(), ptmCount);
+                    PTMCount ptmCount = new PTMCount(PTMDistribution.NO_MODIFICATIONS, null, 1);
+                    ptms.getDistribution().put(PTMDistribution.NO_MODIFICATIONS, ptmCount);
+                }
+            } else {
+                for (PTMDetail modification : modifications) {
+                    if (ptms.getDistribution().containsKey(modification.getAccession())) {
+                        ptms.getDistribution().get(modification.getAccession()).addPTMCount(1);
+                    } else {
+                        PTMCount ptmCount = new PTMCount(modification.getName(), modification.getAccession(), 1);
+                        ptms.getDistribution().put(modification.getAccession(), ptmCount);
+                    }
                 }
             }
         }

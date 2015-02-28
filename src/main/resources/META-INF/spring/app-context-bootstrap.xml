@@ -19,6 +19,10 @@
         <constructor-arg ref="clusterDataSource"/>
     </bean>
 
+    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.ClusterRepoStatisticsReader" id="clusterRepoStatistics">
+        <constructor-arg ref="clusterDataSource"/>
+    </bean>
+
     <!--Setup data source using place holder properties-->
     <bean id="clusterDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${prider.jdbc.driver}"/>
@@ -39,5 +43,7 @@
         <property name="validationQuery" value="SELECT 1 FROM dual"/>
         <!-- Oracle validation query -->
     </bean>
+
+    <util:properties id="archiveProperties" location="classpath:META-INF/props/archive-ws.properties"/>
 
 </beans>

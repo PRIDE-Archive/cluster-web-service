@@ -22,12 +22,8 @@ public final class ProjectWsRetriever {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value(value = "archive.project.detail.url")
-    private final String projectWsUrl;
-
-    public ProjectWsRetriever(String projectWsUrl) {
-        this.projectWsUrl = projectWsUrl;
-    }
+    @Value("#{archiveProperties['archive.project.detail.url']}")
+    private String projectWsUrl;
 
     public List<Project> getProjects(Collection<String> projectAccessions) {
         List<Project> projects = new ArrayList<Project>();

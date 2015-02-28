@@ -57,13 +57,13 @@ public class StatisticsController {
     PSMDeltaMZStatistics getClusterPsmDeltaMZStatistics(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
-        logger.info("Cluster " + clusterId + " PSMs requested");
+        logger.info("Cluster " + clusterId + " delta m/z statistics requested");
 
         ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
         return ClusterStatsCollector.collectPSMDeltaMZStatistics(cluster);
     }
 
-    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 2, notes = "retrieve spectrum similarity statistics for a given Cluster ID")
+    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 3, notes = "retrieve spectrum similarity statistics for a given Cluster ID")
     @RequestMapping(value = "/similarity/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -71,7 +71,7 @@ public class StatisticsController {
     SpectrumSimilarityStatistics getClusterSpectrumSimilarityStatistics(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
-        logger.info("Cluster " + clusterId + " PSMs requested");
+        logger.info("Cluster " + clusterId + " spectrum similarity statistics requested");
 
         ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
         return ClusterStatsCollector.collectSpectrumSimilarityStatistics(cluster);

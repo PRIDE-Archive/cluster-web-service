@@ -11,6 +11,8 @@ import java.util.Map;
  */
 public class PTMDistribution {
 
+    public static final String NO_MODIFICATIONS = "No Modifications";
+
     private Map<String, PTMCount> distribution = new HashMap<String, PTMCount>();
 
     public Map<String, PTMCount> getDistribution() {

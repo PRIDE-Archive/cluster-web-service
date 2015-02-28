@@ -19,7 +19,6 @@ import java.util.*;
 public final class ClusteredPeptideFinder {
 
     public static List<ClusteredPeptide> findClusteredPeptides(ClusterDetail cluster) {
-        List<ClusteredPeptide> clusteredPeptides = new ArrayList<ClusteredPeptide>();
 
         if (cluster != null) {
             List<ClusteredPSMDetail> clusteredPSMDetails = cluster.getClusteredPSMDetails();
@@ -37,8 +36,8 @@ public final class ClusteredPeptideFinder {
                     clusteredPeptide.setSequence(sequence);
                     // ptm
                     List<PTMDetail> modifications = clusteredPSMDetail.getPsmDetail().getModifications();
-                    List<PTM> modifications1 = RepoPTMToWsPTMMapper.asPTMList(modifications);
-                    clusteredPeptide.setModifications(modifications1);
+                    List<PTM> ptms = RepoPTMToWsPTMMapper.asPTMList(modifications);
+                    clusteredPeptide.setModifications(ptms);
 
                     clusteredPeptideMap.put(seqModCombined, clusteredPeptide);
                 }
@@ -51,8 +50,10 @@ public final class ClusteredPeptideFinder {
                 Set<String> taxonomyIdEntries = assayDetail.getTaxonomyIdEntries();
                 clusteredPeptide.addSpecies(taxonomyIdEntries);
             }
-        }
 
-        return clusteredPeptides;
+            return new ArrayList<ClusteredPeptide>(clusteredPeptideMap.values());
+        } else {
+            return Collections.emptyList();
+        }
     }
 }
