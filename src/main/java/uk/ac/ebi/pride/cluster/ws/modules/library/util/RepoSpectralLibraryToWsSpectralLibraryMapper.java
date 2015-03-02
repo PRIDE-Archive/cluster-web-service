@@ -46,11 +46,13 @@ public final class RepoSpectralLibraryToWsSpectralLibraryMapper {
         DownloadURL ftpDownloadURL = new DownloadURL();
         ftpDownloadURL.setURL(generator.asFtpURL(version, fileName));
         ftpDownloadURL.setProtocol("FTP");
+        spectralLibrary.addDownloadURL(ftpDownloadURL);
 
         // ASPERA
         DownloadURL asperaDownloadURL = new DownloadURL();
         asperaDownloadURL.setURL(generator.asAsperaURL(version, fileName));
         asperaDownloadURL.setProtocol("ASPERA");
+        spectralLibrary.addDownloadURL(asperaDownloadURL);
 
         return spectralLibrary;
     }
