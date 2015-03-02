@@ -11,8 +11,8 @@ import java.util.List;
  */
 public class SpectralLibrary {
     private Long taxonomyId;
+    private String speciesScientificName;
     private String speciesName;
-    private String humanReadableSpeciesName;
     private long numberOfSpectra;
     private float fileSize;
     private final List<DownloadURL> downloadURLs = new ArrayList<DownloadURL>();
@@ -25,20 +25,20 @@ public class SpectralLibrary {
         this.taxonomyId = taxonomyId;
     }
 
+    public String getSpeciesScientificName() {
+        return speciesScientificName;
+    }
+
+    public void setSpeciesScientificName(String speciesScientificName) {
+        this.speciesScientificName = speciesScientificName;
+    }
+
     public String getSpeciesName() {
         return speciesName;
     }
 
     public void setSpeciesName(String speciesName) {
         this.speciesName = speciesName;
-    }
-
-    public String getHumanReadableSpeciesName() {
-        return humanReadableSpeciesName;
-    }
-
-    public void setHumanReadableSpeciesName(String humanReadableSpeciesName) {
-        this.humanReadableSpeciesName = humanReadableSpeciesName;
     }
 
     public long getNumberOfSpectra() {
