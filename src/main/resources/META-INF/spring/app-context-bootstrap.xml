@@ -15,11 +15,15 @@
     <bean class="uk.ac.ebi.pride.web.util.callback.filter.JsonpCallbackFilter" id="jsonpCallbackFilter"/>
 
 
-    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.ClusterReader" id="clusterReaderDao">
+    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.cluster.ClusterReader" id="clusterReaderDao">
         <constructor-arg ref="clusterDataSource"/>
     </bean>
 
-    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.ClusterRepoStatisticsReader" id="clusterRepoStatistics">
+    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.stats.ClusterRepoStatisticsReader" id="clusterRepoStatistics">
+        <constructor-arg ref="clusterDataSource"/>
+    </bean>
+
+    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.library.SpectralLibraryReader" id="spectralLibraryReader">
         <constructor-arg ref="clusterDataSource"/>
     </bean>
 
@@ -45,5 +49,6 @@
     </bean>
 
     <util:properties id="archiveProperties" location="classpath:META-INF/props/archive-ws.properties"/>
+    <util:properties id="spectralLibraryProperties" location="classpath:META-INF/props/spectral-library.properties"/>
 
 </beans>

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.cluster.ws.modules.project.model.Project;
 import uk.ac.ebi.pride.cluster.ws.modules.project.util.ProjectWsRetriever;
-import uk.ac.ebi.pride.spectracluster.repo.dao.IClusterReadDao;
+import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
 

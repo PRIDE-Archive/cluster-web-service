@@ -14,7 +14,7 @@ public class SpectralLibrary {
     private String speciesScientificName;
     private String speciesName;
     private long numberOfSpectra;
-    private float fileSize;
+    private long fileSize;
     private final List<DownloadURL> downloadURLs = new ArrayList<DownloadURL>();
 
     public Long getTaxonomyId() {
@@ -49,11 +49,11 @@ public class SpectralLibrary {
         this.numberOfSpectra = numberOfSpectra;
     }
 
-    public float getFileSize() {
+    public long getFileSize() {
         return fileSize;
     }
 
-    public void setFileSize(float fileSize) {
+    public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
     }
 
