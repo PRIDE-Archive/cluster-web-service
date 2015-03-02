@@ -44,8 +44,9 @@ public class SpectralLibraryController {
         spectralLibraryRelease.setReleaseDate(new Date(System.currentTimeMillis()));
 
         SpectralLibrary spectralLibrary = new SpectralLibrary();
-        spectralLibrary.setTaxonomyId("9606");
-        spectralLibrary.setSpeciesName("Human");
+        spectralLibrary.setTaxonomyId(9606l);
+        spectralLibrary.setSpeciesName("Homo sapiens (Human)");
+        spectralLibrary.setHumanReadableSpeciesName("Human");
         spectralLibrary.setNumberOfSpectra(10000);
         spectralLibrary.setFileSize(10000);
         DownloadURL downloadURL = new DownloadURL();
@@ -60,8 +61,9 @@ public class SpectralLibraryController {
         spectralLibraryRelease.addSpectralLibrary(spectralLibrary);
 
         spectralLibrary = new SpectralLibrary();
-        spectralLibrary.setTaxonomyId("10090");
-        spectralLibrary.setSpeciesName("Mouse");
+        spectralLibrary.setTaxonomyId(10090l);
+        spectralLibrary.setSpeciesName("Mus musculus (Mouse)");
+        spectralLibrary.setHumanReadableSpeciesName("Mouse");
         spectralLibrary.setNumberOfSpectra(1234567);
         spectralLibrary.setFileSize(50000);
         downloadURL = new DownloadURL();
