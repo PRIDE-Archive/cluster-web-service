@@ -19,7 +19,7 @@ public class Project {
     private List<String> species = new ArrayList<String>();
     private List<String> tissues = new ArrayList<String>();
     private List<String> tags = new ArrayList<String>();
-    private long pubMedId;
+    private long pubMedId = -1;
     private String publicationTitle;
     private String publicationAbstract;
 

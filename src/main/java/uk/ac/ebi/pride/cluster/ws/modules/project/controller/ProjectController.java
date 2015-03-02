@@ -68,7 +68,7 @@ public class ProjectController {
         List<AssayDetail> assaySummaries = cluster.getAssayDetails();
         Set<String> projectAccessions = new HashSet<String>();
         for (AssayDetail assaySummary : assaySummaries) {
-            projectAccessions.add(assaySummary.getAccession());
+            projectAccessions.add(assaySummary.getProjectAccession());
         }
 
         return projectAccessions;
