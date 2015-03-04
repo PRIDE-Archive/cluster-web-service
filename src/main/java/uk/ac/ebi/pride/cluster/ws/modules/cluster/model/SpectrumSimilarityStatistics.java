@@ -11,24 +11,24 @@ import java.util.List;
  */
 public class SpectrumSimilarityStatistics {
     // spectrum similarity to the consensus spectrum for the PSMs with the highest ratio peptide sequence in the cluster
-    private final List<Float> highRatioPeptideSpectrumSimilarity = new ArrayList<Float>();
+    private final List<Float> highRatioPeptideSpectrumSimilarities = new ArrayList<Float>();
 
     // spectrum similarity for all the PSMs in the cluster
-    private final List<Float> clusterSpectrumSimilarity = new ArrayList<Float>();
+    private final List<Float> clusterSpectrumSimilarities = new ArrayList<Float>();
 
-    public List<Float> getHighRatioPeptideSpectrumSimilarity() {
-        return highRatioPeptideSpectrumSimilarity;
+    public List<Float> getHighRatioPeptideSpectrumSimilarities() {
+        return highRatioPeptideSpectrumSimilarities;
     }
 
     public void addHighRatioPeptideSpectrumSimilarity(Float deltaMz) {
-        highRatioPeptideSpectrumSimilarity.add(deltaMz);
+        highRatioPeptideSpectrumSimilarities.add(deltaMz);
     }
 
-    public List<Float> getClusterSpectrumSimilarity() {
-        return clusterSpectrumSimilarity;
+    public List<Float> getClusterSpectrumSimilarities() {
+        return clusterSpectrumSimilarities;
     }
 
     public void addClusterSpectrumSimilarity(Float deltaMz) {
-        clusterSpectrumSimilarity.add(deltaMz);
+        clusterSpectrumSimilarities.add(deltaMz);
     }
 }
