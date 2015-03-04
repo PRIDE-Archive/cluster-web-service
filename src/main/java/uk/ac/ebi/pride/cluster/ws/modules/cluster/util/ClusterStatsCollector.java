@@ -1,7 +1,7 @@
-package uk.ac.ebi.pride.cluster.ws.modules.stats.util;
+package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
-import uk.ac.ebi.pride.cluster.ws.modules.stats.model.PSMDeltaMZStatistics;
-import uk.ac.ebi.pride.cluster.ws.modules.stats.model.SpectrumSimilarityStatistics;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.PSMDeltaMZStatistics;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.SpectrumSimilarityStatistics;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredSpectrumDetail;

@@ -1,6 +1,6 @@
-package uk.ac.ebi.pride.cluster.ws.modules.peptide.util;
+package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
-import uk.ac.ebi.pride.cluster.ws.modules.peptide.model.ClusteredPeptide;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPeptide;
 import uk.ac.ebi.pride.cluster.ws.modules.psm.model.PTM;
 import uk.ac.ebi.pride.cluster.ws.modules.psm.util.RepoPTMToWsPTMMapper;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;

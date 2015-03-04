@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.modules.peptide.model;
+package uk.ac.ebi.pride.cluster.ws.modules.cluster.model;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;

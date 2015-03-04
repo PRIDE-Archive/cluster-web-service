@@ -14,21 +14,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.cluster.search.model.SolrCluster;
 import uk.ac.ebi.pride.cluster.search.service.IClusterSearchService;
-import uk.ac.ebi.pride.cluster.search.util.LowResUtils;
 import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.PTMCount;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.PTMDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesCount;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.*;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.ClusterStatsCollector;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.RepoClusterToWsClusterMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.SolrClusterToWsClusterMapper;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPeptide;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.ClusteredPeptideFinder;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
 import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
-import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
-import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
-import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
-import uk.ac.ebi.pride.spectracluster.repo.model.PTMDetail;
+import uk.ac.ebi.pride.spectracluster.repo.model.*;
 
 import java.util.*;
 
@@ -114,7 +113,7 @@ public class ClusterController {
     }
 
 
-    @ApiOperation(value = "a convenience endpoint that retrieves cluster species information only", position = 1, notes = "retrieve a record of a specific cluster consensus spectrum")
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster species information only", position = 3, notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/species", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -148,7 +147,7 @@ public class ClusterController {
 
     }
 
-    @ApiOperation(value = "a convenience endpoint that retrieves cluster PTM information only", position = 1, notes = "retrieve PTM records of a specific cluster")
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster PTM information only", position = 4, notes = "retrieve PTM records of a specific cluster")
     @RequestMapping(value = "/{clusterId}/ptms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -171,7 +170,7 @@ public class ClusterController {
             List<PTMDetail> modifications = clusteredPSMDetail.getPsmDetail().getModifications();
 
             if (modifications.isEmpty()) {
-                if (ptms.getDistribution().containsKey(PTMDistribution.NO_MODIFICATIONS))  {
+                if (ptms.getDistribution().containsKey(PTMDistribution.NO_MODIFICATIONS)) {
                     ptms.getDistribution().get(PTMDistribution.NO_MODIFICATIONS).addPTMCount(1);
                 } else {
                     PTMCount ptmCount = new PTMCount(PTMDistribution.NO_MODIFICATIONS, null, 1);
@@ -196,7 +195,7 @@ public class ClusterController {
     }
 
 
-    @ApiOperation(value = "a convenience endpoint that retrieves cluster consensus spectrum information only", position = 1, notes = "retrieve a record of a specific cluster consensus spectrum")
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster consensus spectrum information only", position = 5, notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/consensus", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -215,88 +214,130 @@ public class ClusterController {
 
     }
 
-    @ApiOperation(value = "list similar cluster summaries given a list of peaks", position = 3, notes = "additive clustering functionality")
-    @RequestMapping(value = "/nearest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "returns peptides for a given Cluster ID", position = 6, notes = "retrieve peptides for a given Cluster ID")
+    @RequestMapping(value = "/{clusterId}/peptide", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    ClusterSearchResults getSimilarClusters(
-            @ApiParam(value = "precursor MZ")
-            @RequestParam(value = "precursor", required = false, defaultValue = "") String precursor,
-            @ApiParam(value = "peak list to compare to")
-            @RequestParam(value = "peaks", required = false, defaultValue = "") String peaks,
-            @ApiParam(value = "0-based page number")
-            @RequestParam(value = "page", required = true, defaultValue = "0") int page,
-            @ApiParam(value = "maximum number of results per page")
-            @RequestParam(value = "size", required = true, defaultValue = "10") int size
+    List<ClusteredPeptide> getClusterPeptides(
+            @ApiParam(value = "a cluster ID")
+            @PathVariable("clusterId") long clusterId) {
+        logger.info("Cluster " + clusterId + " peptides requested");
 
-    ) {
-
-        logger.info("Fetched clusters for ");
-        logger.info("page: " + page);
-        logger.info("size: " + size);
-        logger.info("precursor: " + precursor);
-        logger.info("peaks ");
-        logger.info(peaks);
-
-        QueryInputPeaks query = new QueryInputPeaks();
-        parsePeaks(peaks, query);
-        double precursorMz = Double.parseDouble(precursor);
-
-        double[] lowResMz = LowResUtils.toLowResByBucketMean(query.mzValues, 20);
-        double[] lowResIntensity = LowResUtils.toLowResByBucketMean(query.intensityValues, 20);
-        logDoubleArray("MZ", lowResMz);
-        logDoubleArray("Intensity", lowResIntensity);
-
-        Page<SolrCluster> clusters = clusterSearchService.findByNearestPeaks(
-                "HIGH",
-                precursorMz,
-                1.0,
-                lowResMz,
-                lowResIntensity,
-                new PageRequest(page, size)
-        );
-
-        ClusterSearchResults results = new ClusterSearchResults();
-        results.setPageNumber(page);
-        results.setPageSize(size);
-        results.setTotalResults(clusters.getTotalElements());
-        logger.info("Total results is " + clusters.getTotalElements());
-        results.setResults(SolrClusterToWsClusterMapper.asClusterList(clusters));
-
-        return results;
-
+        ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
+        return ClusteredPeptideFinder.findClusteredPeptides(cluster);
     }
 
-    private void logDoubleArray(String tag, double[] values) {
-        for (double va : values) {
-            logger.info(tag + " is " + va);
-        }
+    @ApiOperation(value = "returns delta m/z statistics for a given Cluster ID", position = 7, notes = "retrieve delta m/z statistics for a given Cluster ID")
+    @RequestMapping(value = "/{clusterId}/deltamz", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public
+    @ResponseBody
+    PSMDeltaMZStatistics getClusterPsmDeltaMZStatistics(
+            @ApiParam(value = "a cluster ID")
+            @PathVariable("clusterId") long clusterId) {
+        logger.info("Cluster " + clusterId + " delta m/z statistics requested");
+
+        ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
+        return ClusterStatsCollector.collectPSMDeltaMZStatistics(cluster);
     }
 
-    private void parsePeaks(String peaks, QueryInputPeaks query) {
-        String[] peakStrings = peaks.split("[ \\n]+");
-        query.mzValues = new double[peakStrings.length / 2];
-        query.intensityValues = new double[peakStrings.length / 2];
+    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 8, notes = "retrieve spectrum similarity statistics for a given Cluster ID")
+    @RequestMapping(value = "/{clusterId}/similarity", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public
+    @ResponseBody
+    SpectrumSimilarityStatistics getClusterSpectrumSimilarityStatistics(
+            @ApiParam(value = "a cluster ID")
+            @PathVariable("clusterId") long clusterId) {
+        logger.info("Cluster " + clusterId + " spectrum similarity statistics requested");
 
-
-        int j = 0;
-        for (int i = 0; i < peakStrings.length; i = i + 2) {
-            query.mzValues[j] = Double.parseDouble(peakStrings[i]);
-            query.intensityValues[j] = Double.parseDouble(peakStrings[i + 1]);
-            j++;
-        }
+        ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
+        return ClusterStatsCollector.collectSpectrumSimilarityStatistics(cluster);
     }
 
-    private List<Cluster> getTestClusters(int n) {
-        List<Cluster> res = new LinkedList<Cluster>();
-
-        for (int i = 0; i < n; i++) {
-            Cluster cluster = new Cluster();
-            cluster.setId(i);
-            res.add(cluster);
-        }
-
-        return res;
-    }
+//    @ApiOperation(value = "list similar cluster summaries given a list of peaks", position = 6, notes = "additive clustering functionality")
+//    @RequestMapping(value = "/nearest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseStatus(HttpStatus.OK) // 200
+//    public
+//    @ResponseBody
+//    ClusterSearchResults getSimilarClusters(
+//            @ApiParam(value = "precursor MZ")
+//            @RequestParam(value = "precursor", required = false, defaultValue = "") String precursor,
+//            @ApiParam(value = "peak list to compare to")
+//            @RequestParam(value = "peaks", required = false, defaultValue = "") String peaks,
+//            @ApiParam(value = "0-based page number")
+//            @RequestParam(value = "page", required = true, defaultValue = "0") int page,
+//            @ApiParam(value = "maximum number of results per page")
+//            @RequestParam(value = "size", required = true, defaultValue = "10") int size
+//
+//    ) {
+//
+//        logger.info("Fetched clusters for ");
+//        logger.info("page: " + page);
+//        logger.info("size: " + size);
+//        logger.info("precursor: " + precursor);
+//        logger.info("peaks ");
+//        logger.info(peaks);
+//
+//        QueryInputPeaks query = new QueryInputPeaks();
+//        parsePeaks(peaks, query);
+//        double precursorMz = Double.parseDouble(precursor);
+//
+//        double[] lowResMz = LowResUtils.toLowResByBucketMean(query.mzValues, 20);
+//        double[] lowResIntensity = LowResUtils.toLowResByBucketMean(query.intensityValues, 20);
+//        logDoubleArray("MZ", lowResMz);
+//        logDoubleArray("Intensity", lowResIntensity);
+//
+//        Page<SolrCluster> clusters = clusterSearchService.findByNearestPeaks(
+//                "HIGH",
+//                precursorMz,
+//                1.0,
+//                lowResMz,
+//                lowResIntensity,
+//                new PageRequest(page, size)
+//        );
+//
+//        ClusterSearchResults results = new ClusterSearchResults();
+//        results.setPageNumber(page);
+//        results.setPageSize(size);
+//        results.setTotalResults(clusters.getTotalElements());
+//        logger.info("Total results is " + clusters.getTotalElements());
+//        results.setResults(SolrClusterToWsClusterMapper.asClusterList(clusters));
+//
+//        return results;
+//
+//    }
+//
+//    private void logDoubleArray(String tag, double[] values) {
+//        for (double va : values) {
+//            logger.info(tag + " is " + va);
+//        }
+//    }
+//
+//    private void parsePeaks(String peaks, QueryInputPeaks query) {
+//        String[] peakStrings = peaks.split("[ \\n]+");
+//        query.mzValues = new double[peakStrings.length / 2];
+//        query.intensityValues = new double[peakStrings.length / 2];
+//
+//
+//        int j = 0;
+//        for (int i = 0; i < peakStrings.length; i = i + 2) {
+//            query.mzValues[j] = Double.parseDouble(peakStrings[i]);
+//            query.intensityValues[j] = Double.parseDouble(peakStrings[i + 1]);
+//            j++;
+//        }
+//    }
+//
+//    private List<Cluster> getTestClusters(int n) {
+//        List<Cluster> res = new LinkedList<Cluster>();
+//
+//        for (int i = 0; i < n; i++) {
+//            Cluster cluster = new Cluster();
+//            cluster.setId(i);
+//            res.add(cluster);
+//        }
+//
+//        return res;
+//    }
 }

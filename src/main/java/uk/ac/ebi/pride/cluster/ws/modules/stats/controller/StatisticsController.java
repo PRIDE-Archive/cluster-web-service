@@ -2,22 +2,20 @@ package uk.ac.ebi.pride.cluster.ws.modules.stats.controller;
 
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.pride.cluster.ws.modules.stats.model.PSMDeltaMZStatistics;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import uk.ac.ebi.pride.cluster.ws.modules.stats.model.RepoStatistic;
-import uk.ac.ebi.pride.cluster.ws.modules.stats.model.SpectrumSimilarityStatistics;
-import uk.ac.ebi.pride.cluster.ws.modules.stats.util.ClusterStatsCollector;
 import uk.ac.ebi.pride.cluster.ws.modules.stats.util.RepoStatsToWsStatsMapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.dao.stats.IClusterRepoStatisticsReadDao;
-import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterRepoStatistics;
 
 import java.util.List;
@@ -47,33 +45,5 @@ public class StatisticsController {
     public @ResponseBody List<RepoStatistic> getClusterRepoStatistics() {
         List<ClusterRepoStatistics> generalStatistics = clusterRepoStatisticsReadDao.getGeneralStatistics();
         return RepoStatsToWsStatsMapper.asStatsList(generalStatistics);
-    }
-
-    @ApiOperation(value = "returns delta m/z statistics for a given Cluster ID", position = 2, notes = "retrieve delta m/z statistics for a given Cluster ID")
-    @RequestMapping(value = "/deltamz/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK) // 200
-    public
-    @ResponseBody
-    PSMDeltaMZStatistics getClusterPsmDeltaMZStatistics(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
-        logger.info("Cluster " + clusterId + " delta m/z statistics requested");
-
-        ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
-        return ClusterStatsCollector.collectPSMDeltaMZStatistics(cluster);
-    }
-
-    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 3, notes = "retrieve spectrum similarity statistics for a given Cluster ID")
-    @RequestMapping(value = "/similarity/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK) // 200
-    public
-    @ResponseBody
-    SpectrumSimilarityStatistics getClusterSpectrumSimilarityStatistics(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
-        logger.info("Cluster " + clusterId + " spectrum similarity statistics requested");
-
-        ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
-        return ClusterStatsCollector.collectSpectrumSimilarityStatistics(cluster);
     }
 }

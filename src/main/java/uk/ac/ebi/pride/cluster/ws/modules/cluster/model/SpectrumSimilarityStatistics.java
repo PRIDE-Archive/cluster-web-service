@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.modules.stats.model;
+package uk.ac.ebi.pride.cluster.ws.modules.cluster.model;
 
 import java.util.ArrayList;
 import java.util.List;
