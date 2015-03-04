@@ -14,7 +14,7 @@ public class PSMDeltaMZStatistics {
     private final List<Float> highRatioPeptideDeltaMzs = new ArrayList<Float>();
 
     // delta m/z values for all the PSMs in the cluster
-    private final List<Float> clusterDeltaMz = new ArrayList<Float>();
+    private final List<Float> clusterDeltaMzs = new ArrayList<Float>();
 
     public List<Float> getHighRatioPeptideDeltaMzs() {
         return highRatioPeptideDeltaMzs;
@@ -24,12 +24,12 @@ public class PSMDeltaMZStatistics {
         highRatioPeptideDeltaMzs.add(deltaMz);
     }
 
-    public List<Float> getClusterDeltaMz() {
-        return clusterDeltaMz;
+    public List<Float> getClusterDeltaMzs() {
+        return clusterDeltaMzs;
     }
 
     public void addClusterDeltaMz(Float deltaMz) {
-        clusterDeltaMz.add(deltaMz);
+        clusterDeltaMzs.add(deltaMz);
     }
 
 
