@@ -10,10 +10,10 @@ import java.util.List;
  * @author Rui Wang
  * @version $Id$
  */
-public class SpectralLibraryRelease {
+public class SpectrumLibraryRelease {
     private String version;
     private Date releaseDate;
-    private final List<SpectralLibrary> spectralLibraries = new ArrayList<SpectralLibrary>();
+    private final List<SpectrumLibrary> spectralLibraries = new ArrayList<SpectrumLibrary>();
 
     public String getVersion() {
         return version;
@@ -31,11 +31,11 @@ public class SpectralLibraryRelease {
         this.releaseDate = releaseDate;
     }
 
-    public List<SpectralLibrary> getSpectralLibraries() {
+    public List<SpectrumLibrary> getSpectralLibraries() {
         return spectralLibraries;
     }
 
-    public void addSpectralLibrary(SpectralLibrary spectralLibrary) {
-        this.spectralLibraries.add(spectralLibrary);
+    public void addSpectralLibrary(SpectrumLibrary spectrumLibrary) {
+        this.spectralLibraries.add(spectrumLibrary);
     }
 }

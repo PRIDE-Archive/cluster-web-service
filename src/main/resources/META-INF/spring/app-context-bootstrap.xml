@@ -23,7 +23,7 @@
         <constructor-arg ref="clusterDataSource"/>
     </bean>
 
-    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.library.SpectralLibraryReader" id="spectralLibraryReader">
+    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.library.SpectrumLibraryReader" id="spectralLibraryReader">
         <constructor-arg ref="clusterDataSource"/>
     </bean>
 
@@ -49,6 +49,6 @@
     </bean>
 
     <util:properties id="archiveProperties" location="classpath:META-INF/props/archive-ws.properties"/>
-    <util:properties id="spectralLibraryProperties" location="classpath:META-INF/props/spectral-library.properties"/>
+    <util:properties id="spectrumLibraryProperties" location="classpath:META-INF/props/spectrum-library.properties"/>
 
 </beans>

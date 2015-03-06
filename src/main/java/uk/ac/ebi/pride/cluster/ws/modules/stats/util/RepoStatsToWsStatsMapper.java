@@ -1,9 +1,9 @@
 package uk.ac.ebi.pride.cluster.ws.modules.stats.util;
 
 import uk.ac.ebi.pride.cluster.ws.modules.stats.model.RepoStatistic;
+import uk.ac.ebi.pride.cluster.ws.modules.stats.model.RepoStatisticList;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterRepoStatistics;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,13 +14,13 @@ import java.util.List;
  */
 public final class RepoStatsToWsStatsMapper {
 
-    public static List<RepoStatistic> asStatsList(List<ClusterRepoStatistics> repoStats) {
-        List<RepoStatistic> repoStatistics = new ArrayList<RepoStatistic>();
+    public static RepoStatisticList asStatsList(List<ClusterRepoStatistics> repoStats) {
+        RepoStatisticList repoStatisticList = new RepoStatisticList();
 
         for (ClusterRepoStatistics repoStat : repoStats) {
-            repoStatistics.add(new RepoStatistic(repoStat.getName(), repoStat.getValue()));
+            repoStatisticList.addRepoStatistic(new RepoStatistic(repoStat.getName(), repoStat.getValue()));
         }
 
-        return repoStatistics;
+        return repoStatisticList;
     }
 }

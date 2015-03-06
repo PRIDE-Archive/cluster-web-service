@@ -1,9 +1,9 @@
 package uk.ac.ebi.pride.cluster.ws.modules.psm.util;
 
 import uk.ac.ebi.pride.cluster.ws.modules.psm.model.Psm;
+import uk.ac.ebi.pride.cluster.ws.modules.psm.model.PsmList;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,8 +12,8 @@ import java.util.List;
  */
 public final class RepoPsmToWsPsmMapper {
 
-    public static List<Psm> asPsmList(List<ClusteredPSMDetail> repoPsms) {
-        List<Psm> res = new LinkedList<Psm>();
+    public static PsmList asPsmList(List<ClusteredPSMDetail> repoPsms) {
+        PsmList psmList = new PsmList();
 
         for (ClusteredPSMDetail repoPsm: repoPsms) {
             Psm psm = new Psm();
@@ -24,10 +24,10 @@ public final class RepoPsmToWsPsmMapper {
             psm.setRatio(repoPsm.getPsmRatio());
             psm.setSpectrumId(repoPsm.getSpectrumId());
 
-            res.add(psm);
+            psmList.addPsm(psm);
         }
 
-        return res;
+        return psmList;
     }
 
 

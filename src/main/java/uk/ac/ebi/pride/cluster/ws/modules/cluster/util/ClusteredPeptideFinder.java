@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPeptide;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPeptideList;
 import uk.ac.ebi.pride.cluster.ws.modules.psm.model.PTM;
 import uk.ac.ebi.pride.cluster.ws.modules.psm.util.RepoPTMToWsPTMMapper;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
@@ -18,13 +19,14 @@ import java.util.*;
  */
 public final class ClusteredPeptideFinder {
 
-    public static List<ClusteredPeptide> findClusteredPeptides(ClusterDetail cluster) {
+    public static ClusteredPeptideList findClusteredPeptides(ClusterDetail cluster) {
+
+        ClusteredPeptideList clusteredPeptideList = new ClusteredPeptideList();
 
         if (cluster != null) {
-            List<ClusteredPSMDetail> clusteredPSMDetails = cluster.getClusteredPSMDetails();
 
             Map<String, ClusteredPeptide> clusteredPeptideMap = new HashMap<String, ClusteredPeptide>();
-            for (ClusteredPSMDetail clusteredPSMDetail : clusteredPSMDetails) {
+            for (ClusteredPSMDetail clusteredPSMDetail : cluster.getClusteredPSMDetails()) {
                 String sequence = clusteredPSMDetail.getSequence();
                 String seqModCombined = sequence + clusteredPSMDetail.getModifications();
 
@@ -51,9 +53,9 @@ public final class ClusteredPeptideFinder {
                 clusteredPeptide.addSpecies(taxonomyIdEntries);
             }
 
-            return new ArrayList<ClusteredPeptide>(clusteredPeptideMap.values());
-        } else {
-            return Collections.emptyList();
+            clusteredPeptideList.addClusteredPeptides(clusteredPeptideMap.values());
         }
+
+        return clusteredPeptideList;
     }
 }

@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
  * @version $Id$
  */
 @Component
-public class SpectralLibraryDownloadURLGenerator {
+public class SpectrumLibraryDownloadURLGenerator {
 
-    @Value("#{spectralLibraryProperties['spectral.library.ftp.download.url.prefix']}")
+    @Value("#{spectrumLibraryProperties['spectrum.library.ftp.download.url.prefix']}")
     private String ftpUrlPrefix;
 
-    @Value("#{spectralLibraryProperties['spectral.library.aspera.download.url.prefix']}")
+    @Value("#{spectrumLibraryProperties['spectrum.library.aspera.download.url.prefix']}")
     private String asperaUrlPrefix;
 
     public String asFtpURL(String version, String fileName) {

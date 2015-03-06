@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import uk.ac.ebi.pride.cluster.ws.modules.stats.model.RepoStatistic;
+import uk.ac.ebi.pride.cluster.ws.modules.stats.model.RepoStatisticList;
 import uk.ac.ebi.pride.cluster.ws.modules.stats.util.RepoStatsToWsStatsMapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.dao.stats.IClusterRepoStatisticsReadDao;
@@ -42,7 +42,8 @@ public class StatisticsController {
     @ApiOperation(value = "returns the general statistics for the entire repository", position = 1, notes = "retrieve general statistics")
     @RequestMapping(value = "/general", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
-    public @ResponseBody List<RepoStatistic> getClusterRepoStatistics() {
+    public @ResponseBody
+    RepoStatisticList getClusterRepoStatistics() {
         List<ClusterRepoStatistics> generalStatistics = clusterRepoStatisticsReadDao.getGeneralStatistics();
         return RepoStatsToWsStatsMapper.asStatsList(generalStatistics);
     }

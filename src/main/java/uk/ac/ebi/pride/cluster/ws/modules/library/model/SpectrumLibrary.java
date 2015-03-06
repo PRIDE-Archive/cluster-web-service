@@ -9,7 +9,7 @@ import java.util.List;
  * @author Rui Wang
  * @version $Id$
  */
-public class SpectralLibrary {
+public class SpectrumLibrary {
     private Long taxonomyId;
     private String speciesScientificName;
     private String speciesName;

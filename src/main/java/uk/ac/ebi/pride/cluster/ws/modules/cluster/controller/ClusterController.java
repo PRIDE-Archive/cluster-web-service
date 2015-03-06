@@ -21,10 +21,9 @@ import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesCount;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.*;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.ClusterStatsCollector;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.ClusteredPeptideFinder;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.RepoClusterToWsClusterMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.SolrClusterToWsClusterMapper;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPeptide;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.ClusteredPeptideFinder;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
 import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.*;
@@ -219,7 +218,7 @@ public class ClusterController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    List<ClusteredPeptide> getClusterPeptides(
+    ClusteredPeptideList getClusterPeptides(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster " + clusterId + " peptides requested");

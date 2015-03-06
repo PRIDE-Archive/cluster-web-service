@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.pride.cluster.ws.modules.psm.model.Psm;
+import uk.ac.ebi.pride.cluster.ws.modules.psm.model.PsmList;
 import uk.ac.ebi.pride.cluster.ws.modules.psm.util.RepoPsmToWsPsmMapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
@@ -36,7 +36,7 @@ public class PsmController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    List<Psm> getClusterPsms(
+    PsmList getClusterPsms(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster " + clusterId + " PSMs requested");

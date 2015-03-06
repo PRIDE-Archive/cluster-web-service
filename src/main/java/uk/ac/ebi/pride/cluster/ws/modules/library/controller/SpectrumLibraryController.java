@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import uk.ac.ebi.pride.cluster.ws.modules.library.model.SpectralLibraryRelease;
-import uk.ac.ebi.pride.cluster.ws.modules.library.util.RepoSpectralLibraryToWsSpectralLibraryMapper;
-import uk.ac.ebi.pride.cluster.ws.modules.library.util.SpectralLibraryDownloadURLGenerator;
-import uk.ac.ebi.pride.spectracluster.repo.dao.library.SpectralLibraryReader;
-import uk.ac.ebi.pride.spectracluster.repo.model.SpectralLibraryDetail;
+import uk.ac.ebi.pride.cluster.ws.modules.library.model.SpectrumLibraryRelease;
+import uk.ac.ebi.pride.cluster.ws.modules.library.util.RepoSpectrumLibraryToWsSpectrumLibraryMapper;
+import uk.ac.ebi.pride.cluster.ws.modules.library.util.SpectrumLibraryDownloadURLGenerator;
+import uk.ac.ebi.pride.spectracluster.repo.dao.library.SpectrumLibraryReader;
+import uk.ac.ebi.pride.spectracluster.repo.model.SpectrumLibraryDetail;
 
 import java.util.List;
 
@@ -27,27 +27,27 @@ import java.util.List;
 @Api(value = "library", description = "retrieve information about spectral libraries", position = 0)
 @Controller
 @RequestMapping(value = "/library")
-public class SpectralLibraryController {
+public class SpectrumLibraryController {
 
-    private static final Logger logger = LoggerFactory.getLogger(SpectralLibraryController.class);
-
-    @Autowired
-    private SpectralLibraryReader spectralLibraryReader;
+    private static final Logger logger = LoggerFactory.getLogger(SpectrumLibraryController.class);
 
     @Autowired
-    private SpectralLibraryDownloadURLGenerator spectralLibraryDownloadURLGenerator;
+    private SpectrumLibraryReader spectrumLibraryReader;
+
+    @Autowired
+    private SpectrumLibraryDownloadURLGenerator spectrumLibraryDownloadURLGenerator;
 
     @ApiOperation(value = "returns spectral libraries of the latest release", position = 1, notes = "retrieve spectral libraries of the latest release")
     @RequestMapping(value = "/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    SpectralLibraryRelease getLatestSpectralLibraryRelease() {
+    SpectrumLibraryRelease getLatestSpectralLibraryRelease() {
         logger.info("The latest spectral library release requested");
 
-        List<SpectralLibraryDetail> latestSpectralLibraries = spectralLibraryReader.getLatestSpectralLibraries();
+        List<SpectrumLibraryDetail> latestSpectrumLibraries = spectrumLibraryReader.getLatestSpectrumLibraries();
 
-        return RepoSpectralLibraryToWsSpectralLibraryMapper.asSpectralLibraryRelease(latestSpectralLibraries, spectralLibraryDownloadURLGenerator);
+        return RepoSpectrumLibraryToWsSpectrumLibraryMapper.asSpectrumLibraryRelease(latestSpectrumLibraries, spectrumLibraryDownloadURLGenerator);
     }
 
 }
