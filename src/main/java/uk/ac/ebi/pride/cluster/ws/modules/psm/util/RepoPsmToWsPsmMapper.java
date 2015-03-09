@@ -2,6 +2,8 @@ package uk.ac.ebi.pride.cluster.ws.modules.psm.util;
 
 import uk.ac.ebi.pride.cluster.ws.modules.psm.model.Psm;
 import uk.ac.ebi.pride.cluster.ws.modules.psm.model.PsmList;
+import uk.ac.ebi.pride.cluster.ws.modules.psm.model.QualityAwarePsm;
+import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
 
 import java.util.List;
@@ -30,5 +32,16 @@ public final class RepoPsmToWsPsmMapper {
         return psmList;
     }
 
+    public static QualityAwarePsm asQualityAwarePsm(ClusteredPSMDetail repoPsm, ClusterSummary repoClusterSummary) {
+        QualityAwarePsm qualityAwarePsm = new QualityAwarePsm();
 
+        qualityAwarePsm.setClusterQuality(repoClusterSummary.getQuality().toString());
+        qualityAwarePsm.setClusterId(repoClusterSummary.getId());
+        qualityAwarePsm.setRatio(repoPsm.getPsmRatio());
+        qualityAwarePsm.setId(repoPsm.getPsmId());
+        qualityAwarePsm.setSequence(repoPsm.getSequence());
+        qualityAwarePsm.setSpectrumId(repoPsm.getSpectrumId());
+
+        return qualityAwarePsm;
+    }
 }
