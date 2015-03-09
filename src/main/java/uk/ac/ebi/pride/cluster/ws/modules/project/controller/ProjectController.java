@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.ebi.pride.cluster.ws.modules.project.model.Project;
+import uk.ac.ebi.pride.cluster.ws.modules.project.model.ProjectList;
 import uk.ac.ebi.pride.cluster.ws.modules.project.util.ProjectWsRetriever;
 import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
@@ -44,7 +44,7 @@ public class ProjectController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    List<Project> getClusterProjects(
+    ProjectList getClusterProjects(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster " + clusterId + " projects requested");

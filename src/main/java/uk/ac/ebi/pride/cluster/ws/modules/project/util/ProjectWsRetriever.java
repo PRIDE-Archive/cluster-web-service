@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import uk.ac.ebi.pride.archive.web.service.model.project.ProjectDetail;
 import uk.ac.ebi.pride.cluster.ws.modules.project.model.Project;
+import uk.ac.ebi.pride.cluster.ws.modules.project.model.ProjectList;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,15 +25,15 @@ public final class ProjectWsRetriever {
     @Value("#{archiveProperties['archive.project.detail.url']}")
     private String projectWsUrl;
 
-    public List<Project> getProjects(Collection<String> projectAccessions) {
-        List<Project> projects = new ArrayList<Project>();
+    public ProjectList getProjects(Collection<String> projectAccessions) {
+        ProjectList projectList = new ProjectList();
 
         for (String projectAccession : projectAccessions) {
             Project project = getProject(projectAccession);
-            projects.add(project);
+            projectList.addProject(project);
         }
 
-        return projects;
+        return projectList;
     }
 
 

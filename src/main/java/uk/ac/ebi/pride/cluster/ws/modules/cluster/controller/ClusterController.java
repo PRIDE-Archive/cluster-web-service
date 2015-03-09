@@ -56,7 +56,8 @@ public class ClusterController {
     Cluster getClusterSummary(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
-        logger.info("Cluster " + clusterId + " requested");
+        logger.info("Cluster summary " + clusterId + " requested");
+
         ClusterSummary clusterSummary = clusterReaderDao.findClusterSummary(clusterId);
         List<ClusteredPSMDetail> clusteredPSMSummaries = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterId, DEFAULT_MINIMUM_PSM_RANKING);
         return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0));
