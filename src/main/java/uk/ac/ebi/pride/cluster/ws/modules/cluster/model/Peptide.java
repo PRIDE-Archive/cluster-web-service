@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.model;
 
-import uk.ac.ebi.pride.cluster.ws.modules.psm.model.PTM;
+import uk.ac.ebi.pride.cluster.ws.modules.psm.model.Modification;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Peptide {
     private String sequence;
-    private List<PTM> modifications;
+    private List<Modification> modifications;
 
 
     public String getSequence() {
@@ -23,11 +23,11 @@ public class Peptide {
         this.sequence = sequence;
     }
 
-    public List<PTM> getModifications() {
+    public List<Modification> getModifications() {
         return modifications;
     }
 
-    public void setModifications(List<PTM> modifications) {
+    public void setModifications(List<Modification> modifications) {
         this.modifications = modifications;
     }
 

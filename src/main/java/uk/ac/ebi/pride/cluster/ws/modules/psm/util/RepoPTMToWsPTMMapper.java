@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.cluster.ws.modules.psm.util;
 
-import uk.ac.ebi.pride.cluster.ws.modules.psm.model.PTM;
+import uk.ac.ebi.pride.cluster.ws.modules.psm.model.Modification;
 import uk.ac.ebi.pride.spectracluster.repo.model.PTMDetail;
 
 import java.util.ArrayList;
@@ -14,24 +14,24 @@ import java.util.List;
  */
 public final class RepoPTMToWsPTMMapper {
 
-    public static List<PTM> asPTMList(List<PTMDetail> ptmDetails) {
-        List<PTM> ptms = new ArrayList<PTM>();
+    public static List<Modification> asPTMList(List<PTMDetail> ptmDetails) {
+        List<Modification> modifications = new ArrayList<Modification>();
 
         for (PTMDetail ptmDetail : ptmDetails) {
-            PTM ptm = asPTM(ptmDetail);
-            ptms.add(ptm);
+            Modification modification = asPTM(ptmDetail);
+            modifications.add(modification);
         }
 
-        return ptms;
+        return modifications;
     }
 
-    public static PTM asPTM(PTMDetail ptmDetail) {
-        PTM ptm = new PTM();
+    public static Modification asPTM(PTMDetail ptmDetail) {
+        Modification modification = new Modification();
 
-        ptm.setAccession(ptmDetail.getAccession());
-        ptm.setName(ptmDetail.getName());
-        ptm.setPosition(ptmDetail.getPosition());
+        modification.setAccession(ptmDetail.getAccession());
+        modification.setName(ptmDetail.getName());
+        modification.setPosition(ptmDetail.getPosition());
 
-        return ptm;
+        return modification;
     }
 }

@@ -40,6 +40,8 @@ public class ClusterController {
 
     private static final Logger logger = LoggerFactory.getLogger(ClusterController.class);
 
+    public static final float DEFAULT_MINIMUM_PSM_RANKING = 1.1f;
+
     @Autowired
     IClusterReadDao clusterReaderDao;
 
@@ -55,8 +57,9 @@ public class ClusterController {
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster " + clusterId + " requested");
-
-        return SolrClusterToWsClusterMapper.asCluster(clusterSearchService.findById(clusterId));
+        ClusterSummary clusterSummary = clusterReaderDao.findClusterSummary(clusterId);
+        List<ClusteredPSMDetail> clusteredPSMSummaries = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterId, DEFAULT_MINIMUM_PSM_RANKING);
+        return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0));
     }
 
     @ApiOperation(value = "list clusters for given search criteria", position = 2, notes = "search functionality")
@@ -206,7 +209,7 @@ public class ClusterController {
 
         ClusterSummary repoCluster = clusterReaderDao.findCluster(clusterId);
         if (repoCluster != null) {
-            return RepoClusterToWsClusterMapper.getConsensusSpectrum(clusterReaderDao.findCluster(clusterId));
+            return RepoClusterToWsClusterMapper.asConsensusSpectrum(clusterReaderDao.findCluster(clusterId));
         } else {
             throw new ResourceNotFoundException("Cluster with ID " + clusterId + " not found in DB");
         }

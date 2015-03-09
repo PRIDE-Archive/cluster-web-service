@@ -1,5 +1,10 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.model;
 
+import uk.ac.ebi.pride.cluster.ws.modules.psm.model.Modification;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
  *
@@ -14,15 +19,25 @@ public class Cluster {
 
     private long numberOfSpectra;
 
+    private long totalNumberOfSpectra;
+
     private int numberOfSpecies;
+
+    private int totalNumberOfSpecies;
 
     private int numberOfPTMs;
 
+    private int totalNumberOfPTMs;
+
     private int numberOfProjects;
+
+    private int totalNumberOfProjects;
 
     private double maxRatio;
 
-    private String peptideSequence;
+    private String sequence;
+
+    private final List<Modification> modifications = new ArrayList<Modification>();
 
     private String proteinAccession;
 
@@ -93,12 +108,12 @@ public class Cluster {
         this.maxRatio = maxRatio;
     }
 
-    public String getPeptideSequence() {
-        return peptideSequence;
+    public String getSequence() {
+        return sequence;
     }
 
-    public void setPeptideSequence(String peptideSequence) {
-        this.peptideSequence = peptideSequence;
+    public void setSequence(String peptideSequence) {
+        this.sequence = peptideSequence;
     }
 
     public String getProteinAccession() {
@@ -115,5 +130,45 @@ public class Cluster {
 
     public void setClusterQuality(String clusterQuality) {
         this.clusterQuality = clusterQuality;
+    }
+
+    public long getTotalNumberOfSpectra() {
+        return totalNumberOfSpectra;
+    }
+
+    public void setTotalNumberOfSpectra(long totalNumberOfSpectra) {
+        this.totalNumberOfSpectra = totalNumberOfSpectra;
+    }
+
+    public int getTotalNumberOfSpecies() {
+        return totalNumberOfSpecies;
+    }
+
+    public void setTotalNumberOfSpecies(int totalNumberOfSpecies) {
+        this.totalNumberOfSpecies = totalNumberOfSpecies;
+    }
+
+    public int getTotalNumberOfPTMs() {
+        return totalNumberOfPTMs;
+    }
+
+    public void setTotalNumberOfPTMs(int totalNumberOfPTMs) {
+        this.totalNumberOfPTMs = totalNumberOfPTMs;
+    }
+
+    public int getTotalNumberOfProjects() {
+        return totalNumberOfProjects;
+    }
+
+    public void setTotalNumberOfProjects(int totalNumberOfProjects) {
+        this.totalNumberOfProjects = totalNumberOfProjects;
+    }
+
+    public List<Modification> getModifications() {
+        return modifications;
+    }
+
+    public void addModifications(List<Modification> peptideModifications) {
+        this.modifications.addAll(peptideModifications);
     }
 }

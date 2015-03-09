@@ -1,10 +1,15 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.Cluster;
+import uk.ac.ebi.pride.cluster.ws.modules.psm.util.RepoPTMToWsPTMMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.SpectrumPeak;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
+import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
+import uk.ac.ebi.pride.spectracluster.repo.model.PTMDetail;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
@@ -12,7 +17,7 @@ import java.util.LinkedList;
  */
 public final class RepoClusterToWsClusterMapper {
 
-    public static Spectrum getConsensusSpectrum(ClusterSummary repoCluster) {
+    public static Spectrum asConsensusSpectrum(ClusterSummary repoCluster) {
 
         Spectrum consensusSpectrum = new Spectrum();
 
@@ -32,5 +37,32 @@ public final class RepoClusterToWsClusterMapper {
         consensusSpectrum.setMzStop(consensusSpectrum.getPeaks().get(consensusSpectrum.getPeaks().size() - 1).getMz());
 
         return consensusSpectrum;
+    }
+
+    public static Cluster asCluster(ClusterSummary repoClusterSummary, ClusteredPSMDetail repoPSM) {
+        Cluster newCluster = new Cluster();
+
+        newCluster.setId(repoClusterSummary.getId());
+        newCluster.setAveragePrecursorCharge(repoClusterSummary.getAveragePrecursorCharge());
+        newCluster.setAveragePrecursorMz(repoClusterSummary.getAveragePrecursorMz());
+        newCluster.setMaxRatio(repoClusterSummary.getMaxPeptideRatio());
+        newCluster.setSequence(repoPSM.getSequence());
+        newCluster.setClusterQuality(repoClusterSummary.getQuality().toString());
+
+        // count numbers
+        newCluster.setNumberOfSpectra(repoClusterSummary.getNumberOfSpectra());
+        newCluster.setTotalNumberOfSpectra(repoClusterSummary.getTotalNumberOfSpectra());
+        newCluster.setNumberOfSpecies(repoClusterSummary.getNumberOfSpecies());
+        newCluster.setTotalNumberOfSpecies(repoClusterSummary.getTotalNumberOfSpecies());
+        newCluster.setNumberOfPTMs(repoClusterSummary.getNumberOfPTMs());
+        newCluster.setTotalNumberOfPTMs(repoClusterSummary.getTotalNumberOfPTMs());
+        newCluster.setNumberOfProjects(repoClusterSummary.getNumberOfProjects());
+        newCluster.setTotalNumberOfProjects(repoClusterSummary.getTotalNumberOfProjects());
+
+        // modifications
+        List<PTMDetail> modifications = repoPSM.getPsmDetail().getModifications();
+        newCluster.addModifications(RepoPTMToWsPTMMapper.asPTMList(modifications));
+
+        return newCluster;
     }
 }

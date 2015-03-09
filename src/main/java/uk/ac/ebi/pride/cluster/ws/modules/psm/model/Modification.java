@@ -6,7 +6,7 @@ package uk.ac.ebi.pride.cluster.ws.modules.psm.model;
  * @author Rui Wang
  * @version $Id$
  */
-public class PTM {
+public class Modification {
     private String accession;
     private String name;
     private int position;
@@ -38,13 +38,13 @@ public class PTM {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PTM)) return false;
+        if (!(o instanceof Modification)) return false;
 
-        PTM ptm = (PTM) o;
+        Modification modification = (Modification) o;
 
-        if (position != ptm.position) return false;
-        if (accession != null ? !accession.equals(ptm.accession) : ptm.accession != null) return false;
-        if (name != null ? !name.equals(ptm.name) : ptm.name != null) return false;
+        if (position != modification.position) return false;
+        if (accession != null ? !accession.equals(modification.accession) : modification.accession != null) return false;
+        if (name != null ? !name.equals(modification.name) : modification.name != null) return false;
 
         return true;
     }
