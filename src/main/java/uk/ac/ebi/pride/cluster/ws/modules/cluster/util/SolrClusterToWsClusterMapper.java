@@ -31,7 +31,7 @@ public final class SolrClusterToWsClusterMapper {
         newCluster.setAveragePrecursorCharge(solrCluster.getAveragePrecursorCharge());
         newCluster.setAveragePrecursorMz(solrCluster.getAveragePrecursorMz());
         newCluster.setMaxRatio(solrCluster.getMaxRatio());
-        newCluster.setPeptideSequence((String) solrCluster.getHighestRatioPepSequences().toArray()[0]);
+        newCluster.setSequence((String) solrCluster.getHighestRatioPepSequences().toArray()[0]);
         newCluster.setClusterQuality(solrCluster.getClusterQuality().toString());
         newCluster.setProteinAccession((String) solrCluster.getHighestRatioProteinAccessions().toArray()[0]);
 
