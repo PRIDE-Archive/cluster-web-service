@@ -8,7 +8,7 @@ import uk.ac.ebi.pride.spectracluster.repo.model.SpectrumLibraryDetail;
 import java.util.List;
 
 /**
- * Mapper from repository spectral library representation to web service spectral library representation
+ * Mapper from repository spectrum library representation to web service spectrum library representation
  *
  * @author Rui Wang
  * @version $Id$
@@ -24,7 +24,7 @@ public final class RepoSpectrumLibraryToWsSpectrumLibraryMapper {
 
         for (SpectrumLibraryDetail detail : spectrumLibraryDetails) {
             SpectrumLibrary spectrumLibrary = asSpectrumLibrary(detail, generator);
-            spectrumLibraryRelease.addSpectralLibrary(spectrumLibrary);
+            spectrumLibraryRelease.addSpectrumLibrary(spectrumLibrary);
         }
 
         return spectrumLibraryRelease;

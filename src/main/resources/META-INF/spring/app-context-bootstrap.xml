@@ -23,7 +23,7 @@
         <constructor-arg ref="clusterDataSource"/>
     </bean>
 
-    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.library.SpectrumLibraryReader" id="spectralLibraryReader">
+    <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.library.SpectrumLibraryReader" id="spectrumLibraryReader">
         <constructor-arg ref="clusterDataSource"/>
     </bean>
 

@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * A release of all the spectral libraries
+ * A release of all the spectrum libraries
  *
  * @author Rui Wang
  * @version $Id$
@@ -31,11 +31,11 @@ public class SpectrumLibraryRelease {
         this.releaseDate = releaseDate;
     }
 
-    public List<SpectrumLibrary> getSpectralLibraries() {
+    public List<SpectrumLibrary> getSpectrumLibraries() {
         return spectralLibraries;
     }
 
-    public void addSpectralLibrary(SpectrumLibrary spectrumLibrary) {
+    public void addSpectrumLibrary(SpectrumLibrary spectrumLibrary) {
         this.spectralLibraries.add(spectrumLibrary);
     }
 }
