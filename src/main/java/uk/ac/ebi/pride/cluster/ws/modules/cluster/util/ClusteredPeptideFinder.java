@@ -7,7 +7,7 @@ import uk.ac.ebi.pride.cluster.ws.modules.psm.util.RepoPTMToWsPTMMapper;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
-import uk.ac.ebi.pride.spectracluster.repo.model.PTMDetail;
+import uk.ac.ebi.pride.spectracluster.repo.model.ModificationDetail;
 
 import java.util.*;
 
@@ -37,7 +37,7 @@ public final class ClusteredPeptideFinder {
                     // sequence
                     clusteredPeptide.setSequence(sequence);
                     // ptm
-                    List<PTMDetail> modifications = clusteredPSMDetail.getPsmDetail().getModifications();
+                    List<ModificationDetail> modifications = clusteredPSMDetail.getPsmDetail().getModifications();
                     List<Modification> ptms = RepoPTMToWsPTMMapper.asPTMList(modifications);
                     clusteredPeptide.setModifications(ptms);
 

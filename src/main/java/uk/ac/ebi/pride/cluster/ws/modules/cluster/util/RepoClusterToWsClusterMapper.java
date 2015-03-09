@@ -6,7 +6,7 @@ import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.SpectrumPeak;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
-import uk.ac.ebi.pride.spectracluster.repo.model.PTMDetail;
+import uk.ac.ebi.pride.spectracluster.repo.model.ModificationDetail;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -54,13 +54,13 @@ public final class RepoClusterToWsClusterMapper {
         newCluster.setTotalNumberOfSpectra(repoClusterSummary.getTotalNumberOfSpectra());
         newCluster.setNumberOfSpecies(repoClusterSummary.getNumberOfSpecies());
         newCluster.setTotalNumberOfSpecies(repoClusterSummary.getTotalNumberOfSpecies());
-        newCluster.setNumberOfPTMs(repoClusterSummary.getNumberOfPTMs());
-        newCluster.setTotalNumberOfPTMs(repoClusterSummary.getTotalNumberOfPTMs());
+        newCluster.setNumberOfPTMs(repoClusterSummary.getNumberOfModifications());
+        newCluster.setTotalNumberOfPTMs(repoClusterSummary.getTotalNumberOfModifications());
         newCluster.setNumberOfProjects(repoClusterSummary.getNumberOfProjects());
         newCluster.setTotalNumberOfProjects(repoClusterSummary.getTotalNumberOfProjects());
 
         // modifications
-        List<PTMDetail> modifications = repoPSM.getPsmDetail().getModifications();
+        List<ModificationDetail> modifications = repoPSM.getPsmDetail().getModifications();
         newCluster.addModifications(RepoPTMToWsPTMMapper.asPTMList(modifications));
 
         return newCluster;
