@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Details of one spectral library, including download links
+ * Details of one spectrum library, including download links
  *
  * @author Rui Wang
  * @version $Id$

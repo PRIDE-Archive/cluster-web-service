@@ -1,7 +1,7 @@
 package uk.ac.ebi.pride.cluster.ws.modules.library.model;
 
 /**
- * Spectral library download URL
+ * Spectrum library download URL
  *
  * @author Rui Wang
  * @version $Id$

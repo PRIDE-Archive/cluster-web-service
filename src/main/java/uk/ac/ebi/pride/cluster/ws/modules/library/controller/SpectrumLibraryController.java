@@ -24,7 +24,7 @@ import java.util.List;
  * @author Rui Wang
  * @version $Id$
  */
-@Api(value = "library", description = "retrieve information about spectral libraries", position = 0)
+@Api(value = "library", description = "retrieve information about spectrum libraries", position = 0)
 @Controller
 @RequestMapping(value = "/library")
 public class SpectrumLibraryController {
@@ -37,13 +37,13 @@ public class SpectrumLibraryController {
     @Autowired
     private SpectrumLibraryDownloadURLGenerator spectrumLibraryDownloadURLGenerator;
 
-    @ApiOperation(value = "returns spectral libraries of the latest release", position = 1, notes = "retrieve spectral libraries of the latest release")
+    @ApiOperation(value = "returns spectrum libraries of the latest release", position = 1, notes = "retrieve spectrum libraries of the latest release")
     @RequestMapping(value = "/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    SpectrumLibraryRelease getLatestSpectralLibraryRelease() {
-        logger.info("The latest spectral library release requested");
+    SpectrumLibraryRelease getLatestSpectrumLibraryRelease() {
+        logger.info("The latest spectrum library release requested");
 
         List<SpectrumLibraryDetail> latestSpectrumLibraries = spectrumLibraryReader.getLatestSpectrumLibraries();
 
