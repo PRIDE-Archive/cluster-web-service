@@ -1,15 +1,12 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.Cluster;
-import uk.ac.ebi.pride.cluster.ws.modules.psm.util.RepoPTMToWsPTMMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.SpectrumPeak;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
-import uk.ac.ebi.pride.spectracluster.repo.model.ModificationDetail;
 
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
@@ -60,8 +57,7 @@ public final class RepoClusterToWsClusterMapper {
         newCluster.setTotalNumberOfProjects(repoClusterSummary.getTotalNumberOfProjects());
 
         // modifications
-        List<ModificationDetail> modifications = repoPSM.getPsmDetail().getModifications();
-        newCluster.addModifications(RepoPTMToWsPTMMapper.asPTMList(modifications));
+        newCluster.addModifications(repoPSM.getPsmDetail().getModifications());
 
         return newCluster;
     }

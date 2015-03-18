@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.model;
 
-import uk.ac.ebi.pride.cluster.ws.modules.psm.model.Modification;
+import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class Cluster {
 
     private String sequence;
 
-    private final List<Modification> modifications = new ArrayList<Modification>();
+    private final List<ModificationProvider> modifications = new ArrayList<ModificationProvider>();
 
     private String proteinAccession;
 
@@ -164,11 +164,11 @@ public class Cluster {
         this.totalNumberOfProjects = totalNumberOfProjects;
     }
 
-    public List<Modification> getModifications() {
+    public List<ModificationProvider> getModifications() {
         return modifications;
     }
 
-    public void addModifications(List<Modification> peptideModifications) {
+    public void addModifications(List<ModificationProvider> peptideModifications) {
         this.modifications.addAll(peptideModifications);
     }
 }

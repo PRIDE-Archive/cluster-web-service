@@ -12,6 +12,7 @@ import java.util.List;
  * @author Rui Wang
  * @version $Id$
  */
+@Deprecated
 public final class RepoPTMToWsPTMMapper {
 
     public static List<Modification> asPTMList(List<ModificationDetail> modificationDetails) {

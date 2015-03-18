@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
 import uk.ac.ebi.pride.cluster.search.model.SolrCluster;
 import uk.ac.ebi.pride.cluster.search.service.IClusterSearchService;
 import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
@@ -170,7 +171,7 @@ public class ClusterController {
         PTMDistribution ptms = new PTMDistribution();
         for (ClusteredPSMDetail clusteredPSMDetail : clusteredPSMDetails) {
             //todo: change to use standardised modifications
-            List<ModificationDetail> modifications = clusteredPSMDetail.getPsmDetail().getModifications();
+            List<ModificationProvider> modifications = clusteredPSMDetail.getPsmDetail().getModifications();
 
             if (modifications.isEmpty()) {
                 if (ptms.getDistribution().containsKey(PTMDistribution.NO_MODIFICATIONS)) {
@@ -180,7 +181,7 @@ public class ClusterController {
                     ptms.getDistribution().put(PTMDistribution.NO_MODIFICATIONS, ptmCount);
                 }
             } else {
-                for (ModificationDetail modification : modifications) {
+                for (ModificationProvider modification : modifications) {
                     if (ptms.getDistribution().containsKey(modification.getAccession())) {
                         ptms.getDistribution().get(modification.getAccession()).addPTMCount(1);
                     } else {

@@ -1,12 +1,18 @@
 package uk.ac.ebi.pride.cluster.ws.modules.psm.model;
 
+import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
+
+import java.util.Map;
+
 /**
  * Post translational modifications
  *
  * @author Rui Wang
  * @version $Id$
  */
-public class Modification {
+/* TODO Add support for Neutral Losses and Position Map */
+public class Modification implements ModificationProvider {
     private String accession;
     private String name;
     private int position;
@@ -21,6 +27,21 @@ public class Modification {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Integer getMainPosition() {
+        return getPosition();
+    }
+
+    @Override
+    public CvParamProvider getNeutralLoss() {
+        return null;
+    }
+
+    @Override
+    public Map<Integer, CvParamProvider> getPositionMap() {
+        return null;
     }
 
     public void setName(String name) {
