@@ -51,8 +51,8 @@ public final class RepoClusterToWsClusterMapper {
         newCluster.setTotalNumberOfSpectra(repoClusterSummary.getTotalNumberOfSpectra());
         newCluster.setNumberOfSpecies(repoClusterSummary.getNumberOfSpecies());
         newCluster.setTotalNumberOfSpecies(repoClusterSummary.getTotalNumberOfSpecies());
-        newCluster.setNumberOfPTMs(repoClusterSummary.getNumberOfModifications());
-        newCluster.setTotalNumberOfPTMs(repoClusterSummary.getTotalNumberOfModifications());
+        newCluster.setNumberOfModifications(repoClusterSummary.getNumberOfModifications());
+        newCluster.setTotalNumberOfModifications(repoClusterSummary.getTotalNumberOfModifications());
         newCluster.setNumberOfProjects(repoClusterSummary.getNumberOfProjects());
         newCluster.setTotalNumberOfProjects(repoClusterSummary.getTotalNumberOfProjects());
 

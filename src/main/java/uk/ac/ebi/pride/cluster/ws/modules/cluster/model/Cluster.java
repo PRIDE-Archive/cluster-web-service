@@ -21,17 +21,17 @@ public class Cluster {
 
     private long totalNumberOfSpectra;
 
-    private int numberOfSpecies;
+    private long numberOfSpecies;
 
-    private int totalNumberOfSpecies;
+    private long totalNumberOfSpecies;
 
-    private int numberOfPTMs;
+    private long numberOfModifications;
 
-    private int totalNumberOfPTMs;
+    private long totalNumberOfModifications;
 
-    private int numberOfProjects;
+    private long numberOfProjects;
 
-    private int totalNumberOfProjects;
+    private long totalNumberOfProjects;
 
     private double maxRatio;
 
@@ -76,27 +76,27 @@ public class Cluster {
         this.numberOfSpectra = numberOfSpectra;
     }
 
-    public int getNumberOfSpecies() {
+    public long getNumberOfSpecies() {
         return numberOfSpecies;
     }
 
-    public void setNumberOfSpecies(int numberOfSpecies) {
+    public void setNumberOfSpecies(long numberOfSpecies) {
         this.numberOfSpecies = numberOfSpecies;
     }
 
-    public int getNumberOfPTMs() {
-        return numberOfPTMs;
+    public long getNumberOfModifications() {
+        return numberOfModifications;
     }
 
-    public void setNumberOfPTMs(int numberOfPTMs) {
-        this.numberOfPTMs = numberOfPTMs;
+    public void setNumberOfModifications(long numberOfMods) {
+        this.numberOfModifications = numberOfMods;
     }
 
-    public int getNumberOfProjects() {
+    public long getNumberOfProjects() {
         return numberOfProjects;
     }
 
-    public void setNumberOfProjects(int numberOfProjects) {
+    public void setNumberOfProjects(long numberOfProjects) {
         this.numberOfProjects = numberOfProjects;
     }
 
@@ -140,27 +140,27 @@ public class Cluster {
         this.totalNumberOfSpectra = totalNumberOfSpectra;
     }
 
-    public int getTotalNumberOfSpecies() {
+    public long getTotalNumberOfSpecies() {
         return totalNumberOfSpecies;
     }
 
-    public void setTotalNumberOfSpecies(int totalNumberOfSpecies) {
+    public void setTotalNumberOfSpecies(long totalNumberOfSpecies) {
         this.totalNumberOfSpecies = totalNumberOfSpecies;
     }
 
-    public int getTotalNumberOfPTMs() {
-        return totalNumberOfPTMs;
+    public long getTotalNumberOfModifications() {
+        return totalNumberOfModifications;
     }
 
-    public void setTotalNumberOfPTMs(int totalNumberOfPTMs) {
-        this.totalNumberOfPTMs = totalNumberOfPTMs;
+    public void setTotalNumberOfModifications(long totalNumberOfModifications) {
+        this.totalNumberOfModifications = totalNumberOfModifications;
     }
 
-    public int getTotalNumberOfProjects() {
+    public long getTotalNumberOfProjects() {
         return totalNumberOfProjects;
     }
 
-    public void setTotalNumberOfProjects(int totalNumberOfProjects) {
+    public void setTotalNumberOfProjects(long totalNumberOfProjects) {
         this.totalNumberOfProjects = totalNumberOfProjects;
     }
 

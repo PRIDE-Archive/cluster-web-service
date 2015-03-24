@@ -35,10 +35,14 @@ public final class SolrClusterToWsClusterMapper {
         newCluster.setClusterQuality(solrCluster.getClusterQuality().toString());
         newCluster.setProteinAccession((String) solrCluster.getHighestRatioProteinAccessions().toArray()[0]);
 
-        //ToDo: to provide proper implementation, right now it hardcoded value
-        newCluster.setNumberOfSpecies(0);
-        newCluster.setNumberOfPTMs(0);
-        newCluster.setNumberOfProjects(0);
+        newCluster.setNumberOfSpectra(solrCluster.getNumberOfSpectra());
+        newCluster.setTotalNumberOfSpectra(solrCluster.getTotalNumberOfSpectra());
+        newCluster.setNumberOfSpecies(solrCluster.getNumberOfSpecies());
+        newCluster.setTotalNumberOfSpecies(solrCluster.getTotalNumberOfSpecies());
+        newCluster.setNumberOfModifications(solrCluster.getNumberOfModifications());
+        newCluster.setTotalNumberOfModifications(solrCluster.getTotalNumberOfModifications());
+        newCluster.setNumberOfProjects(solrCluster.getNumberOfProjects());
+        newCluster.setTotalNumberOfProjects(solrCluster.getTotalNumberOfProjects());
 
         return newCluster;
     }
