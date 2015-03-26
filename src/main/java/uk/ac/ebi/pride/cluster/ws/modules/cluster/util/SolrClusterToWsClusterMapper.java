@@ -1,6 +1,7 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
 import org.springframework.data.domain.Page;
+import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
 import uk.ac.ebi.pride.cluster.search.model.SolrCluster;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.Cluster;
 
@@ -32,9 +33,10 @@ public final class SolrClusterToWsClusterMapper {
         newCluster.setAveragePrecursorMz(solrCluster.getAveragePrecursorMz());
         newCluster.setMaxRatio(solrCluster.getMaxRatio());
         newCluster.setSequence((String) solrCluster.getHighestRatioPepSequences().toArray()[0]);
-        newCluster.setClusterQuality(solrCluster.getClusterQuality().toString());
+        newCluster.setClusterQuality(solrCluster.getClusterQuality());
         newCluster.setProteinAccession((String) solrCluster.getHighestRatioProteinAccessions().toArray()[0]);
 
+        // counts
         newCluster.setNumberOfSpectra(solrCluster.getNumberOfSpectra());
         newCluster.setTotalNumberOfSpectra(solrCluster.getTotalNumberOfSpectra());
         newCluster.setNumberOfSpecies(solrCluster.getNumberOfSpecies());
@@ -43,6 +45,14 @@ public final class SolrClusterToWsClusterMapper {
         newCluster.setTotalNumberOfModifications(solrCluster.getTotalNumberOfModifications());
         newCluster.setNumberOfProjects(solrCluster.getNumberOfProjects());
         newCluster.setTotalNumberOfProjects(solrCluster.getTotalNumberOfProjects());
+
+        // modifications
+        Iterable<ModificationProvider> modifications = solrCluster.getModifications();
+        if (modifications != null) {
+            for (ModificationProvider modification : modifications) {
+                newCluster.addModification(modification);
+            }
+        }
 
         return newCluster;
     }

@@ -168,6 +168,10 @@ public class Cluster {
         return modifications;
     }
 
+    public void addModification(ModificationProvider peptideModification) {
+        this.modifications.add(peptideModification);
+    }
+
     public void addModifications(List<ModificationProvider> peptideModifications) {
         this.modifications.addAll(peptideModifications);
     }
