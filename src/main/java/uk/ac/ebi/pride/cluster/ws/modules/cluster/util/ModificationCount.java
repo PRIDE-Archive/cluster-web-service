@@ -1,4 +1,4 @@
-package uk.ac.ebi.pride.cluster.ws.modules.assay.model;
+package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
 /**
  * Count for a particular PTM

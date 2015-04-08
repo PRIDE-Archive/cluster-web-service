@@ -1,10 +1,6 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
 import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
-import uk.ac.ebi.pride.cluster.ws.modules.assay.model.ModificationCount;
-import uk.ac.ebi.pride.cluster.ws.modules.assay.model.ModificationDistribution;
-import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesCount;
-import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterModificationCounts;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterSpeciesCounts;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.PSMDeltaMZStatistics;

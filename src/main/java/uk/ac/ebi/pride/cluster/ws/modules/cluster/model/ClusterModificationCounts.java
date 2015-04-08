@@ -1,6 +1,6 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.model;
 
-import uk.ac.ebi.pride.cluster.ws.modules.assay.model.ModificationCount;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.ModificationCount;
 
 import java.util.List;
 
