@@ -10,9 +10,9 @@ package uk.ac.ebi.pride.cluster.ws.modules.stats.model;
  */
 public class RepoStatistic {
     private String name;
-    private String value;
+    private Long value;
 
-    public RepoStatistic(String name, String value) {
+    public RepoStatistic(String name, Long value) {
         this.name = name;
         this.value = value;
     }
@@ -25,11 +25,11 @@ public class RepoStatistic {
         this.name = name;
     }
 
-    public String getValue() {
+    public Long getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Long value) {
         this.value = value;
     }
 }
