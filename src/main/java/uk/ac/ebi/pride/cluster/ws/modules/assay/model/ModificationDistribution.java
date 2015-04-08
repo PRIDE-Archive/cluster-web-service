@@ -9,17 +9,17 @@ import java.util.Map;
  * @author Rui Wang
  * @version $Id$
  */
-public class PTMDistribution {
+public class ModificationDistribution {
 
     public static final String NO_MODIFICATIONS = "No Modifications";
 
-    private Map<String, PTMCount> distribution = new HashMap<String, PTMCount>();
+    private Map<String, ModificationCount> distribution = new HashMap<String, ModificationCount>();
 
-    public Map<String, PTMCount> getDistribution() {
+    public Map<String, ModificationCount> getDistribution() {
         return distribution;
     }
 
-    public void setDistribution(Map<String, PTMCount> distribution) {
+    public void setDistribution(Map<String, ModificationCount> distribution) {
         this.distribution = distribution;
     }
 }

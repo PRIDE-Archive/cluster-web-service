@@ -16,8 +16,8 @@ import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
 import uk.ac.ebi.pride.cluster.search.model.SolrCluster;
 import uk.ac.ebi.pride.cluster.search.service.IClusterSearchService;
 import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
-import uk.ac.ebi.pride.cluster.ws.modules.assay.model.PTMCount;
-import uk.ac.ebi.pride.cluster.ws.modules.assay.model.PTMDistribution;
+import uk.ac.ebi.pride.cluster.ws.modules.assay.model.ModificationCount;
+import uk.ac.ebi.pride.cluster.ws.modules.assay.model.ModificationDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesCount;
 import uk.ac.ebi.pride.cluster.ws.modules.assay.model.SpeciesDistribution;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.*;
@@ -27,7 +27,10 @@ import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.RepoClusterToWsClusterMap
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.SolrClusterToWsClusterMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
 import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
-import uk.ac.ebi.pride.spectracluster.repo.model.*;
+import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
+import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
+import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
+import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
 
 import java.util.*;
 
@@ -117,7 +120,8 @@ public class ClusterController {
     }
 
 
-    @ApiOperation(value = "a convenience endpoint that retrieves cluster species information only", position = 3, notes = "retrieve a record of a specific cluster consensus spectrum")
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster species information only", position = 3,
+            notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/species", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -129,12 +133,20 @@ public class ClusterController {
 
         // get the cluster
         uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail repoCluster = clusterReaderDao.findCluster(clusterId);
-        // Get the assays for a given cluster
-        List<AssayDetail> repoAssays = repoCluster.getAssayDetails();
+
+        // Get the clustered psm details for a given cluster
+        List<ClusteredPSMDetail> clusteredPSMDetails = repoCluster.getClusteredPSMDetails();
+
         // Extract the species
         SpeciesDistribution species = new SpeciesDistribution();
-        for (AssayDetail repoAssay : repoAssays) {
-            for (String aSpecies : repoAssay.getSpeciesEntries()) {
+
+        for (ClusteredPSMDetail clusteredPSMDetail : clusteredPSMDetails) {
+            // get assay
+            Long assayId = clusteredPSMDetail.getPsmDetail().getAssayId();
+            AssayDetail assayDetail = repoCluster.getAssayDetail(assayId);
+
+            // count species
+            for (String aSpecies : assayDetail.getSpeciesEntries()) {
                 if (species.getDistribution().containsKey(aSpecies)) {
                     species.getDistribution().get(aSpecies).addSpeciesCount(1);
                 } else {
@@ -142,7 +154,6 @@ public class ClusterController {
                     species.getDistribution().put(aSpecies, newSpeciesCount);
                 }
             }
-
         }
 
         ClusterSpeciesCounts res = new ClusterSpeciesCounts();
@@ -151,15 +162,16 @@ public class ClusterController {
 
     }
 
-    @ApiOperation(value = "a convenience endpoint that retrieves cluster PTM information only", position = 4, notes = "retrieve PTM records of a specific cluster")
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster modification information only", position = 4,
+            notes = "retrieve modification records of a specific cluster")
     @RequestMapping(value = "/{clusterId}/ptms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    ClusterPTMCounts getClusterPTMs(
+    ClusterModificationCounts getClusterPTMs(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
-        logger.info("Cluster " + clusterId + " PTMs requested");
+        logger.info("Cluster " + clusterId + " modifications requested");
 
         // get the cluster
         uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail repoCluster = clusterReaderDao.findCluster(clusterId);
@@ -168,38 +180,44 @@ public class ClusterController {
         List<ClusteredPSMDetail> clusteredPSMDetails = repoCluster.getClusteredPSMDetails();
 
         // Extract the PTMs
-        PTMDistribution ptms = new PTMDistribution();
+        ModificationDistribution modificationDistribution = new ModificationDistribution();
         for (ClusteredPSMDetail clusteredPSMDetail : clusteredPSMDetails) {
-            //todo: change to use standardised modifications
-            List<ModificationProvider> modifications = clusteredPSMDetail.getPsmDetail().getModifications();
+            //todo: change to use standardised mods
+            List<ModificationProvider> mods = clusteredPSMDetail.getPsmDetail().getModifications();
 
-            if (modifications.isEmpty()) {
-                if (ptms.getDistribution().containsKey(PTMDistribution.NO_MODIFICATIONS)) {
-                    ptms.getDistribution().get(PTMDistribution.NO_MODIFICATIONS).addPTMCount(1);
+            if (mods.isEmpty()) {
+                if (modificationDistribution.getDistribution().containsKey(ModificationDistribution.NO_MODIFICATIONS)) {
+                    modificationDistribution.getDistribution().get(ModificationDistribution.NO_MODIFICATIONS).addModificationCount(1);
                 } else {
-                    PTMCount ptmCount = new PTMCount(PTMDistribution.NO_MODIFICATIONS, null, 1);
-                    ptms.getDistribution().put(PTMDistribution.NO_MODIFICATIONS, ptmCount);
+                    ModificationCount modificationCount = new ModificationCount(ModificationDistribution.NO_MODIFICATIONS, null, 1);
+                    modificationDistribution.getDistribution().put(ModificationDistribution.NO_MODIFICATIONS, modificationCount);
                 }
             } else {
-                for (ModificationProvider modification : modifications) {
-                    if (ptms.getDistribution().containsKey(modification.getAccession())) {
-                        ptms.getDistribution().get(modification.getAccession()).addPTMCount(1);
-                    } else {
-                        PTMCount ptmCount = new PTMCount(modification.getName(), modification.getAccession(), 1);
-                        ptms.getDistribution().put(modification.getAccession(), ptmCount);
+                Set<String> countedModAccession = new HashSet<String>();
+                for (ModificationProvider modification : mods) {
+                    String accession = modification.getAccession();
+                    if (!countedModAccession.contains(accession)) {
+                        if (modificationDistribution.getDistribution().containsKey(accession)) {
+                            modificationDistribution.getDistribution().get(accession).addModificationCount(1);
+                        } else {
+                            ModificationCount modificationCount = new ModificationCount(modification.getName(), accession, 1);
+                            modificationDistribution.getDistribution().put(accession, modificationCount);
+                        }
+                        countedModAccession.add(accession);
                     }
                 }
             }
         }
 
-        ClusterPTMCounts res = new ClusterPTMCounts();
-        res.setPtmCounts(new ArrayList<PTMCount>(ptms.getDistribution().values()));
+        ClusterModificationCounts res = new ClusterModificationCounts();
+        res.setModificationCounts(new ArrayList<ModificationCount>(modificationDistribution.getDistribution().values()));
         return res;
 
     }
 
 
-    @ApiOperation(value = "a convenience endpoint that retrieves cluster consensus spectrum information only", position = 5, notes = "retrieve a record of a specific cluster consensus spectrum")
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster consensus spectrum information only", position = 5,
+            notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/consensus", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -246,7 +264,8 @@ public class ClusterController {
         return ClusterStatsCollector.collectPSMDeltaMZStatistics(cluster);
     }
 
-    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 8, notes = "retrieve spectrum similarity statistics for a given Cluster ID")
+    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 8,
+            notes = "retrieve spectrum similarity statistics for a given Cluster ID")
     @RequestMapping(value = "/{clusterId}/similarity", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
