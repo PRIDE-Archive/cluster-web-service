@@ -21,6 +21,9 @@ public class ClusteredPeptide extends Peptide {
     // species in taxonomy ids have been assigned to this peptide for a given cluster
     private final Set<String> species = new LinkedHashSet<String>();
 
+    // pride archive project accessions where this peptide come from
+    private final Set<String> projectAccessions = new LinkedHashSet<String>();
+
     public long getClusterId() {
         return clusterId;
     }
@@ -53,6 +56,18 @@ public class ClusteredPeptide extends Peptide {
         species.addAll(taxonomyIds);
     }
 
+    public Set<String> getProjectAccessions() {
+        return projectAccessions;
+    }
+
+    public void addProjectAccession(String projectAccession) {
+        projectAccessions.add(projectAccession);
+    }
+
+    public void addProjectAccessions(Collection<String> projectAccessions) {
+        projectAccessions.addAll(projectAccessions);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,6 +78,8 @@ public class ClusteredPeptide extends Peptide {
 
         if (clusterId != that.clusterId) return false;
         if (numberOfPSMs != that.numberOfPSMs) return false;
+        if (projectAccessions != null ? !projectAccessions.equals(that.projectAccessions) : that.projectAccessions != null)
+            return false;
         if (species != null ? !species.equals(that.species) : that.species != null) return false;
 
         return true;
@@ -74,6 +91,7 @@ public class ClusteredPeptide extends Peptide {
         result = 31 * result + (int) (clusterId ^ (clusterId >>> 32));
         result = 31 * result + numberOfPSMs;
         result = 31 * result + (species != null ? species.hashCode() : 0);
+        result = 31 * result + (projectAccessions != null ? projectAccessions.hashCode() : 0);
         return result;
     }
 
@@ -83,6 +101,7 @@ public class ClusteredPeptide extends Peptide {
                 "clusterId=" + clusterId +
                 ", numberOfPSMs=" + numberOfPSMs +
                 ", species=" + species +
+                ", projectAccessions=" + projectAccessions +
                 "} " + super.toString();
     }
 }

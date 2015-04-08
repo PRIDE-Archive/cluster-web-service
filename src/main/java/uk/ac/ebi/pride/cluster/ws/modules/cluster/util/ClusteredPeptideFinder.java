@@ -47,6 +47,10 @@ public final class ClusteredPeptideFinder {
                 AssayDetail assayDetail = cluster.getAssayDetail(clusteredPSMDetail.getPsmDetail().getAssayId());
                 Set<String> taxonomyIdEntries = assayDetail.getTaxonomyIdEntries();
                 clusteredPeptide.addSpecies(taxonomyIdEntries);
+
+                // project accession
+                String projectAccession = assayDetail.getProjectAccession();
+                clusteredPeptide.addProjectAccession(projectAccession);
             }
 
             clusteredPeptideList.addClusteredPeptides(clusteredPeptideMap.values());
