@@ -138,7 +138,7 @@ public class ClusterController {
 
     @ApiOperation(value = "a convenience endpoint that retrieves cluster modification information only", position = 4,
             notes = "retrieve modification records of a specific cluster")
-    @RequestMapping(value = "/{clusterId}/ptms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{clusterId}/modifications", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
