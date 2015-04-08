@@ -1,7 +1,8 @@
 package uk.ac.ebi.pride.cluster.ws.modules.project.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A list of PRIDE Archive project details
@@ -10,9 +11,10 @@ import java.util.List;
  * @version $Id$
  */
 public class ProjectList {
-    private List<Project> projects = new ArrayList<Project>();
+    // concurrent set for adding
+    private final Set<Project> projects = Collections.synchronizedSet(new LinkedHashSet<Project>());
 
-    public List<Project> getProjects() {
+    public Set<Project> getProjects() {
         return projects;
     }
 

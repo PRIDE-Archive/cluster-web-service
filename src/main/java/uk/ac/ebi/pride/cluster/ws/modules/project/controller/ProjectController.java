@@ -6,6 +6,7 @@ import com.wordnik.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -33,11 +34,11 @@ public class ProjectController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
-    @Autowired
-    IClusterReadDao clusterReaderDao;
+    @Value("#{archiveProperties['archive.project.detail.url']}")
+    private String projectWsUrl;
 
     @Autowired
-    ProjectWsRetriever projectWsRetriever;
+    IClusterReadDao clusterReaderDao;
 
     @ApiOperation(value = "returns projects for a given Cluster ID", position = 1, notes = "retrieve projects for a given Cluster ID")
     @RequestMapping(value = "/list/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,6 +49,8 @@ public class ProjectController {
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster " + clusterId + " projects requested");
+
+        ProjectWsRetriever projectWsRetriever = new ProjectWsRetriever(projectWsUrl);
 
         Set<String> projectAccessions = getProjectAccessions(clusterId);
 
