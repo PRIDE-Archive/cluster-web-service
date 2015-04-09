@@ -49,8 +49,9 @@ public class PsmController {
     }
 
 
-    @ApiOperation(value = "returns the quality of a PSM for a given PRIDE Archive PSM ID", position = 2, notes = "retrieve PSM with cluster quality annotations")
-    @RequestMapping(value = "/archive/{archivePsmId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "returns the quality of a PSM for a given PRIDE Archive PSM ID", position = 2,
+                  notes = "retrieve PSM with cluster quality annotations")
+    @RequestMapping(value = "/archive/{archivePsmId:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
