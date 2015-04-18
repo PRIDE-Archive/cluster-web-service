@@ -6,7 +6,6 @@ import com.wordnik.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,14 +20,14 @@ import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.ClusteredPeptideFinder;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.RepoClusterToWsClusterMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.SolrClusterToWsClusterMapper;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
+import uk.ac.ebi.pride.indexutils.results.PageWrapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -64,6 +63,58 @@ public class ClusterController {
         return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0));
     }
 
+//    @ApiOperation(value = "list clusters for given search criteria", position = 2, notes = "search functionality")
+//    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseStatus(HttpStatus.OK) // 200
+//    public
+//    @ResponseBody
+//    ClusterSearchResults simpleSearchClusters(
+//            @ApiParam(value = "general search term against multiple fields including: Max Ratio Peptide Sequence")
+//            @RequestParam(value = "q", required = false, defaultValue = "") String q,
+//            @ApiParam(value = "specific search term against Max Ratio Peptide Sequence")
+//            @RequestParam(value = "peptide", required = false, defaultValue = "") String peptide,
+//            @ApiParam(value = "specific search term against Species in a Cluster")
+//            @RequestParam(value = "species", required = false, defaultValue = "") String species,
+//            @ApiParam(value = "specific search term against Protein Accessions in a Cluster")
+//            @RequestParam(value = "protein", required = false, defaultValue = "") String protein,
+//            @ApiParam(value = "specific search term against Project Accessions in a Cluster")
+//            @RequestParam(value = "project", required = false, defaultValue = "") String project,
+//            @ApiParam(value = "0-based page number")
+//            @RequestParam(value = "page", required = true, defaultValue = "0") int page,
+//            @ApiParam(value = "maximum number of results per page")
+//            @RequestParam(value = "size", required = true, defaultValue = "10") int size
+//    ) {
+//
+//        logger.info("Fetched clusters for\n" +
+//                        " query: " + q + "\n" +
+//                        " peptide: " + peptide + "\n" +
+//                        " species: " + species + "\n" +
+//                        " protein: " + protein + "\n" +
+//                        " project: " + project + "\n" +
+//                        " page: " + page + "\n" +
+//                        " size: " + size
+//        );
+//
+//        Page<SolrCluster> res;
+//
+//        if ("".equals(q)) {
+//            res = clusterSearchService.findAll(new PageRequest(page, size));
+//        } else {
+//            Set<String> seqs = new HashSet<String>();
+//            Collections.addAll(seqs, q.split(" "));
+//            res = clusterSearchService.findByHighestRatioPepSequences(seqs, new PageRequest(page, size));
+//        }
+//
+//        ClusterSearchResults results = new ClusterSearchResults();
+//        results.setPageNumber(page);
+//        results.setPageSize(size);
+//        results.setTotalResults(res.getTotalElements());
+//        logger.info("Total results is " + results.getTotalResults());
+//        results.setResults(SolrClusterToWsClusterMapper.asClusterList(res));
+//
+//        return results;
+//    }
+
     @ApiOperation(value = "list clusters for given search criteria", position = 2, notes = "search functionality")
     @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
@@ -72,14 +123,16 @@ public class ClusterController {
     ClusterSearchResults simpleSearchClusters(
             @ApiParam(value = "general search term against multiple fields including: Max Ratio Peptide Sequence")
             @RequestParam(value = "q", required = false, defaultValue = "") String q,
-            @ApiParam(value = "specific search term against Max Ratio Peptide Sequence")
-            @RequestParam(value = "peptide", required = false, defaultValue = "") String peptide,
-            @ApiParam(value = "specific search term against Species in a Cluster")
-            @RequestParam(value = "species", required = false, defaultValue = "") String species,
-            @ApiParam(value = "specific search term against Protein Accessions in a Cluster")
-            @RequestParam(value = "protein", required = false, defaultValue = "") String protein,
-            @ApiParam(value = "specific search term against Project Accessions in a Cluster")
-            @RequestParam(value = "project", required = false, defaultValue = "") String project,
+            @ApiParam(value = "filter cluster by Max Ratio Peptide Sequence")
+            @RequestParam(value = "peptide", required = false, defaultValue = "") Set<String> peptides,
+            @ApiParam(value = "filter clusters by modification name")
+            @RequestParam(value = "modFilters", required = false) Set<String> modFilters,
+            @ApiParam(value = "filter clusters by species name")
+            @RequestParam(value = "speciesFilters", required = false) Set<String> speciesFilters,
+            @ApiParam(value = "allow faceted results")
+            @RequestParam(value = "facets", required = false, defaultValue = "false") Boolean facets,
+            @ApiParam(value = "allow highlights results")
+            @RequestParam(value = "highligts", required = false, defaultValue = "false") Boolean highlights,
             @ApiParam(value = "0-based page number")
             @RequestParam(value = "page", required = true, defaultValue = "0") int page,
             @ApiParam(value = "maximum number of results per page")
@@ -88,34 +141,47 @@ public class ClusterController {
 
         logger.info("Fetched clusters for\n" +
                         " query: " + q + "\n" +
-                        " peptide: " + peptide + "\n" +
-                        " species: " + species + "\n" +
-                        " protein: " + protein + "\n" +
-                        " project: " + project + "\n" +
+                        " peptide: " + peptides + "\n" +
+                        " modFilters: " + modFilters + "\n" +
+                        " speciesFilters: " + speciesFilters + "\n" +
+                        " facets: " + facets + "\n" +
+                        " highlights: " + highlights + "\n" +
                         " page: " + page + "\n" +
                         " size: " + size
         );
 
-        Page<SolrCluster> res;
-
-        if ("".equals(q)) {
-            res = clusterSearchService.findAll(new PageRequest(page, size));
-        } else {
-            Set<String> seqs = new HashSet<String>();
-            Collections.addAll(seqs, q.split(" "));
-            res = clusterSearchService.findByHighestRatioPepSequences(seqs, new PageRequest(page, size));
-        }
+        PageWrapper<SolrCluster> res =
+                clusterSearchService.findByTextAndHighestRatioPepSequencesHighlightsFilterOnModificationNamesAndSpeciesNames(
+                        q,
+                        peptides,
+                        modFilters,
+                        speciesFilters,
+                        new PageRequest(page, size));
 
         ClusterSearchResults results = new ClusterSearchResults();
         results.setPageNumber(page);
         results.setPageSize(size);
-        results.setTotalResults(res.getTotalElements());
+        results.setTotalResults(res.getPage().getTotalElements());
         logger.info("Total results is " + results.getTotalResults());
-        results.setResults(SolrClusterToWsClusterMapper.asClusterList(res));
+        results.setResults(SolrClusterToWsClusterMapper.asClusterList(res.getPage()));
 
+        if (highlights) {
+            for (Map.Entry<SolrCluster, Map<String, List<String>>> clusterMapEntry : res.getHighlights().entrySet()) {
+                results.addHighlight(clusterMapEntry.getKey().getId(), clusterMapEntry.getValue());
+            }
+        }
+
+        if (facets) {
+            Map<String, Map<String, Long>> factes = clusterSearchService.findByTextAndHighestRatioPepSequencesFacetOnModificationNamesAndSpeciesNames(
+                    q,
+                    peptides,
+                    modFilters,
+                    speciesFilters);
+            results.setFacetsMap(factes);
+
+        }
         return results;
     }
-
 
     @ApiOperation(value = "a convenience endpoint that retrieves cluster species information only", position = 3,
             notes = "retrieve a record of a specific cluster consensus spectrum")
@@ -191,7 +257,7 @@ public class ClusterController {
 
 
     @ApiOperation(value = "returns delta m/z statistics for a given Cluster ID", position = 7,
-                  notes = "retrieve delta m/z statistics for a given Cluster ID")
+            notes = "retrieve delta m/z statistics for a given Cluster ID")
     @RequestMapping(value = "/{clusterId}/deltamz", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -207,7 +273,7 @@ public class ClusterController {
 
 
     @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 8,
-                  notes = "retrieve spectrum similarity statistics for a given Cluster ID")
+            notes = "retrieve spectrum similarity statistics for a given Cluster ID")
     @RequestMapping(value = "/{clusterId}/similarity", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
