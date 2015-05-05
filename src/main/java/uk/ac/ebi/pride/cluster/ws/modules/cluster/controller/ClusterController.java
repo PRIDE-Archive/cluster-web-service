@@ -117,7 +117,7 @@ public class ClusterController {
 //    }
 
     @ApiOperation(value = "list clusters for given search criteria", position = 2, notes = "search functionality")
-    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
