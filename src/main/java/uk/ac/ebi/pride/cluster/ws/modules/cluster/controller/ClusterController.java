@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -121,7 +122,7 @@ public class ClusterController {
     public
     @ResponseBody
     ClusterSearchResults simpleSearchClusters(
-            @ApiParam(value = "general search term against multiple fields including: Max Ratio Peptide Sequence")
+            @ApiParam(value = "general search term against multiple fields including: peptide sequence")
             @RequestParam(value = "q", required = false, defaultValue = "") String q,
             @ApiParam(value = "filter cluster by Max Ratio Peptide Sequence")
             @RequestParam(value = "peptide", required = false, defaultValue = "") Set<String> peptides,
@@ -129,6 +130,10 @@ public class ClusterController {
             @RequestParam(value = "modFilters", required = false) Set<String> modFilters,
             @ApiParam(value = "filter clusters by species name")
             @RequestParam(value = "speciesFilters", required = false) Set<String> speciesFilters,
+            @ApiParam(value = "the field to sort on (e.g. num_spectra, num_projects, or max_ratio)")
+            @RequestParam(value = "sort", required = false) String fieldToSort,
+            @ApiParam(value = "the direction of the sort (either desc or asc)")
+            @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
             @ApiParam(value = "allow faceted results")
             @RequestParam(value = "facets", required = false, defaultValue = "false") Boolean facets,
             @ApiParam(value = "allow highlights results")
@@ -144,11 +149,15 @@ public class ClusterController {
                         " peptide: " + peptides + "\n" +
                         " modFilters: " + modFilters + "\n" +
                         " speciesFilters: " + speciesFilters + "\n" +
+                        " sort: " + fieldToSort + "\n" +
+                        " order: " + order + "\n" +
                         " facets: " + facets + "\n" +
                         " highlights: " + highlights + "\n" +
                         " page: " + page + "\n" +
                         " size: " + size
         );
+
+        Sort sort = generateSort(fieldToSort, order);
 
         PageWrapper<SolrCluster> res =
                 clusterSearchService.findByTextAndHighestRatioPepSequencesHighlightsFilterOnModificationNamesAndSpeciesNames(
@@ -156,7 +165,7 @@ public class ClusterController {
                         peptides,
                         modFilters,
                         speciesFilters,
-                        null,
+                        sort,
                         new PageRequest(page, size));
 
         ClusterSearchResults results = new ClusterSearchResults();
@@ -184,6 +193,28 @@ public class ClusterController {
         return results;
     }
 
+    /**
+     * Generate a Sort for a given set of criterias
+     *
+     * @param fieldToSort field to be sorted
+     * @param order       sort order
+     * @return an sort object
+     */
+    private Sort generateSort(String fieldToSort, String order) {
+
+        Sort sort = null;
+
+        if (fieldToSort != null) {
+            Sort.Direction direction = Sort.Direction.fromString(order);
+
+            if (direction != null) {
+                sort = new Sort(direction, fieldToSort);
+            }
+        }
+
+        return sort;
+    }
+
     @ApiOperation(value = "a convenience endpoint that retrieves cluster species information only", position = 3,
             notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/species", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -198,8 +229,6 @@ public class ClusterController {
         // get the cluster
         ClusterDetail repoCluster = clusterReaderDao.findCluster(clusterId);
         return ClusterStatsCollector.collectClusterSpeciesCounts(repoCluster);
-
-
     }
 
 
@@ -217,8 +246,6 @@ public class ClusterController {
         // get the cluster
         ClusterDetail repoCluster = clusterReaderDao.findCluster(clusterId);
         return ClusterStatsCollector.collectClusterModificationCounts(repoCluster);
-
-
     }
 
 
