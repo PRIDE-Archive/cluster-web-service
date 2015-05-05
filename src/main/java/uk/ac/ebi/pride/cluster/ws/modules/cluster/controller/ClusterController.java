@@ -156,6 +156,7 @@ public class ClusterController {
                         peptides,
                         modFilters,
                         speciesFilters,
+                        null,
                         new PageRequest(page, size));
 
         ClusterSearchResults results = new ClusterSearchResults();
