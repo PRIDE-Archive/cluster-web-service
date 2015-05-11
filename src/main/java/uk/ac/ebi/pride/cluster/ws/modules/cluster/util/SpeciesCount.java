@@ -5,11 +5,11 @@ package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
  */
 public class SpeciesCount {
     private String speciesName;
-    private long speciesCount;
+    private long count;
 
-    public SpeciesCount(String speciesName, long speciesCount) {
+    public SpeciesCount(String speciesName, long count) {
         this.speciesName = speciesName;
-        this.speciesCount = speciesCount;
+        this.count = count;
     }
 
     public String getSpeciesName() {
@@ -20,17 +20,17 @@ public class SpeciesCount {
         this.speciesName = speciesName;
     }
 
-    public long getSpeciesCount() {
-        return speciesCount;
+    public long getCount() {
+        return count;
     }
 
-    public void setSpeciesCount(long speciesCount) {
-        this.speciesCount = speciesCount;
+    public void setCount(long count) {
+        this.count = count;
     }
 
 
     public void addSpeciesCount(long n) {
-        this.speciesCount += n;
+        this.count += n;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class SpeciesCount {
 
         SpeciesCount that = (SpeciesCount) o;
 
-        if (speciesCount != that.speciesCount) return false;
+        if (count != that.count) return false;
         if (speciesName != null ? !speciesName.equals(that.speciesName) : that.speciesName != null) return false;
 
         return true;
@@ -49,7 +49,7 @@ public class SpeciesCount {
     @Override
     public int hashCode() {
         int result = speciesName != null ? speciesName.hashCode() : 0;
-        result = 31 * result + (int) (speciesCount ^ (speciesCount >>> 32));
+        result = 31 * result + (int) (count ^ (count >>> 32));
         return result;
     }
 
@@ -57,7 +57,7 @@ public class SpeciesCount {
     public String toString() {
         return "SpeciesCount{" +
                 "speciesName='" + speciesName + '\'' +
-                ", speciesCount=" + speciesCount +
+                ", count=" + count +
                 '}';
     }
 }
