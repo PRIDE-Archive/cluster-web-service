@@ -49,74 +49,7 @@ public class ClusterController {
     @Autowired
     IClusterSearchService clusterSearchService;
 
-    @ApiOperation(value = "retrieves cluster information by cluster ID", position = 1, notes = "retrieve a record of a specific cluster")
-    @RequestMapping(value = "/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK) // 200
-    public
-    @ResponseBody
-    Cluster getClusterSummary(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
-        logger.info("Cluster summary " + clusterId + " requested");
-
-        ClusterSummary clusterSummary = clusterReaderDao.findClusterSummary(clusterId);
-        List<ClusteredPSMDetail> clusteredPSMSummaries = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterId, DEFAULT_MINIMUM_PSM_RANKING);
-        return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0));
-    }
-
-//    @ApiOperation(value = "list clusters for given search criteria", position = 2, notes = "search functionality")
-//    @RequestMapping(value = "/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.OK) // 200
-//    public
-//    @ResponseBody
-//    ClusterSearchResults simpleSearchClusters(
-//            @ApiParam(value = "general search term against multiple fields including: Max Ratio Peptide Sequence")
-//            @RequestParam(value = "q", required = false, defaultValue = "") String q,
-//            @ApiParam(value = "specific search term against Max Ratio Peptide Sequence")
-//            @RequestParam(value = "peptide", required = false, defaultValue = "") String peptide,
-//            @ApiParam(value = "specific search term against Species in a Cluster")
-//            @RequestParam(value = "species", required = false, defaultValue = "") String species,
-//            @ApiParam(value = "specific search term against Protein Accessions in a Cluster")
-//            @RequestParam(value = "protein", required = false, defaultValue = "") String protein,
-//            @ApiParam(value = "specific search term against Project Accessions in a Cluster")
-//            @RequestParam(value = "project", required = false, defaultValue = "") String project,
-//            @ApiParam(value = "0-based page number")
-//            @RequestParam(value = "page", required = true, defaultValue = "0") int page,
-//            @ApiParam(value = "maximum number of results per page")
-//            @RequestParam(value = "size", required = true, defaultValue = "10") int size
-//    ) {
-//
-//        logger.info("Fetched clusters for\n" +
-//                        " query: " + q + "\n" +
-//                        " peptide: " + peptide + "\n" +
-//                        " species: " + species + "\n" +
-//                        " protein: " + protein + "\n" +
-//                        " project: " + project + "\n" +
-//                        " page: " + page + "\n" +
-//                        " size: " + size
-//        );
-//
-//        Page<SolrCluster> res;
-//
-//        if ("".equals(q)) {
-//            res = clusterSearchService.findAll(new PageRequest(page, size));
-//        } else {
-//            Set<String> seqs = new HashSet<String>();
-//            Collections.addAll(seqs, q.split(" "));
-//            res = clusterSearchService.findByHighestRatioPepSequences(seqs, new PageRequest(page, size));
-//        }
-//
-//        ClusterSearchResults results = new ClusterSearchResults();
-//        results.setPageNumber(page);
-//        results.setPageSize(size);
-//        results.setTotalResults(res.getTotalElements());
-//        logger.info("Total results is " + results.getTotalResults());
-//        results.setResults(SolrClusterToWsClusterMapper.asClusterList(res));
-//
-//        return results;
-//    }
-
-    @ApiOperation(value = "list clusters for given search criteria", position = 2, notes = "search functionality")
+    @ApiOperation(value = "list clusters for given search criteria", position = 1, notes = "search functionality")
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -191,6 +124,21 @@ public class ClusterController {
 
         }
         return results;
+    }
+
+    @ApiOperation(value = "retrieves cluster information by cluster ID", position = 2, notes = "retrieve a record of a specific cluster")
+    @RequestMapping(value = "/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public
+    @ResponseBody
+    Cluster getClusterSummary(
+            @ApiParam(value = "a cluster ID")
+            @PathVariable("clusterId") long clusterId) {
+        logger.info("Cluster summary " + clusterId + " requested");
+
+        ClusterSummary clusterSummary = clusterReaderDao.findClusterSummary(clusterId);
+        List<ClusteredPSMDetail> clusteredPSMSummaries = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterId, DEFAULT_MINIMUM_PSM_RANKING);
+        return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0));
     }
 
     /**
