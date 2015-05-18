@@ -16,10 +16,7 @@ import uk.ac.ebi.pride.cluster.search.model.SolrCluster;
 import uk.ac.ebi.pride.cluster.search.service.IClusterSearchService;
 import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.*;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.ClusterStatsCollector;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.ClusteredPeptideFinder;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.RepoClusterToWsClusterMapper;
-import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.SolrClusterToWsClusterMapper;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.*;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
 import uk.ac.ebi.pride.indexutils.results.PageWrapper;
 import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
@@ -74,7 +71,7 @@ public class ClusterController {
             @ApiParam(value = "0-based page number")
             @RequestParam(value = "page", required = true, defaultValue = "0") int page,
             @ApiParam(value = "maximum number of results per page")
-            @RequestParam(value = "size", required = true, defaultValue = "10") int size
+            @RequestParam(value = "size", required = true, defaultValue = "20") int size
     ) {
 
         logger.info("Fetched clusters for\n" +
@@ -152,11 +149,11 @@ public class ClusterController {
 
         Sort sort = null;
 
-        if (fieldToSort != null) {
-            Sort.Direction direction = Sort.Direction.fromString(order);
-
-            if (direction != null) {
-                sort = new Sort(direction, fieldToSort);
+        if (fieldToSort != null && !fieldToSort.trim().isEmpty()) {
+            String clusterField = ClusterToClusterFieldMapper.mapToClusterField(fieldToSort);
+            if (clusterField != null) {
+                Sort.Direction direction = Sort.Direction.fromString(order);
+                sort = new Sort(direction, clusterField);
             }
         }
 
