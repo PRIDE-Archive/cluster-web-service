@@ -47,4 +47,47 @@ public class StatisticsController {
         List<ClusterRepoStatistics> generalStatistics = clusterRepoStatisticsReadDao.getGeneralStatistics();
         return RepoStatsToWsStatsMapper.asStatsList(generalStatistics);
     }
+
+    @ApiOperation(value = "returns the number of clusters per species", position = 2, notes = "retrieve the number of clusters per species")
+    @RequestMapping(value = "/species/cluster/count", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public @ResponseBody
+    RepoStatisticList getClusterPerSpeciesStatistics() {
+        List<ClusterRepoStatistics> statistics = clusterRepoStatisticsReadDao.getStatisticsByPrefix(ClusterRepoStatistics.NUMBER_OF_CLUSTERS_PER_SPECIES);
+        for (ClusterRepoStatistics stat : statistics) {
+            String name = stat.getName();
+            stat.setName(name.substring(ClusterRepoStatistics.NUMBER_OF_CLUSTERS_PER_SPECIES.length(), name.length()));
+        }
+        return RepoStatsToWsStatsMapper.asStatsList(statistics);
+    }
+
+    @ApiOperation(value = "returns the number of unique peptides per species", position = 2, notes = "retrieve the number of unique peptides per species")
+    @RequestMapping(value = "/species/peptide/count", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public @ResponseBody
+    RepoStatisticList getUniquePeptidesPerSpeciesStatistics() {
+        List<ClusterRepoStatistics> statistics = clusterRepoStatisticsReadDao.getStatisticsByPrefix(ClusterRepoStatistics.NUMBER_OF_UNIQUE_PEPTIDES_PER_SPECIES);
+        for (ClusterRepoStatistics stat : statistics) {
+            String name = stat.getName();
+            stat.setName(name.substring(ClusterRepoStatistics.NUMBER_OF_UNIQUE_PEPTIDES_PER_SPECIES.length(), name.length()));
+        }
+        return RepoStatsToWsStatsMapper.asStatsList(statistics);
+    }
+
+    @ApiOperation(value = "returns the number of overlapping peptides for each pair of species", position = 3, notes = "retrieve the number of overlapping peptides for each pair of species")
+    @RequestMapping(value = "/species/peptide/overlap", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public @ResponseBody
+    RepoStatisticList getOverlappingPeptidesPerSpeciesPairStatistics() {
+        List<ClusterRepoStatistics> statistics = clusterRepoStatisticsReadDao.getStatisticsByPrefix(ClusterRepoStatistics.OVERLAPPING_UNIQUE_PEPTIDES_ON_SPEICES);
+
+        for (ClusterRepoStatistics stat : statistics) {
+            String name = stat.getName();
+            stat.setName(name.substring(ClusterRepoStatistics.OVERLAPPING_UNIQUE_PEPTIDES_ON_SPEICES.length(), name.length()));
+        }
+
+        return RepoStatsToWsStatsMapper.asStatsList(statistics);
+    }
+
+
 }
