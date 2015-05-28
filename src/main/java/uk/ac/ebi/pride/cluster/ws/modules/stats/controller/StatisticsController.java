@@ -55,8 +55,8 @@ public class StatisticsController {
     RepoStatisticList getClusterPerSpeciesStatistics() {
         List<ClusterRepoStatistics> statistics = clusterRepoStatisticsReadDao.getStatisticsByPrefix(ClusterRepoStatistics.NUMBER_OF_CLUSTERS_PER_SPECIES);
         for (ClusterRepoStatistics stat : statistics) {
-            String name = stat.getName();
-            stat.setName(name.substring(ClusterRepoStatistics.NUMBER_OF_CLUSTERS_PER_SPECIES.length(), name.length()));
+            String[] names = stat.getName().split("-");
+            stat.setName(names[1].trim());
         }
         return RepoStatsToWsStatsMapper.asStatsList(statistics);
     }
@@ -68,8 +68,8 @@ public class StatisticsController {
     RepoStatisticList getUniquePeptidesPerSpeciesStatistics() {
         List<ClusterRepoStatistics> statistics = clusterRepoStatisticsReadDao.getStatisticsByPrefix(ClusterRepoStatistics.NUMBER_OF_UNIQUE_PEPTIDES_PER_SPECIES);
         for (ClusterRepoStatistics stat : statistics) {
-            String name = stat.getName();
-            stat.setName(name.substring(ClusterRepoStatistics.NUMBER_OF_UNIQUE_PEPTIDES_PER_SPECIES.length(), name.length()));
+            String[] names = stat.getName().split("-");
+            stat.setName(names[1].trim());
         }
         return RepoStatsToWsStatsMapper.asStatsList(statistics);
     }
@@ -82,8 +82,8 @@ public class StatisticsController {
         List<ClusterRepoStatistics> statistics = clusterRepoStatisticsReadDao.getStatisticsByPrefix(ClusterRepoStatistics.OVERLAPPING_UNIQUE_PEPTIDES_ON_SPEICES);
 
         for (ClusterRepoStatistics stat : statistics) {
-            String name = stat.getName();
-            stat.setName(name.substring(ClusterRepoStatistics.OVERLAPPING_UNIQUE_PEPTIDES_ON_SPEICES.length(), name.length()));
+            String[] names = stat.getName().split("-");
+            stat.setName(names[1].trim());
         }
 
         return RepoStatsToWsStatsMapper.asStatsList(statistics);
