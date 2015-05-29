@@ -34,6 +34,7 @@ public final class RepoSpectrumLibraryToWsSpectrumLibraryMapper {
         SpectrumLibrary spectrumLibrary = new SpectrumLibrary();
 
         spectrumLibrary.setNumberOfSpectra(spectrumLibraryDetail.getNumberOfSpectra());
+        spectrumLibrary.setNumberOfPeptides(spectrumLibraryDetail.getNumberOfPeptides());
         spectrumLibrary.setTaxonomyId(spectrumLibraryDetail.getTaxonomyId());
         spectrumLibrary.setFileSize(spectrumLibraryDetail.getFileSize());
         spectrumLibrary.setSpeciesName(spectrumLibraryDetail.getSpeciesName());
