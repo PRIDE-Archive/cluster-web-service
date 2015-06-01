@@ -101,9 +101,6 @@ public class StatisticsController {
 
             // total counts
             Long cnt = counts.get(speciesOneName);
-            if (speciesOneName.equals("Escherichia coli str. K")) {
-                System.out.println("reach");
-            }
             if (cnt == null) {
                 counts.put(speciesOneName, count);
             } else {
@@ -115,9 +112,6 @@ public class StatisticsController {
         ValueComparator valueComparator = new ValueComparator(counts);
         TreeMap<String, Map<String, Long>> sortedStats = new TreeMap<String, Map<String, Long>>(valueComparator);
         sortedStats.putAll(stats);
-
-        long ecoliCount = counts.get("Escherichia coli str. K");
-        Map<String, Long> testNumbers = stats.get("Escherichia coli str. K");
 
         // only keep the top species that has the most counts
         String[] topSpecies = new String[numOfSpecies];
