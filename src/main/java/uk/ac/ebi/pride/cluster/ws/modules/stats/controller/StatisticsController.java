@@ -32,6 +32,8 @@ public class StatisticsController {
 
     private static final Logger logger = LoggerFactory.getLogger(StatisticsController.class);
 
+    private static final String FIELD_SEPARATOR = "|";
+
     @Autowired
     IClusterReadDao clusterReaderDao;
 
@@ -54,7 +56,7 @@ public class StatisticsController {
     RepoStatisticList getClusterPerSpeciesStatistics() {
         List<ClusterRepoStatistics> statistics = clusterRepoStatisticsReadDao.getStatisticsByPrefix(ClusterRepoStatistics.NUMBER_OF_CLUSTERS_PER_SPECIES);
         for (ClusterRepoStatistics stat : statistics) {
-            String[] names = stat.getName().split("-");
+            String[] names = stat.getName().split(FIELD_SEPARATOR);
             stat.setName(names[1].trim());
         }
         return RepoStatsToWsStatsMapper.asStatsList(statistics);
@@ -67,7 +69,7 @@ public class StatisticsController {
     RepoStatisticList getUniquePeptidesPerSpeciesStatistics() {
         List<ClusterRepoStatistics> statistics = clusterRepoStatisticsReadDao.getStatisticsByPrefix(ClusterRepoStatistics.NUMBER_OF_UNIQUE_PEPTIDES_PER_SPECIES);
         for (ClusterRepoStatistics stat : statistics) {
-            String[] names = stat.getName().split("-");
+            String[] names = stat.getName().split(FIELD_SEPARATOR);
             stat.setName(names[1].trim());
         }
         return RepoStatsToWsStatsMapper.asStatsList(statistics);
@@ -86,7 +88,7 @@ public class StatisticsController {
         Map<String, Map<String, Long>> stats = new HashMap<String, Map<String, Long>>();
         Map<String, Long> counts = new HashMap<String, Long>();
         for (ClusterRepoStatistics stat : statistics) {
-            String[] names = stat.getName().split("-");
+            String[] names = stat.getName().split(FIELD_SEPARATOR);
             String speciesOneName = names[1];
             String speciesTwoName = names[2];
             Long count = stat.getValue();
