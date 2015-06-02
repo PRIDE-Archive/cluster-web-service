@@ -14,6 +14,10 @@
     <!-- Callback filter for cross server query support -->
     <bean class="uk.ac.ebi.pride.web.util.callback.filter.JsonpCallbackFilter" id="jsonpCallbackFilter"/>
 
+    <bean class="uk.ac.ebi.pride.spectracluster.repo.utils.ModificationDetailFetcher" id="modificationDetailFetcher">
+        <constructor-arg name="psiModFile" value="classpath:META-INF/mod/PSI-MOD.obo"/>
+        <constructor-arg name="uniModFile" value="classpath:META-INF/mod/unimod.xml"/>
+    </bean>
 
     <bean class="uk.ac.ebi.pride.spectracluster.repo.dao.cluster.ClusterReader" id="clusterReaderDao">
         <constructor-arg ref="clusterDataSource"/>

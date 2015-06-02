@@ -23,6 +23,7 @@ import uk.ac.ebi.pride.spectracluster.repo.dao.cluster.IClusterReadDao;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
+import uk.ac.ebi.pride.spectracluster.repo.utils.ModificationDetailFetcher;
 
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,9 @@ public class ClusterController {
 
     @Autowired
     IClusterSearchService clusterSearchService;
+
+    @Autowired
+    ModificationDetailFetcher modificationDetailFetcher;
 
     @ApiOperation(value = "list clusters for given search criteria", position = 1, notes = "search functionality")
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -135,7 +139,7 @@ public class ClusterController {
 
         ClusterSummary clusterSummary = clusterReaderDao.findClusterSummary(clusterId);
         List<ClusteredPSMDetail> clusteredPSMSummaries = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterId, DEFAULT_MINIMUM_PSM_RANKING);
-        return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0));
+        return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0), modificationDetailFetcher);
     }
 
     /**

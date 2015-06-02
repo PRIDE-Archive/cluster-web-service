@@ -1,12 +1,20 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
+import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
+import uk.ac.ebi.pride.archive.dataprovider.param.CvParamProvider;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.Cluster;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.Modification;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.SpectrumPeak;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
+import uk.ac.ebi.pride.spectracluster.repo.utils.ModificationDetailFetcher;
+import uk.ac.ebi.pridemod.model.PTM;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
@@ -36,7 +44,7 @@ public final class RepoClusterToWsClusterMapper {
         return consensusSpectrum;
     }
 
-    public static Cluster asCluster(ClusterSummary repoClusterSummary, ClusteredPSMDetail repoPSM) {
+    public static Cluster asCluster(ClusterSummary repoClusterSummary, ClusteredPSMDetail repoPSM, ModificationDetailFetcher modificationDetailFetcher) {
         Cluster newCluster = new Cluster();
 
         newCluster.setId(repoClusterSummary.getId());
@@ -57,8 +65,35 @@ public final class RepoClusterToWsClusterMapper {
         newCluster.setTotalNumberOfProjects(repoClusterSummary.getTotalNumberOfProjects());
 
         // modifications
-        newCluster.addModifications(repoPSM.getPsmDetail().getModifications());
+        List<ModificationProvider> modifications = asModifications(repoPSM.getPsmDetail().getModifications(), modificationDetailFetcher);
+        newCluster.addModifications(modifications);
 
         return newCluster;
+    }
+
+    public static List<ModificationProvider> asModifications(List<ModificationProvider> repoMods,
+                                                     ModificationDetailFetcher modificationDetailFetcher) {
+        List<ModificationProvider> mods = new ArrayList<ModificationProvider>();
+
+        if (repoMods != null) {
+            for (ModificationProvider repoMod : repoMods) {
+                Modification modification = new Modification();
+                modification.setAccession(repoMod.getAccession());
+                modification.setMainPosition(repoMod.getMainPosition());
+                modification.setName(repoMod.getName());
+                modification.setNeutralLoss(repoMod.getNeutralLoss());
+                modification.setPositionMap(new HashMap<Integer, CvParamProvider>(repoMod.getPositionMap()));
+
+                // mono mass
+                PTM ptm = modificationDetailFetcher.getPTMbyAccession(repoMod.getAccession());
+                if (ptm != null) {
+                    modification.setMonoMass(ptm.getMonoDeltaMass());
+                }
+
+                mods.add(modification);
+            }
+        }
+
+        return mods;
     }
 }
