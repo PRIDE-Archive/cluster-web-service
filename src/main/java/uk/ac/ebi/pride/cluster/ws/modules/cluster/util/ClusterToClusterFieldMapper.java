@@ -69,6 +69,10 @@ public final class ClusterToClusterFieldMapper {
             return ClusterFields.HIGHEST_RATIO_PEP_SEQUENCE;
         }
 
+        if ("sequence_sort".equals(fieldName)) {
+            return ClusterFields.HIGHEST_RATIO_PEP_SEQUENCE_SORT;
+        }
+
         if ("proteinAccession".equals(fieldName)) {
             return ClusterFields.HIGHEST_RATIO_PROTEIN_ACCESSION;
         }
