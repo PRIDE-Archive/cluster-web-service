@@ -13,6 +13,8 @@ public class Cluster {
 
     private long id;
 
+    private String uuid;
+
     private double averagePrecursorMz;
 
     private double averagePrecursorCharge;
@@ -50,6 +52,14 @@ public class Cluster {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getUUID() {
+        return uuid;
+    }
+
+    public void setUUID(String uuid) {
+        this.uuid = uuid;
     }
 
     public double getAveragePrecursorMz() {

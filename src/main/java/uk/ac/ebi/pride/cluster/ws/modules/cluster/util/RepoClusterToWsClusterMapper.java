@@ -48,6 +48,7 @@ public final class RepoClusterToWsClusterMapper {
         Cluster newCluster = new Cluster();
 
         newCluster.setId(repoClusterSummary.getId());
+        newCluster.setUUID(repoClusterSummary.getUUID());
         newCluster.setAveragePrecursorCharge(repoClusterSummary.getAveragePrecursorCharge());
         newCluster.setAveragePrecursorMz(repoClusterSummary.getAveragePrecursorMz());
         newCluster.setMaxRatio(repoClusterSummary.getMaxPeptideRatio());

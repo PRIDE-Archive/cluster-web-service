@@ -132,13 +132,28 @@ public class ClusterController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    Cluster getClusterSummary(
+    Cluster getClusterSummaryByID(
             @ApiParam(value = "a cluster ID")
             @PathVariable("clusterId") long clusterId) {
         logger.info("Cluster summary " + clusterId + " requested");
 
         ClusterSummary clusterSummary = clusterReaderDao.findClusterSummary(clusterId);
         List<ClusteredPSMDetail> clusteredPSMSummaries = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterId, DEFAULT_MINIMUM_PSM_RANKING);
+        return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0), modificationDetailFetcher);
+    }
+
+    @ApiOperation(value = "retrieves cluster information by cluster UUID", position = 3, notes = "retrieve a record of a specific cluster")
+    @RequestMapping(value = "/uuid/{uuid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public
+    @ResponseBody
+    Cluster getClusterSummaryByUUID(
+            @ApiParam(value = "a cluster UUID")
+            @PathVariable("uuid") String uuid) {
+        logger.info("Cluster summary " + uuid + " requested");
+
+        ClusterSummary clusterSummary = clusterReaderDao.findClusterSummaryByUUID(uuid);
+        List<ClusteredPSMDetail> clusteredPSMSummaries = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterSummary.getId(), DEFAULT_MINIMUM_PSM_RANKING);
         return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0), modificationDetailFetcher);
     }
 
@@ -164,7 +179,7 @@ public class ClusterController {
         return sort;
     }
 
-    @ApiOperation(value = "a convenience endpoint that retrieves cluster species information only", position = 3,
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster species information only", position = 4,
             notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/species", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
@@ -181,7 +196,7 @@ public class ClusterController {
     }
 
 
-    @ApiOperation(value = "a convenience endpoint that retrieves cluster modification information only", position = 4,
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster modification information only", position = 5,
             notes = "retrieve modification records of a specific cluster")
     @RequestMapping(value = "/{clusterId}/modifications", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
@@ -198,7 +213,7 @@ public class ClusterController {
     }
 
 
-    @ApiOperation(value = "a convenience endpoint that retrieves cluster consensus spectrum information only", position = 5,
+    @ApiOperation(value = "a convenience endpoint that retrieves cluster consensus spectrum information only", position = 6,
             notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/consensus", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
@@ -218,7 +233,7 @@ public class ClusterController {
 
     }
 
-    @ApiOperation(value = "returns peptides for a given Cluster ID", position = 6, notes = "retrieve peptides for a given Cluster ID")
+    @ApiOperation(value = "returns peptides for a given Cluster ID", position = 7, notes = "retrieve peptides for a given Cluster ID")
     @RequestMapping(value = "/{clusterId}/peptide", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -233,7 +248,7 @@ public class ClusterController {
     }
 
 
-    @ApiOperation(value = "returns delta m/z statistics for a given Cluster ID", position = 7,
+    @ApiOperation(value = "returns delta m/z statistics for a given Cluster ID", position = 8,
             notes = "retrieve delta m/z statistics for a given Cluster ID")
     @RequestMapping(value = "/{clusterId}/deltamz", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
@@ -249,7 +264,7 @@ public class ClusterController {
     }
 
 
-    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 8,
+    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 9,
             notes = "retrieve spectrum similarity statistics for a given Cluster ID")
     @RequestMapping(value = "/{clusterId}/similarity", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
