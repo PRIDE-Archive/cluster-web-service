@@ -32,7 +32,7 @@ public class StatisticsController {
 
     private static final Logger logger = LoggerFactory.getLogger(StatisticsController.class);
 
-    private static final String FIELD_SEPARATOR = "|";
+    private static final String FIELD_SEPARATOR = "\\|";
 
     @Autowired
     IClusterReadDao clusterReaderDao;
