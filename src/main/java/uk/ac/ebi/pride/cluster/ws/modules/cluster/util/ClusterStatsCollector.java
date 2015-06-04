@@ -74,27 +74,13 @@ public final class ClusterStatsCollector {
             List<ModificationProvider> mods = clusteredPSMDetail.getPsmDetail().getModifications();
 
             if (mods.isEmpty()) {
-                if (modificationDistribution.getDistribution().containsKey(ModificationDistribution.NO_MODIFICATIONS)) {
-                    modificationDistribution.getDistribution().get(ModificationDistribution.NO_MODIFICATIONS).addModificationCount(1);
-                } else {
-                    ModificationCount modificationCount = new ModificationCount(ModificationDistribution.NO_MODIFICATIONS, null, 1);
-                    modificationDistribution.getDistribution().put(ModificationDistribution.NO_MODIFICATIONS, modificationCount);
-                }
+                modificationDistribution.incrementModificationCount(ModificationDistribution.NO_MODIFICATIONS, ModificationDistribution.NO_MODIFICATIONS, 1);
             } else {
                 Set<String> countedModAccession = new HashSet<String>();
                 for (ModificationProvider modification : mods) {
                     String accession = modification.getAccession();
                     if (!countedModAccession.contains(accession)) {
-                        if (modificationDistribution.getDistribution().containsKey(accession)) {
-                            modificationDistribution.getDistribution().get(accession).addModificationCount(1);
-                        } else {
-                            String name = modification.getName();
-                            if (name == null) {
-                                name = accession;
-                            }
-                            ModificationCount modificationCount = new ModificationCount(name, accession, 1);
-                            modificationDistribution.getDistribution().put(accession, modificationCount);
-                        }
+                        modificationDistribution.incrementModificationCount(modification, 1);
                         countedModAccession.add(accession);
                     }
                 }
@@ -102,7 +88,7 @@ public final class ClusterStatsCollector {
         }
 
         ClusterModificationCounts res = new ClusterModificationCounts();
-        res.setModificationCounts(new ArrayList<ModificationCount>(modificationDistribution.getDistribution().values()));
+        res.setModificationCounts(new ArrayList<ModificationCount>(modificationDistribution.getDistribution()));
         return res;
     }
 
