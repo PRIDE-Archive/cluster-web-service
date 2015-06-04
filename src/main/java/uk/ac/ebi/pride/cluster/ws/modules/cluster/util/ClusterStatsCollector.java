@@ -88,7 +88,11 @@ public final class ClusterStatsCollector {
                         if (modificationDistribution.getDistribution().containsKey(accession)) {
                             modificationDistribution.getDistribution().get(accession).addModificationCount(1);
                         } else {
-                            ModificationCount modificationCount = new ModificationCount(modification.getName(), accession, 1);
+                            String name = modification.getName();
+                            if (name == null) {
+                                name = accession;
+                            }
+                            ModificationCount modificationCount = new ModificationCount(name, accession, 1);
                             modificationDistribution.getDistribution().put(accession, modificationCount);
                         }
                         countedModAccession.add(accession);
