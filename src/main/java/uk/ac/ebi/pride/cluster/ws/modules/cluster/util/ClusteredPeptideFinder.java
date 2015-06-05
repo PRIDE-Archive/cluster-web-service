@@ -33,11 +33,16 @@ public final class ClusteredPeptideFinder {
                 if (clusteredPeptide == null) {
                     clusteredPeptide = new ClusteredPeptide();
                     clusteredPeptide.setClusterId(cluster.getId());
+
                     // sequence
                     clusteredPeptide.setSequence(sequence);
+
                     // modifications
                     clusteredPeptide.setModifications(clusteredPSMDetail.getPsmDetail().getModifications());
                     clusteredPeptideMap.put(seqModCombined, clusteredPeptide);
+
+                    // whether it is consensus peptide
+                    clusteredPeptide.setConsensusPeptide(clusteredPSMDetail.getRank() == 1.1f);
                 }
 
                 // PSM count

@@ -24,6 +24,8 @@ public class ClusteredPeptide extends Peptide {
     // pride archive project accessions where this peptide come from
     private final Set<String> projectAccessions = new LinkedHashSet<String>();
 
+    private boolean consensusPeptide;
+
     public long getClusterId() {
         return clusterId;
     }
@@ -65,7 +67,15 @@ public class ClusteredPeptide extends Peptide {
     }
 
     public void addProjectAccessions(Collection<String> projectAccessions) {
-        projectAccessions.addAll(projectAccessions);
+        this.projectAccessions.addAll(projectAccessions);
+    }
+
+    public boolean isConsensusPeptide() {
+        return consensusPeptide;
+    }
+
+    public void setConsensusPeptide(boolean consensusPeptide) {
+        this.consensusPeptide = consensusPeptide;
     }
 
     @Override
@@ -78,11 +88,10 @@ public class ClusteredPeptide extends Peptide {
 
         if (clusterId != that.clusterId) return false;
         if (numberOfPSMs != that.numberOfPSMs) return false;
-        if (projectAccessions != null ? !projectAccessions.equals(that.projectAccessions) : that.projectAccessions != null)
-            return false;
+        if (consensusPeptide != that.consensusPeptide) return false;
         if (species != null ? !species.equals(that.species) : that.species != null) return false;
+        return !(projectAccessions != null ? !projectAccessions.equals(that.projectAccessions) : that.projectAccessions != null);
 
-        return true;
     }
 
     @Override
@@ -92,6 +101,7 @@ public class ClusteredPeptide extends Peptide {
         result = 31 * result + numberOfPSMs;
         result = 31 * result + (species != null ? species.hashCode() : 0);
         result = 31 * result + (projectAccessions != null ? projectAccessions.hashCode() : 0);
+        result = 31 * result + (consensusPeptide ? 1 : 0);
         return result;
     }
 
@@ -102,6 +112,7 @@ public class ClusteredPeptide extends Peptide {
                 ", numberOfPSMs=" + numberOfPSMs +
                 ", species=" + species +
                 ", projectAccessions=" + projectAccessions +
+                ", consensusPeptide=" + consensusPeptide +
                 "} " + super.toString();
     }
 }
