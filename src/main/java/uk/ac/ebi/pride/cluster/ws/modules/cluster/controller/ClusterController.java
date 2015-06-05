@@ -78,29 +78,30 @@ public class ClusterController {
             @RequestParam(value = "size", required = true, defaultValue = "20") int size
     ) {
 
-        logger.info("Fetched clusters for\n" +
-                        " query: " + q + "\n" +
-                        " peptide: " + peptides + "\n" +
-                        " modFilters: " + modFilters + "\n" +
-                        " speciesFilters: " + speciesFilters + "\n" +
-                        " sort: " + fieldToSort + "\n" +
-                        " order: " + order + "\n" +
-                        " facets: " + facets + "\n" +
-                        " highlights: " + highlights + "\n" +
-                        " page: " + page + "\n" +
+        logger.info("Fetched clusters for" +
+                        " query: " + q +
+                        " peptide: " + peptides +
+                        " modFilters: " + modFilters +
+                        " speciesFilters: " + speciesFilters +
+                        " sort: " + fieldToSort +
+                        " order: " + order +
+                        " facets: " + facets +
+                        " highlights: " + highlights +
+                        " page: " + page +
                         " size: " + size
         );
 
         Sort sort = generateSort(fieldToSort, order);
 
         PageWrapper<SolrCluster> res =
-                clusterSearchService.findByTextAndHighestRatioPepSequencesHighlightsFilterOnModificationNamesAndSpeciesNames(
+                clusterSearchService.findClusterByQuery(
                         q,
                         peptides,
                         modFilters,
                         speciesFilters,
                         sort,
                         new PageRequest(page, size));
+
 
         ClusterSearchResults results = new ClusterSearchResults();
         results.setPageNumber(page);
@@ -116,13 +117,16 @@ public class ClusterController {
         }
 
         if (facets) {
-            Map<String, Map<String, Long>> factes = clusterSearchService.findByTextAndHighestRatioPepSequencesFacetOnModificationNamesAndSpeciesNames(
+            logger.info("Before querying for facets");
+
+            Map<String, Map<String, Long>> factes = clusterSearchService.findClusterFacetByQuery(
                     q,
                     peptides,
                     modFilters,
                     speciesFilters);
             results.setFacetsMap(factes);
 
+            logger.info("After querying for facets");
         }
         return results;
     }
