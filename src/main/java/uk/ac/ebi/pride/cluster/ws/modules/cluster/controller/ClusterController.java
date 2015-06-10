@@ -251,8 +251,22 @@ public class ClusterController {
         return ClusteredPeptideFinder.findClusteredPeptides(cluster);
     }
 
+    @ApiOperation(value = "returns projects for a given Cluster ID", position = 8, notes = "retrieve projects for a given Cluster ID")
+    @RequestMapping(value = "/{clusterId}/project", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public
+    @ResponseBody
+    ClusteredProjectList getClusterProjects(
+            @ApiParam(value = "a cluster ID")
+            @PathVariable("clusterId") long clusterId) {
+        logger.info("Cluster " + clusterId + " projects requested");
 
-    @ApiOperation(value = "returns delta m/z statistics for a given Cluster ID", position = 8,
+        ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
+        return ClusteredProjectFinder.findClusteredProjects(cluster);
+    }
+
+
+    @ApiOperation(value = "returns delta m/z statistics for a given Cluster ID", position = 9,
             notes = "retrieve delta m/z statistics for a given Cluster ID")
     @RequestMapping(value = "/{clusterId}/deltamz", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
@@ -268,7 +282,7 @@ public class ClusterController {
     }
 
 
-    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 9,
+    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 10,
             notes = "retrieve spectrum similarity statistics for a given Cluster ID")
     @RequestMapping(value = "/{clusterId}/similarity", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
