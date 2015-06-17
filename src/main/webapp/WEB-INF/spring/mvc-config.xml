@@ -12,7 +12,7 @@
     <!-- Enables the Spring MVC @Controller programming model -->
     <annotation-driven/>
 
-    <context:component-scan base-package="uk.ac.ebi.pride.cluster.ws.modules"/>
+    <context:component-scan base-package="uk.ac.ebi.pride.cluster.ws.modules, uk.ac.ebi.pride.cluster.ws.error"/>
 
     <!-- Swagger config (REST service documentation)-->
     <!-- Swagger beans -->

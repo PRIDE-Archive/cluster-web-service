@@ -28,6 +28,7 @@ import uk.ac.ebi.pride.spectracluster.repo.utils.ModificationDetailFetcher;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
@@ -131,36 +132,6 @@ public class ClusterController {
         return results;
     }
 
-    @ApiOperation(value = "retrieves cluster information by cluster ID", position = 2, notes = "retrieve a record of a specific cluster")
-    @RequestMapping(value = "/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK) // 200
-    public
-    @ResponseBody
-    Cluster getClusterSummaryByID(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
-        logger.info("Cluster summary " + clusterId + " requested");
-
-        ClusterSummary clusterSummary = clusterReaderDao.findClusterSummary(clusterId);
-        List<ClusteredPSMDetail> clusteredPSMSummaries = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterId, DEFAULT_MINIMUM_PSM_RANKING);
-        return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0), modificationDetailFetcher);
-    }
-
-    @ApiOperation(value = "retrieves cluster information by cluster UUID", position = 3, notes = "retrieve a record of a specific cluster")
-    @RequestMapping(value = "/uuid/{uuid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK) // 200
-    public
-    @ResponseBody
-    Cluster getClusterSummaryByUUID(
-            @ApiParam(value = "a cluster UUID")
-            @PathVariable("uuid") String uuid) {
-        logger.info("Cluster summary " + uuid + " requested");
-
-        ClusterSummary clusterSummary = clusterReaderDao.findClusterSummaryByUUID(uuid);
-        List<ClusteredPSMDetail> clusteredPSMSummaries = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterSummary.getId(), DEFAULT_MINIMUM_PSM_RANKING);
-        return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0), modificationDetailFetcher);
-    }
-
     /**
      * Generate a Sort for a given set of criterias
      *
@@ -183,6 +154,26 @@ public class ClusterController {
         return sort;
     }
 
+    @ApiOperation(value = "retrieves cluster information by cluster ID or cluster UUID", position = 2, notes = "retrieve a record of a specific cluster")
+    @RequestMapping(value = "/{clusterId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK) // 200
+    public
+    @ResponseBody
+    Cluster getClusterSummaryByID(
+            @ApiParam(value = "a cluster ID or cluster UUID")
+            @PathVariable("clusterId") String clusterId) {
+        logger.info("Cluster summary " + clusterId + " requested");
+
+        ClusterSummary clusterSummary = findClusterSummaryByID(clusterId);
+
+        if (clusterSummary.getId() == null) {
+            throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
+        } else {
+            List<ClusteredPSMDetail> clusteredPSMSummaries = clusterReaderDao.findClusteredPSMSummaryByClusterId(clusterSummary.getId(), DEFAULT_MINIMUM_PSM_RANKING);
+            return RepoClusterToWsClusterMapper.asCluster(clusterSummary, clusteredPSMSummaries.get(0), modificationDetailFetcher);
+        }
+    }
+
     @ApiOperation(value = "a convenience endpoint that retrieves cluster species information only", position = 4,
             notes = "retrieve a record of a specific cluster consensus spectrum")
     @RequestMapping(value = "/{clusterId}/species", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -190,100 +181,126 @@ public class ClusterController {
     public
     @ResponseBody
     ClusterSpeciesCounts getClusterSpecies(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
+            @ApiParam(value = "a cluster ID or cluster UUID")
+            @PathVariable("clusterId") String clusterId) {
         logger.info("Cluster " + clusterId + " species requested");
 
         // get the cluster
-        ClusterDetail repoCluster = clusterReaderDao.findCluster(clusterId);
-        return ClusterStatsCollector.collectClusterSpeciesCounts(repoCluster);
+        ClusterDetail repoCluster = findClusterDetailByID(clusterId);
+
+        if (repoCluster.getId() == null) {
+            throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
+        } else {
+            return ClusterStatsCollector.collectClusterSpeciesCounts(repoCluster);
+        }
     }
 
 
     @ApiOperation(value = "a convenience endpoint that retrieves cluster modification information only", position = 5,
             notes = "retrieve modification records of a specific cluster")
-    @RequestMapping(value = "/{clusterId}/modifications", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{clusterId}/modification", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
     ClusterModificationCounts getClusterPTMs(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
+            @ApiParam(value = "a cluster ID or cluster UUID")
+            @PathVariable("clusterId") String clusterId) {
         logger.info("Cluster " + clusterId + " modifications requested");
 
         // get the cluster
-        ClusterDetail repoCluster = clusterReaderDao.findCluster(clusterId);
-        return ClusterStatsCollector.collectClusterModificationCounts(repoCluster);
+        ClusterDetail repoCluster = findClusterDetailByID(clusterId);
+
+        if (repoCluster.getId() == null) {
+            throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
+        } else {
+            return ClusterStatsCollector.collectClusterModificationCounts(repoCluster);
+        }
     }
 
 
     @ApiOperation(value = "a convenience endpoint that retrieves cluster consensus spectrum information only", position = 6,
             notes = "retrieve a record of a specific cluster consensus spectrum")
-    @RequestMapping(value = "/{clusterId}/consensus", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{clusterId}/consensusspectrum", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
     Spectrum getClusterConsensusSpectrum(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
+            @ApiParam(value = "a cluster ID or cluster UUID")
+            @PathVariable("clusterId") String clusterId) {
         logger.info("Cluster " + clusterId + " consensus spectra requested");
 
-        ClusterSummary repoCluster = clusterReaderDao.findCluster(clusterId);
-        if (repoCluster != null) {
-            return RepoClusterToWsClusterMapper.asConsensusSpectrum(clusterReaderDao.findCluster(clusterId));
+        ClusterSummary repoCluster = findClusterSummaryByID(clusterId);
+
+        if (repoCluster.getId() == null) {
+            throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
         } else {
-            throw new ResourceNotFoundException("Cluster with ID " + clusterId + " not found in DB");
+            return RepoClusterToWsClusterMapper.asConsensusSpectrum(repoCluster);
         }
 
     }
 
-    @ApiOperation(value = "returns peptides for a given Cluster ID", position = 7, notes = "retrieve peptides for a given Cluster ID")
+    @ApiOperation(value = "returns peptides for a given Cluster ID or UUID", position = 7, notes = "retrieve peptides for a given Cluster ID or UUID")
     @RequestMapping(value = "/{clusterId}/peptide", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
     ClusteredPeptideList getClusterPeptides(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
+            @ApiParam(value = "a cluster ID or cluster UUID")
+            @PathVariable("clusterId") String clusterId) {
         logger.info("Cluster " + clusterId + " peptides requested");
 
-        ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
-        return ClusteredPeptideFinder.findClusteredPeptides(cluster);
+        ClusterDetail cluster = findClusterDetailByID(clusterId);
+
+        if (cluster.getId() == null) {
+            throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
+        } else {
+            return ClusteredPeptideFinder.findClusteredPeptides(cluster);
+        }
     }
 
-    @ApiOperation(value = "returns projects for a given Cluster ID", position = 8, notes = "retrieve projects for a given Cluster ID")
+    @ApiOperation(value = "returns projects for a given Cluster ID or UUID", position = 8, notes = "retrieve projects for a given Cluster ID or UUID")
     @RequestMapping(value = "/{clusterId}/project", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
     ClusteredProjectList getClusterProjects(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
+            @ApiParam(value = "a cluster ID or UUID")
+            @PathVariable("clusterId") String clusterId) {
         logger.info("Cluster " + clusterId + " projects requested");
 
-        ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
-        return ClusteredProjectFinder.findClusteredProjects(cluster);
+        ClusterDetail cluster = findClusterDetailByID(clusterId);
+
+        if (cluster.getId() == null) {
+            throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
+        } else {
+            return ClusteredProjectFinder.findClusteredProjects(cluster);
+        }
     }
 
 
-    @ApiOperation(value = "returns delta m/z statistics for a given Cluster ID", position = 9,
-            notes = "retrieve delta m/z statistics for a given Cluster ID")
+    @ApiOperation(value = "returns delta m/z statistics for a given Cluster ID or UUID", position = 9,
+            notes = "retrieve delta m/z statistics for a given Cluster ID or UUID")
     @RequestMapping(value = "/{clusterId}/deltamz", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
     PSMDeltaMZStatistics getClusterPsmDeltaMZStatistics(
-            @ApiParam(value = "a cluster ID")
-            @PathVariable("clusterId") long clusterId) {
+            @ApiParam(value = "a cluster ID or UUID")
+            @PathVariable("clusterId") String clusterId) {
         logger.info("Cluster " + clusterId + " delta m/z statistics requested");
 
-        ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
-        return ClusterStatsCollector.collectPSMDeltaMZStatistics(cluster);
+        ClusterDetail cluster = findClusterDetailByID(clusterId);
+
+        if (cluster.getId() == null) {
+            throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
+        } else {
+            return ClusterStatsCollector.collectPSMDeltaMZStatistics(cluster);
+        }
     }
 
 
-    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID", position = 10,
-            notes = "retrieve spectrum similarity statistics for a given Cluster ID")
+    @ApiOperation(value = "returns spectrum similarity statistics for a given Cluster ID or UUID", position = 10,
+            notes = "retrieve spectrum similarity statistics for a given Cluster ID or UUID")
     @RequestMapping(value = "/{clusterId}/similarity", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public
@@ -294,7 +311,59 @@ public class ClusterController {
         logger.info("Cluster " + clusterId + " spectrum similarity statistics requested");
 
         ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
-        return ClusterStatsCollector.collectSpectrumSimilarityStatistics(cluster);
+
+        if (cluster.getId() == null) {
+            throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
+        } else {
+            return ClusterStatsCollector.collectSpectrumSimilarityStatistics(cluster);
+        }
+    }
+
+
+    /**
+     * Find cluster summary according the type of the ID
+     *
+     * @param id cluster id can be either the database id or UUID
+     * @return cluster summary
+     */
+    private ClusterSummary findClusterSummaryByID(String id) {
+        if (isLong(id)) {
+            long clusterId = Long.parseLong(id);
+            return clusterReaderDao.findClusterSummary(clusterId);
+        } else if (isUUID(id)) {
+            return clusterReaderDao.findClusterSummaryByUUID(id);
+        } else {
+            return new ClusterSummary();
+        }
+    }
+
+    private ClusterDetail findClusterDetailByID(String id) {
+        if (isLong(id)) {
+            long clusterId = Long.parseLong(id);
+            return clusterReaderDao.findCluster(clusterId);
+        } else if (isUUID(id)) {
+            return clusterReaderDao.findClusterByUUID(id);
+        } else {
+            return new ClusterDetail();
+        }
+    }
+
+    private boolean isUUID(String id) {
+        try {
+            UUID.fromString(id);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    private boolean isLong(String id) {
+        try {
+            Long.parseLong(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 //    @ApiOperation(value = "list similar cluster summaries given a list of peaks", position = 6, notes = "additive clustering functionality")
