@@ -37,7 +37,7 @@ public class SpectrumLibraryController {
     @Autowired
     private SpectrumLibraryDownloadURLGenerator spectrumLibraryDownloadURLGenerator;
 
-    @ApiOperation(value = "returns spectrum libraries of the latest release", position = 1, notes = "retrieve spectrum libraries of the latest release")
+    @ApiOperation(value = "Endpoint that returns spectrum libraries of the latest release", position = 1, notes = "retrieve spectrum libraries of the latest release")
     @RequestMapping(value = "/latest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public

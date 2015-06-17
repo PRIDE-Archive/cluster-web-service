@@ -40,7 +40,7 @@ public class StatisticsController {
     @Autowired
     IClusterRepoStatisticsReadDao clusterRepoStatisticsReadDao;
 
-    @ApiOperation(value = "returns the general statistics for the entire repository", position = 1, notes = "retrieve general statistics")
+    @ApiOperation(value = "Endpoint that returns the general statistics for the entire repository", position = 1, notes = "retrieve general statistics")
     @RequestMapping(value = "/general", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public @ResponseBody
@@ -49,7 +49,7 @@ public class StatisticsController {
         return RepoStatsToWsStatsMapper.asStatsList(generalStatistics);
     }
 
-    @ApiOperation(value = "returns the number of clusters per species", position = 2, notes = "retrieve the number of clusters per species")
+    @ApiOperation(value = "Endpoint that returns the number of clusters per species", position = 2, notes = "retrieve the number of clusters per species")
     @RequestMapping(value = "/species/clusterCount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public @ResponseBody
@@ -62,7 +62,7 @@ public class StatisticsController {
         return RepoStatsToWsStatsMapper.asStatsList(statistics);
     }
 
-    @ApiOperation(value = "returns the number of unique peptides per species", position = 2, notes = "retrieve the number of unique peptides per species")
+    @ApiOperation(value = "Endpoint that returns the number of unique peptides per species", position = 2, notes = "retrieve the number of unique peptides per species")
     @RequestMapping(value = "/species/peptideCount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public @ResponseBody
@@ -75,7 +75,7 @@ public class StatisticsController {
         return RepoStatsToWsStatsMapper.asStatsList(statistics);
     }
 
-    @ApiOperation(value = "returns the number of overlapping peptides for each pair of species", position = 3, notes = "retrieve the number of overlapping peptides for each pair of species")
+    @ApiOperation(value = "Endpoint that returns the number of overlapping peptides for each pair of species", position = 3, notes = "retrieve the number of overlapping peptides for each pair of species")
     @RequestMapping(value = "/species/peptideOverlap/{numbOfSpecies}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public @ResponseBody
