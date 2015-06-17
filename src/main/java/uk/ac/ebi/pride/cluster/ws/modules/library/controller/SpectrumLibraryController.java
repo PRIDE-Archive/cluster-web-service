@@ -24,9 +24,9 @@ import java.util.List;
  * @author Rui Wang
  * @version $Id$
  */
-@Api(value = "library", description = "retrieve information about spectrum libraries", position = 0)
+@Api(value = "spectrumlibrary", description = "retrieve information about spectrum libraries", position = 0)
 @Controller
-@RequestMapping(value = "/library")
+@RequestMapping(value = "/spectrumlibrary")
 public class SpectrumLibraryController {
 
     private static final Logger logger = LoggerFactory.getLogger(SpectrumLibraryController.class);

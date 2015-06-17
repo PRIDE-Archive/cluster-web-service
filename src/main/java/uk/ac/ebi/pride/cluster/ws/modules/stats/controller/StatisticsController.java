@@ -25,9 +25,9 @@ import java.util.*;
  * @author Rui Wang
  * @version $Id$
  */
-@Api(value = "stats", description = "retrieve statistics about the repository", position = 0)
+@Api(value = "statistic", description = "retrieve statistics about the repository", position = 0)
 @Controller
-@RequestMapping(value = "/stats")
+@RequestMapping(value = "/statistic")
 public class StatisticsController {
 
     private static final Logger logger = LoggerFactory.getLogger(StatisticsController.class);
@@ -50,7 +50,7 @@ public class StatisticsController {
     }
 
     @ApiOperation(value = "returns the number of clusters per species", position = 2, notes = "retrieve the number of clusters per species")
-    @RequestMapping(value = "/species/cluster/count", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/species/clustercount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public @ResponseBody
     RepoStatisticList getClusterPerSpeciesStatistics() {
@@ -63,7 +63,7 @@ public class StatisticsController {
     }
 
     @ApiOperation(value = "returns the number of unique peptides per species", position = 2, notes = "retrieve the number of unique peptides per species")
-    @RequestMapping(value = "/species/peptide/count", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/species/peptidecount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public @ResponseBody
     RepoStatisticList getUniquePeptidesPerSpeciesStatistics() {
@@ -76,7 +76,7 @@ public class StatisticsController {
     }
 
     @ApiOperation(value = "returns the number of overlapping peptides for each pair of species", position = 3, notes = "retrieve the number of overlapping peptides for each pair of species")
-    @RequestMapping(value = "/species/peptide/overlap/{numbOfSpecies}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/species/peptideoverlap/{numbOfSpecies}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK) // 200
     public @ResponseBody
     RepoChordChartStatistic getOverlappingPeptidesPerSpeciesPairStatistics(
