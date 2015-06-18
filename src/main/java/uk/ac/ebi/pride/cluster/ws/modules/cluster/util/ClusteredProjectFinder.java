@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.filter.IPredicate;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredProject;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredProjectList;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
@@ -18,13 +19,21 @@ import java.util.Map;
  */
 public final class ClusteredProjectFinder {
 
-    public static ClusteredProjectList findClusteredProjects(ClusterDetail cluster) {
+    public static ClusteredProjectList findClusteredProjects(ClusterDetail cluster, IPredicate<ClusteredPSMDetail> psmFilter) {
         ClusteredProjectList clusteredProjectList = new ClusteredProjectList();
 
         Map<String, ClusteredProject> clusteredProjects = new HashMap<String, ClusteredProject>();
 
         List<ClusteredPSMDetail> clusteredPSMs = cluster.getClusteredPSMDetails();
+
+
         for (ClusteredPSMDetail clusteredPSM : clusteredPSMs) {
+
+            // filter by psm
+            if (!psmFilter.apply(clusteredPSM)) {
+                continue;
+            }
+
             Long assayId = clusteredPSM.getPsmDetail().getAssayId();
             AssayDetail assayDetail = cluster.getAssayDetail(assayId);
 

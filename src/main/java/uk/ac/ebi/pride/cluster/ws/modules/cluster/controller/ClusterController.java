@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import uk.ac.ebi.pride.cluster.search.model.SolrCluster;
 import uk.ac.ebi.pride.cluster.search.service.IClusterSearchService;
 import uk.ac.ebi.pride.cluster.ws.error.exception.ResourceNotFoundException;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.filter.*;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.*;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.util.*;
 import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.Spectrum;
@@ -25,10 +26,7 @@ import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
 import uk.ac.ebi.pride.spectracluster.repo.utils.ModificationDetailFetcher;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Jose A. Dianes <jdianes@ebi.ac.uk>
@@ -41,6 +39,8 @@ public class ClusterController {
     private static final Logger logger = LoggerFactory.getLogger(ClusterController.class);
 
     public static final float DEFAULT_MINIMUM_PSM_RANKING = 1.1f;
+
+    public static final String NO_MODIFICATION = "NONE";
 
     @Autowired
     IClusterReadDao clusterReaderDao;
@@ -263,13 +263,13 @@ public class ClusterController {
     @ResponseStatus(HttpStatus.OK) // 200
     public
     @ResponseBody
-    ClusteredPeptideList getClusterPSMs(
+    ClusteredPSMList getClusterPSMs(
             @ApiParam(value = "a cluster ID or cluster UUID")
             @PathVariable("clusterId") String clusterId,
             @ApiParam(value = "peptide sequence")
             @RequestParam(value = "sequence", required = false) String sequence,
-            @ApiParam(value = "modifications with their positions")
-            @RequestParam(value = "modification", required = false) String modification,
+            @ApiParam(value = "modifications with their positions, or 'NONE' for no modifications")
+            @RequestParam(value = "mod", required = false) String modification,
             @ApiParam(value = "project accession")
             @RequestParam(value = "project", required = false) String projectAccession,
             @ApiParam(value = "0-based page number")
@@ -284,8 +284,33 @@ public class ClusterController {
                 " page: " + page +
                 " size: " + size);
 
-        //todo: provide implementation
-        return null;
+        ClusterDetail cluster = findClusterDetailByID(clusterId);
+
+        if (cluster.getId() == null) {
+            throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
+        } else {
+            List<IPredicate<ClusteredPSMDetail>> psmFilters = new ArrayList<IPredicate<ClusteredPSMDetail>>();
+
+            // sequence filter
+            if (sequence != null) {
+                psmFilters.add(new ClusteredPSMSequenceFilter(sequence));
+            }
+
+            // modification filter
+            if (modification != null) {
+                if (modification.equalsIgnoreCase(NO_MODIFICATION)) {
+                    psmFilters.add(new ClusteredPSMNoModificationFilter());
+                } else {
+                    psmFilters.add(new ClusteredPSMModificationFilter(modification));
+                }
+            }
+
+            if (projectAccession != null) {
+                psmFilters.add(new ClusteredPSMProjectFilter(cluster, projectAccession));
+            }
+
+            return ClusteredPeptideFinder.findClusteredPSMs(cluster, Predicates.and(psmFilters), page, size);
+        }
     }
 
     @ApiOperation(value = "Endpoint that returns projects for a given Cluster ID or UUID", position = 8, notes = "retrieve projects for a given Cluster ID or UUID")
@@ -298,18 +323,32 @@ public class ClusterController {
             @PathVariable("clusterId") String clusterId,
             @ApiParam(value = "peptide sequence")
             @RequestParam(value = "sequence", required = false) String sequence,
-            @ApiParam(value = "modifications with their positions")
-            @RequestParam(value = "modification", required = false) String modification) {
+            @ApiParam(value = "modifications with their positions, or 'NONE' for no modifications")
+            @RequestParam(value = "mod", required = false) String modification) {
         logger.info("Cluster " + clusterId + " projects requested");
-
-        //todo: extend implementation
 
         ClusterDetail cluster = findClusterDetailByID(clusterId);
 
         if (cluster.getId() == null) {
             throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
         } else {
-            return ClusteredProjectFinder.findClusteredProjects(cluster);
+            List<IPredicate<ClusteredPSMDetail>> psmFilters = new ArrayList<IPredicate<ClusteredPSMDetail>>();
+
+            // sequence filter
+            if (sequence != null) {
+                psmFilters.add(new ClusteredPSMSequenceFilter(sequence));
+            }
+
+            // modification filter
+            if (modification != null) {
+                if (modification.equalsIgnoreCase(NO_MODIFICATION)) {
+                    psmFilters.add(new ClusteredPSMNoModificationFilter());
+                } else {
+                    psmFilters.add(new ClusteredPSMModificationFilter(modification));
+                }
+            }
+
+            return ClusteredProjectFinder.findClusteredProjects(cluster, Predicates.and(psmFilters));
         }
     }
 

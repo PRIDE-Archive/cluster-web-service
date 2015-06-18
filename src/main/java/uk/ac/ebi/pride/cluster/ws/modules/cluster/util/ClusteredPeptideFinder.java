@@ -1,17 +1,18 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.filter.IPredicate;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPSM;
+import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPSMList;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPeptide;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPeptideList;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
- * Find clustered peptides for a given cluster
+ * Find clustered peptides or psms for a given cluster
  *
  * @author Rui Wang
  * @version $Id$
@@ -62,5 +63,42 @@ public final class ClusteredPeptideFinder {
         }
 
         return clusteredPeptideList;
+    }
+
+    public static ClusteredPSMList findClusteredPSMs(ClusterDetail cluster, IPredicate<ClusteredPSMDetail> psmFilter,
+                                                     int pageNo, int pageSize) {
+        ClusteredPSMList clusteredPSMList = new ClusteredPSMList();
+
+        // filter clustered psms by peptide sequence
+        List<ClusteredPSMDetail> clusteredPSMDetails = new ArrayList<ClusteredPSMDetail>(cluster.getClusteredPSMDetails());
+
+        // filter clustered psms by project accession and modifications
+        Iterator<ClusteredPSMDetail> clusteredPSMDetailIterator = clusteredPSMDetails.iterator();
+        while(clusteredPSMDetailIterator.hasNext()) {
+            ClusteredPSMDetail clusteredPSMDetail = clusteredPSMDetailIterator.next();
+
+            if (!psmFilter.apply(clusteredPSMDetail)) {
+                clusteredPSMDetailIterator.remove();
+            }
+        }
+
+        // pagination
+        List<ClusteredPSMDetail> results = new ArrayList<ClusteredPSMDetail>();
+
+        int totalPagedSize = (pageNo + 1) * pageSize;
+
+        if (totalPagedSize > 0) {
+            int lastIndex = totalPagedSize >= clusteredPSMDetails.size() ? clusteredPSMDetails.size() : totalPagedSize;
+            results.addAll(clusteredPSMDetails.subList(pageNo * pageSize, lastIndex));
+
+            List<ClusteredPSM> clusteredPSMs = RepoPSMToWsPSMMapper.asPSMList(results);
+            clusteredPSMList.setPsms(clusteredPSMs);
+        }
+
+        clusteredPSMList.setTotalResults(clusteredPSMDetails.size());
+        clusteredPSMList.setPageNumber(pageNo);
+        clusteredPSMList.setPageSize(pageSize);
+
+        return clusteredPSMList;
     }
 }
