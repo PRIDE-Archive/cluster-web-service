@@ -91,7 +91,7 @@ public final class ClusteredPeptideFinder {
             int lastIndex = totalPagedSize >= clusteredPSMDetails.size() ? clusteredPSMDetails.size() : totalPagedSize;
             results.addAll(clusteredPSMDetails.subList(pageNo * pageSize, lastIndex));
 
-            List<ClusteredPSM> clusteredPSMs = RepoPSMToWsPSMMapper.asPSMList(results);
+            List<ClusteredPSM> clusteredPSMs = RepoPSMToWsPSMMapper.asPSMList(results, cluster);
             clusteredPSMList.setPsms(clusteredPSMs);
         }
 

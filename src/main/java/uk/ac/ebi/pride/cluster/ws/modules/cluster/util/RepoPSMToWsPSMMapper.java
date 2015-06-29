@@ -2,6 +2,8 @@ package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
 import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPSM;
+import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
+import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.PSMDetail;
 
@@ -15,18 +17,18 @@ import java.util.List;
  */
 public final class RepoPSMToWsPSMMapper {
 
-    public static List<ClusteredPSM> asPSMList(List<ClusteredPSMDetail> repoPSMs) {
+    public static List<ClusteredPSM> asPSMList(List<ClusteredPSMDetail> repoPSMs, ClusterDetail cluster) {
         ArrayList<ClusteredPSM> clusteredPSMs = new ArrayList<ClusteredPSM>();
 
         for (ClusteredPSMDetail repoPSM : repoPSMs) {
-            clusteredPSMs.add(asPSM(repoPSM));
+            clusteredPSMs.add(asPSM(repoPSM, cluster));
         }
 
         return clusteredPSMs;
     }
 
 
-    public static ClusteredPSM asPSM(ClusteredPSMDetail repoPSM) {
+    public static ClusteredPSM asPSM(ClusteredPSMDetail repoPSM, ClusterDetail cluster) {
         ClusteredPSM clusteredPSM = new ClusteredPSM();
 
         clusteredPSM.setClusterId(repoPSM.getClusterId());
@@ -52,6 +54,14 @@ public final class RepoPSMToWsPSMMapper {
         clusteredPSM.setPostAminoAcid(repoPSMDetail.getPostAminoAcid());
         clusteredPSM.setDeltaMZ(repoPSMDetail.getDeltaMZ());
         clusteredPSM.setQuantificationLabel(repoPSMDetail.getQuantificationLabel());
+
+        Long assayId = repoPSMDetail.getAssayId();
+        AssayDetail assayDetail = cluster.getAssayDetail(assayId);
+        clusteredPSM.setProjectAccession(assayDetail.getProjectAccession());
+        clusteredPSM.setAssayAccession(assayDetail.getAccession());
+        clusteredPSM.setSpecies(assayDetail.getSpecies());
+        clusteredPSM.setTissues(assayDetail.getTissue());
+        clusteredPSM.setDiseases(assayDetail.getDisease());
 
         return clusteredPSM;
     }

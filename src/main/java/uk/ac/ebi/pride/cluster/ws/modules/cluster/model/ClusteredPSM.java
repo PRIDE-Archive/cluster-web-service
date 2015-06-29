@@ -13,11 +13,16 @@ public class ClusteredPSM extends Peptide {
     private Long clusterId; // internal cluster id
     private Long psmId; // internal psm id
     private Long spectrumId; // internal spectrum id
+    private String projectAccession;
+    private String assayAccession;
     private float psmRatio; // ratio is the number of distinct psm / the number of spectra
     private float rank;
     private Long assayId;
     private String archivePSMId;
     private List<ModificationProvider> standardisedModifications;
+    private String species;
+    private String tissues;
+    private String diseases;
     private String searchEngine;
     private String searchEngineScores;
     private String searchDatabase;
@@ -53,6 +58,46 @@ public class ClusteredPSM extends Peptide {
 
     public void setSpectrumId(Long spectrumId) {
         this.spectrumId = spectrumId;
+    }
+
+    public String getProjectAccession() {
+        return projectAccession;
+    }
+
+    public void setProjectAccession(String projectAccession) {
+        this.projectAccession = projectAccession;
+    }
+
+    public String getAssayAccession() {
+        return assayAccession;
+    }
+
+    public void setAssayAccession(String assayAccession) {
+        this.assayAccession = assayAccession;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public String getTissues() {
+        return tissues;
+    }
+
+    public void setTissues(String tissues) {
+        this.tissues = tissues;
+    }
+
+    public String getDiseases() {
+        return diseases;
+    }
+
+    public void setDiseases(String diseases) {
+        this.diseases = diseases;
     }
 
     public float getPsmRatio() {
