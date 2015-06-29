@@ -292,12 +292,12 @@ public class ClusterController {
             List<IPredicate<ClusteredPSMDetail>> psmFilters = new ArrayList<IPredicate<ClusteredPSMDetail>>();
 
             // sequence filter
-            if (sequence != null) {
+            if (sequence != null && !"".equals(sequence)) {
                 psmFilters.add(new ClusteredPSMSequenceFilter(sequence));
             }
 
             // modification filter
-            if (modification != null) {
+            if (modification != null && !"".equals(modification)) {
                 if (modification.equalsIgnoreCase(NO_MODIFICATION)) {
                     psmFilters.add(new ClusteredPSMNoModificationFilter());
                 } else {
@@ -305,7 +305,7 @@ public class ClusterController {
                 }
             }
 
-            if (projectAccession != null) {
+            if (projectAccession != null && !"".equals(projectAccession)) {
                 psmFilters.add(new ClusteredPSMProjectFilter(cluster, projectAccession));
             }
 
@@ -335,12 +335,12 @@ public class ClusterController {
             List<IPredicate<ClusteredPSMDetail>> psmFilters = new ArrayList<IPredicate<ClusteredPSMDetail>>();
 
             // sequence filter
-            if (sequence != null) {
+            if (sequence != null && !"".equals(sequence)) {
                 psmFilters.add(new ClusteredPSMSequenceFilter(sequence));
             }
 
             // modification filter
-            if (modification != null) {
+            if (modification != null && !"".equals(modification)) {
                 if (modification.equalsIgnoreCase(NO_MODIFICATION)) {
                     psmFilters.add(new ClusteredPSMNoModificationFilter());
                 } else {
