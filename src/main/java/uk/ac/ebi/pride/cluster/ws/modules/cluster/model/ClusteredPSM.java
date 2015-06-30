@@ -23,6 +23,7 @@ public class ClusteredPSM extends Peptide {
     private String species;
     private String tissues;
     private String diseases;
+    private String instruments;
     private String searchEngine;
     private String searchEngineScores;
     private String searchDatabase;
@@ -98,6 +99,14 @@ public class ClusteredPSM extends Peptide {
 
     public void setDiseases(String diseases) {
         this.diseases = diseases;
+    }
+
+    public String getInstruments() {
+        return instruments;
+    }
+
+    public void setInstruments(String instruments) {
+        this.instruments = instruments;
     }
 
     public float getPsmRatio() {

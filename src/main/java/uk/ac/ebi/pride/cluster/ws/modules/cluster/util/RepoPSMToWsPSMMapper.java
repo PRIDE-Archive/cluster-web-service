@@ -62,6 +62,7 @@ public final class RepoPSMToWsPSMMapper {
         clusteredPSM.setSpecies(assayDetail.getSpecies());
         clusteredPSM.setTissues(assayDetail.getTissue());
         clusteredPSM.setDiseases(assayDetail.getDisease());
+        clusteredPSM.setInstruments(assayDetail.getInstrument());
 
         return clusteredPSM;
     }
