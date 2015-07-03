@@ -6,6 +6,8 @@ import com.wordnik.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -365,10 +367,14 @@ public class ClusterController {
 
         ClusterDetail cluster = findClusterDetailByID(clusterId);
 
+        logger.debug("Retrieved cluster details for cluster: " + clusterId);
+
         if (cluster.getId() == null) {
             throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
         } else {
-            return ClusterStatsCollector.collectPSMDeltaMZStatistics(cluster);
+            PSMDeltaMZStatistics psmDeltaMZStatistics = ClusterStatsCollector.collectPSMDeltaMZStatistics(cluster);
+            logger.debug("Collected PSM delta m/z statistics");
+            return psmDeltaMZStatistics;
         }
     }
 
@@ -386,10 +392,14 @@ public class ClusterController {
 
         ClusterDetail cluster = clusterReaderDao.findCluster(clusterId);
 
+        logger.debug("Retrieved cluster details for cluster: " + clusterId);
+
         if (cluster.getId() == null) {
             throw new ResourceNotFoundException("Cluster using ID: " + clusterId);
         } else {
-            return ClusterStatsCollector.collectSpectrumSimilarityStatistics(cluster);
+            SpectrumSimilarityStatistics spectrumSimilarityStatistics = ClusterStatsCollector.collectSpectrumSimilarityStatistics(cluster);
+            logger.debug("Collected spectrum similarity statistics");
+            return spectrumSimilarityStatistics;
         }
     }
 
@@ -411,6 +421,8 @@ public class ClusterController {
         }
     }
 
+    @Cacheable(value="clusters", key="#id", unless = "#result.totalNumberOfSpectra > 200")
+    @CacheEvict(value = "clusters", condition = "")
     private ClusterDetail findClusterDetailByID(String id) {
         if (isLong(id)) {
             long clusterId = Long.parseLong(id);

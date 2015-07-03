@@ -22,12 +22,9 @@
         </encoder>
     </appender>
 
-    <logger name="uk.ac.ebi.pride" level="info"/>
-    <logger name="org.springframework" level="error"/>
-    <logger name="org.springframework.beans" level="error"/>
-    <logger name="com.mangofactory.swagger" level="info"/>
+    <logger name="uk.ac.ebi.pride.cluster.ws" level="INFO"/>
 
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="LOGFILE" />
     </root>

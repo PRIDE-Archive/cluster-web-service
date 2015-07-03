@@ -9,6 +9,7 @@
         <param-value>
             classpath:META-INF/spring/app-context-bootstrap.xml
             classpath:META-INF/spring/search-context.xml
+            classpath:META-INF/spring/cache-context.xml
         </param-value>
     </context-param>
 
