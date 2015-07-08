@@ -12,6 +12,8 @@ public class ClusteredProject {
 
     private String accession;
 
+    private String title;
+
     private int numberOfPSMs = 0;
 
     private Set<String> species;
@@ -30,6 +32,14 @@ public class ClusteredProject {
 
     public void setAccession(String accession) {
         this.accession = accession;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getNumberOfPSMs() {
@@ -94,6 +104,7 @@ public class ClusteredProject {
 
         if (numberOfPSMs != that.numberOfPSMs) return false;
         if (accession != null ? !accession.equals(that.accession) : that.accession != null) return false;
+        if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (species != null ? !species.equals(that.species) : that.species != null) return false;
         if (diseases != null ? !diseases.equals(that.diseases) : that.diseases != null) return false;
         if (tissues != null ? !tissues.equals(that.tissues) : that.tissues != null) return false;
@@ -105,6 +116,7 @@ public class ClusteredProject {
     @Override
     public int hashCode() {
         int result = accession != null ? accession.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + numberOfPSMs;
         result = 31 * result + (species != null ? species.hashCode() : 0);
         result = 31 * result + (diseases != null ? diseases.hashCode() : 0);
@@ -118,6 +130,7 @@ public class ClusteredProject {
     public String toString() {
         return "ClusteredProject{" +
                 "accession='" + accession + '\'' +
+                ", title='" + title + '\'' +
                 ", numberOfPSMs=" + numberOfPSMs +
                 ", species=" + species +
                 ", diseases=" + diseases +

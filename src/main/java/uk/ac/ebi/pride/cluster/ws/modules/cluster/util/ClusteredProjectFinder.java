@@ -42,6 +42,7 @@ public final class ClusteredProjectFinder {
                 clusteredProject = new ClusteredProject();
 
                 clusteredProject.setAccession(assayDetail.getProjectAccession());
+                clusteredProject.setTitle(assayDetail.getProjectTitle());
                 clusteredProject.setSpecies(assayDetail.getSpeciesEntries());
                 clusteredProject.setTissues(assayDetail.getTissueEntries());
                 clusteredProject.setDiseases(assayDetail.getDiseaseEntries());
