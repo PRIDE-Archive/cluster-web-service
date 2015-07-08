@@ -28,7 +28,7 @@ public final class ClusteredPeptideFinder {
             Map<String, ClusteredPeptide> clusteredPeptideMap = new HashMap<String, ClusteredPeptide>();
             for (ClusteredPSMDetail clusteredPSMDetail : cluster.getClusteredPSMDetails()) {
                 String sequence = clusteredPSMDetail.getSequence();
-                String seqModCombined = sequence + clusteredPSMDetail.getModifications();
+                String seqModCombined = sequence + clusteredPSMDetail.getPsmDetail().getModificationString();
 
                 ClusteredPeptide clusteredPeptide = clusteredPeptideMap.get(seqModCombined);
                 if (clusteredPeptide == null) {
