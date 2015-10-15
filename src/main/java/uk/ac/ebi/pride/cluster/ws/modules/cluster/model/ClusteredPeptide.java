@@ -75,7 +75,8 @@ public class ClusteredPeptide extends Peptide {
     }
 
     public void setConsensusPeptide(boolean consensusPeptide) {
-        this.consensusPeptide = consensusPeptide;
+        //Todo: We need to check this a the database level because the ranking should be persintance
+        this.consensusPeptide = (!this.consensusPeptide)?consensusPeptide:this.consensusPeptide;
     }
 
     @Override

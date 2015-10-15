@@ -5,10 +5,10 @@ import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterModificationCount
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusterSpeciesCounts;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.PSMDeltaMZStatistics;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.SpectrumSimilarityStatistics;
-import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
-import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
-import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
-import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredSpectrumDetail;
+import uk.ac.ebi.pride.indexutils.modifications.Modification;
+import uk.ac.ebi.pride.spectracluster.repo.model.*;
+import uk.ac.ebi.pride.utilities.pridemod.ModReader;
+import uk.ac.ebi.pride.utilities.pridemod.model.PTM;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -66,6 +66,7 @@ public final class ClusterStatsCollector {
     public static ClusterModificationCounts collectClusterModificationCounts(ClusterDetail cluster) {
         // Get the clustered psm details for a given cluster
         List<ClusteredPSMDetail> clusteredPSMDetails = cluster.getClusteredPSMDetails();
+        ModReader modeReader = ModReader.getInstance();
 
         // Extract the PTMs
         ModificationDistribution modificationDistribution = new ModificationDistribution();
@@ -79,9 +80,22 @@ public final class ClusterStatsCollector {
                 Set<String> countedModAccession = new HashSet<String>();
                 for (ModificationProvider modification : mods) {
                     String accession = modification.getAccession();
-                    if (!countedModAccession.contains(accession)) {
+                    String aa = ClusterStatsCollector.getCommonAminoAcid(modification, clusteredPSMDetail.getSequence());
+                    List<PTM> anchorPTMs;
+                    if(aa != null)
+                        anchorPTMs = modeReader.getAnchorModification(accession, aa);
+                    else
+                        anchorPTMs = modeReader.getAnchorModification(accession);
+
+                    //System.out.println(anchorPTMs.size());
+
+                    if(anchorPTMs.size() == 1){
+                        ((Modification)modification).setAccession(anchorPTMs.get(0).getAccession());
+                        ((Modification)modification).setName(anchorPTMs.get(0).getName());
+                    }
+                    if (!countedModAccession.contains(modification.getAccession())) {
                         modificationDistribution.incrementModificationCount(modification, 1);
-                        countedModAccession.add(accession);
+                        countedModAccession.add(modification.getAccession());
                     }
                 }
             }
@@ -133,5 +147,17 @@ public final class ClusterStatsCollector {
         }
 
         return spectrumSimilarityStatistics;
+    }
+
+    private static String getCommonAminoAcid(ModificationProvider mod, String sequence){
+        if(mod.getPositionMap() != null && !mod.getPositionMap().isEmpty()){
+            for(Integer position: mod.getPositionMap().keySet()){
+                if(position != null && position < sequence.length()){
+                    position = (position == 0)?1:position;
+                    return sequence.substring(position-1, position);
+                }
+            }
+        }
+        return null;
     }
 }

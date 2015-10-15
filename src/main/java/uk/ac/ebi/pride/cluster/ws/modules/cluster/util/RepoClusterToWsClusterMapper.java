@@ -9,7 +9,7 @@ import uk.ac.ebi.pride.cluster.ws.modules.spectrum.model.SpectrumPeak;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterSummary;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
 import uk.ac.ebi.pride.spectracluster.repo.utils.ModificationDetailFetcher;
-import uk.ac.ebi.pridemod.model.PTM;
+import uk.ac.ebi.pride.utilities.pridemod.model.PTM;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,6 +72,12 @@ public final class RepoClusterToWsClusterMapper {
         return newCluster;
     }
 
+    /**
+     * This function wrapper all the information for the modifications in the web-services level
+     * @param repoMods
+     * @param modificationDetailFetcher
+     * @return
+     */
     public static List<ModificationProvider> asModifications(List<ModificationProvider> repoMods,
                                                      ModificationDetailFetcher modificationDetailFetcher) {
         List<ModificationProvider> mods = new ArrayList<ModificationProvider>();
@@ -97,4 +103,6 @@ public final class RepoClusterToWsClusterMapper {
 
         return mods;
     }
+
+
 }

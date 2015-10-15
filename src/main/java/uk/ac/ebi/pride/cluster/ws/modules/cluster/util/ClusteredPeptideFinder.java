@@ -8,6 +8,7 @@ import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPeptideList;
 import uk.ac.ebi.pride.spectracluster.repo.model.AssayDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusterDetail;
 import uk.ac.ebi.pride.spectracluster.repo.model.ClusteredPSMDetail;
+import uk.ac.ebi.pride.utilities.pridemod.ModReader;
 
 import java.util.*;
 
@@ -21,6 +22,7 @@ public final class ClusteredPeptideFinder {
 
     public static ClusteredPeptideList findClusteredPeptides(ClusterDetail cluster) {
 
+
         ClusteredPeptideList clusteredPeptideList = new ClusteredPeptideList();
 
         if (cluster != null) {
@@ -28,7 +30,8 @@ public final class ClusteredPeptideFinder {
             Map<String, ClusteredPeptide> clusteredPeptideMap = new HashMap<String, ClusteredPeptide>();
             for (ClusteredPSMDetail clusteredPSMDetail : cluster.getClusteredPSMDetails()) {
                 String sequence = clusteredPSMDetail.getSequence();
-                String seqModCombined = sequence + clusteredPSMDetail.getPsmDetail().getModificationString();
+
+                String seqModCombined = sequence + clusteredPSMDetail.getPsmDetail().getAnchorModificationString();
 
                 ClusteredPeptide clusteredPeptide = clusteredPeptideMap.get(seqModCombined);
                 if (clusteredPeptide == null) {
@@ -39,12 +42,13 @@ public final class ClusteredPeptideFinder {
                     clusteredPeptide.setSequence(sequence);
 
                     // modifications
-                    clusteredPeptide.setModifications(clusteredPSMDetail.getPsmDetail().getModifications());
+                    clusteredPeptide.setModifications(clusteredPSMDetail.getPsmDetail().getAnchorModifications());
                     clusteredPeptideMap.put(seqModCombined, clusteredPeptide);
 
-                    // whether it is consensus peptide
-                    clusteredPeptide.setConsensusPeptide(clusteredPSMDetail.getRank() == 1.1f);
                 }
+
+                clusteredPeptide.setConsensusPeptide(clusteredPSMDetail.getRank() == 1.1f);
+
 
                 // PSM count
                 clusteredPeptide.addPSMCount(1);
