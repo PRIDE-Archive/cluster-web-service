@@ -18,7 +18,7 @@ public class ClusteredPSMModificationFilter implements IPredicate<ClusteredPSMDe
 
     @Override
     public boolean apply(ClusteredPSMDetail psm) {
-        String clusteredPSMDetailModifications = psm.getPsmDetail().getModificationString();
+        String clusteredPSMDetailModifications = psm.getPsmDetail().getAnchorModificationString();
         return modification.equalsIgnoreCase(clusteredPSMDetailModifications);
 
     }

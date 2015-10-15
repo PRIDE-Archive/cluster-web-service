@@ -1,5 +1,6 @@
 package uk.ac.ebi.pride.cluster.ws.modules.cluster.util;
 
+import uk.ac.ebi.pride.archive.dataprovider.identification.ModificationProvider;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.filter.IPredicate;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPSM;
 import uk.ac.ebi.pride.cluster.ws.modules.cluster.model.ClusteredPSMList;
@@ -105,4 +106,8 @@ public final class ClusteredPeptideFinder {
 
         return clusteredPSMList;
     }
+
+
+
+
 }
